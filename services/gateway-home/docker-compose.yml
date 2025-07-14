@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: ../../
+      dockerfile: services/gateway-home/Dockerfile
+      args:
+        serviceName: gateway_home
+    image: gateway_home:latest
+    ports:
+      - "80:80"
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
