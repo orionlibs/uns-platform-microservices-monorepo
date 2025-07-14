@@ -37,7 +37,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: ${GATEWAY_HOME_DATABASE_URL:jdbc:mysql://localhost:3306/uns_gateway?createDatabaseIfNotExist=true&useLegacyDatetimeCode=false&serverTimezone=UTC&useSSL=false&elideSetAutoCommits=true&allowPublicKeyRetrieval=true&autoReconnect=true&allowMultiQueries=true}
+    url: ${DOCUMENTS_DATABASE_URL}
     username: ${DOCUMENTS_DATABASE_USERNAME}
     password: ${DOCUMENTS_DATABASE_PASSWORD}
     hikari:

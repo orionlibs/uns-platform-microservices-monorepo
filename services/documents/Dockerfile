@@ -10,4 +10,7 @@ RUN ./gradlew :services:documents:bootJar --no-daemon
 FROM eclipse-temurin:21-jre-jammy
 EXPOSE 8080
 COPY --from=build /app/services/documents/build/libs/app.jar /app.jar
+ARG DOCUMENTS_DATABASE_URL
+ARG DOCUMENTS_DATABASE_USERNAME
+ARG DOCUMENTS_DATABASE_PASSWORD
 ENTRYPOINT java -jar "/app.jar"
