@@ -38,16 +38,6 @@ tasks.withType<Test> {
     }
 }
 
-// standard `test`
-tasks.named<Test>("test") {
-    failFast = true
-}
-
-// make `check` depend on them
-tasks.named("check") {
-    dependsOn("test")
-}
-
 // Jacoco report (uses default executionData)
 tasks.named<JacocoReport>("jacocoTestReport") {
     reports {

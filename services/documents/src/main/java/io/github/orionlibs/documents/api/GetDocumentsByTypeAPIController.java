@@ -1,9 +1,9 @@
 package io.github.orionlibs.documents.api;
 
-import io.github.orionlibs.documents.document.DocumentService;
-import io.github.orionlibs.documents.document.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.documents.document.model.DocumentEntity;
-import io.github.orionlibs.documents.document.model.DocumentType;
+import io.github.orionlibs.documents.DocumentService;
+import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
+import io.github.orionlibs.documents.model.DocumentEntity;
+import io.github.orionlibs.documents.model.DocumentType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;

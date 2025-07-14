@@ -5,9 +5,9 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.orionlibs.documents.document.DocumentService;
-import io.github.orionlibs.documents.document.model.DocumentEntity;
-import io.github.orionlibs.documents.document.model.DocumentType;
+import io.github.orionlibs.documents.DocumentService;
+import io.github.orionlibs.documents.model.DocumentEntity;
+import io.github.orionlibs.documents.model.DocumentType;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;

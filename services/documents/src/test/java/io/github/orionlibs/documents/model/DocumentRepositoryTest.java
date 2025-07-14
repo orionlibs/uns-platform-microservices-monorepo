@@ -1,4 +1,4 @@
-package io.github.orionlibs.documents.document.model;
+package io.github.orionlibs.documents.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

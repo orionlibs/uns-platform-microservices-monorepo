@@ -1,4 +1,4 @@
-package io.github.orionlibs.documents.document.model;
+package io.github.orionlibs.documents.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
