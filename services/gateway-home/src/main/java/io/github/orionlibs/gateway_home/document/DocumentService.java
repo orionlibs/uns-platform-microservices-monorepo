@@ -18,4 +18,16 @@ public class DocumentService
     {
         return documentRepository.findAllByType(documentType);
     }
+
+
+    public DocumentEntity save(DocumentEntity document)
+    {
+        return documentRepository.save(document);
+    }
+
+
+    public void deleteAll()
+    {
+        documentRepository.deleteAll();
+    }
 }

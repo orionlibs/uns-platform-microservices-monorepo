@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerUtils.baseAPIPath)
 //@Validated
 @Tag(name = "Documents", description = "Manage documents")
-public class APIController
+public class GetDocumentsByTypeAPIController
 {
     @Autowired
     private DocumentService documentService;
