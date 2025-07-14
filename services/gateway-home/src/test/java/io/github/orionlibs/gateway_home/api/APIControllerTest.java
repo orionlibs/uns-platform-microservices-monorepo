@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 class APIControllerTest
 {
-    @Value("${TEST_URL:http://localhost:8080/v1/home}")
+    @Value("${TEST_URL:http://localhost:8080/v1/documents/types}")
     private String testUrl;
 
 
