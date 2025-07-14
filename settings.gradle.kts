@@ -16,5 +16,5 @@ dependencyResolutionManagement {
 
 
 rootProject.name = "uns-platform-microservices-monorepo"
-// include("libs:core")
+include("libs:core")
 include("services:documents")

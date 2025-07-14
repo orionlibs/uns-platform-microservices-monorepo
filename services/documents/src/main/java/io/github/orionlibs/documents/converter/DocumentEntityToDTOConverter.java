@@ -1,5 +1,6 @@
 package io.github.orionlibs.documents.converter;
 
+import io.github.orionlibs.core.converter.Converter;
 import io.github.orionlibs.documents.api.DocumentDTO;
 import io.github.orionlibs.documents.model.DocumentEntity;
 import org.springframework.stereotype.Component;

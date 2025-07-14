@@ -17,6 +17,7 @@ allprojects {
 subprojects {
     apply(plugin = "java")
     apply(plugin = "io.spring.dependency-management")
+    apply(plugin = "base")
 
     java {
         sourceCompatibility = JavaVersion.VERSION_21

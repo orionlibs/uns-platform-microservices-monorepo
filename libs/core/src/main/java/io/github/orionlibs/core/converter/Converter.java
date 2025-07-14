@@ -1,4 +1,4 @@
-package io.github.orionlibs.documents.converter;
+package io.github.orionlibs.core.converter;
 
 /**
  * It converts a data type to another
