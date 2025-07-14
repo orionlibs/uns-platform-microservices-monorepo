@@ -15,6 +15,10 @@ plugins {
 group = "com.onelivery"
 version = "0.0.1"
 
+repositories {
+    mavenCentral()
+}
+
 java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(21))
