@@ -56,22 +56,3 @@ spring:
         lob:
           non_contextual_creation: true
     show-sql: true
-
-# Test profile
----
-spring:
-  config:
-    activate:
-      on-profile: test
-
-  datasource:
-    driver-class-name: org.h2.Driver
-    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL;\INIT=CREATE SCHEMA IF NOT EXISTS uns_gateway\;
-    username: sa
-    password:
-  jpa:
-    database: H2
-    hibernate:
-      ddl-auto: create-drop
-      dialect: org.hibernate.dialect.H2Dialect
-    show-sql: false
