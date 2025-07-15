@@ -2,14 +2,14 @@ package io.github.orionlibs.documents.converter;
 
 import io.github.orionlibs.core.converter.Converter;
 import io.github.orionlibs.documents.api.DocumentDTO;
-import io.github.orionlibs.documents.model.DocumentEntity;
+import io.github.orionlibs.documents.model.DocumentModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DocumentEntityToDTOConverter implements Converter<DocumentEntity, DocumentDTO>
+public class DocumentEntityToDTOConverter implements Converter<DocumentModel, DocumentDTO>
 {
     @Override
-    public DocumentDTO convert(DocumentEntity objectToConvert)
+    public DocumentDTO convert(DocumentModel objectToConvert)
     {
         if(objectToConvert == null)
         {

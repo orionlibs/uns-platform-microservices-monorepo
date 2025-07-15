@@ -2,7 +2,7 @@ package io.github.orionlibs.documents.api;
 
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.documents.model.DocumentEntity;
+import io.github.orionlibs.documents.model.DocumentModel;
 import io.github.orionlibs.documents.model.DocumentType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -46,7 +46,7 @@ public class GetDocumentsByTypeAPIController
     @GetMapping(value = "/documents/types/{documentType}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<DocumentsDTO> getDocumentsByType(@PathVariable(name = "documentType") DocumentType documentType)
     {
-        List<DocumentEntity> documentsFound = documentService.getDocumentsByType(documentType);
+        List<DocumentModel> documentsFound = documentService.getDocumentsByType(documentType);
         List<DocumentDTO> documentsToReturn = documentsFound.stream()
                         .map(doc -> documentEntityToDTOConverter.convert(doc))
                         .toList();

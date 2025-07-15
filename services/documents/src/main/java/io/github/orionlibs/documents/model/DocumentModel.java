@@ -15,10 +15,10 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 @Entity
-@Table(name = "documents", schema = "uns_gateway", indexes = {
+@Table(name = "documents", schema = "uns", indexes = {
                 @Index(name = "idx_id", columnList = "id")
 })
-public class DocumentEntity
+public class DocumentModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -41,12 +41,12 @@ public class DocumentEntity
     private LocalDateTime updatedAt;
 
 
-    public DocumentEntity()
+    public DocumentModel()
     {
     }
 
 
-    public DocumentEntity(String documentURL, DocumentType type, String title, String description)
+    public DocumentModel(String documentURL, DocumentType type, String title, String description)
     {
         this.documentURL = documentURL;
         this.type = type;

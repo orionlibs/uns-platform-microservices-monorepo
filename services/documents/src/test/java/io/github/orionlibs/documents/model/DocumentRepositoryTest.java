@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 public class DocumentRepositoryTest
 {
     @Autowired
-    private DocumentRepository documentRepository;
+    private DocumentDAO documentRepository;
 
 
     @BeforeEach
@@ -28,9 +28,9 @@ public class DocumentRepositoryTest
     void saveDocumentAndReturnDocument()
     {
         // given
-        DocumentEntity doc1 = saveDocument("https://company.com/1.pdf");
+        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
         // when
-        DocumentEntity savedDoc = documentRepository.save(doc1);
+        DocumentModel savedDoc = documentRepository.save(doc1);
         // then
         assertThat(savedDoc).isNotNull();
         assertThat(savedDoc.getId()).isGreaterThan(0);
@@ -44,12 +44,12 @@ public class DocumentRepositoryTest
     void saveDocumentsAndReturnByType()
     {
         // given
-        DocumentEntity doc1 = saveDocument("https://company.com/1.pdf");
-        DocumentEntity doc2 = saveDocument("https://company.com/2.pdf");
+        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
+        DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
         // when
-        DocumentEntity savedDoc1 = documentRepository.save(doc1);
-        DocumentEntity savedDoc2 = documentRepository.save(doc2);
-        List<DocumentEntity> docs = documentRepository.findAllByType(DocumentType.DOCUMENTATION);
+        DocumentModel savedDoc1 = documentRepository.save(doc1);
+        DocumentModel savedDoc2 = documentRepository.save(doc2);
+        List<DocumentModel> docs = documentRepository.findAllByType(DocumentType.DOCUMENTATION);
         // then
         assertThat(docs).isNotNull();
         assertThat(docs.size()).isEqualTo(2);
@@ -64,9 +64,9 @@ public class DocumentRepositoryTest
     }
 
 
-    private DocumentEntity saveDocument(String documentURL)
+    private DocumentModel saveDocument(String documentURL)
     {
-        DocumentEntity doc = new DocumentEntity(documentURL, DocumentType.DOCUMENTATION, "doc title 1", "doc description 1");
+        DocumentModel doc = new DocumentModel(documentURL, DocumentType.DOCUMENTATION, "doc title 1", "doc description 1");
         return documentRepository.save(doc);
     }
 }

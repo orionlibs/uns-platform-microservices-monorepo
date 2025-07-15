@@ -1,7 +1,7 @@
 package io.github.orionlibs.documents;
 
-import io.github.orionlibs.documents.model.DocumentEntity;
-import io.github.orionlibs.documents.model.DocumentRepository;
+import io.github.orionlibs.documents.model.DocumentModel;
+import io.github.orionlibs.documents.model.DocumentDAO;
 import io.github.orionlibs.documents.model.DocumentType;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 public class DocumentService
 {
     @Autowired
-    private DocumentRepository documentRepository;
+    private DocumentDAO documentRepository;
 
 
-    public List<DocumentEntity> getDocumentsByType(DocumentType documentType)
+    public List<DocumentModel> getDocumentsByType(DocumentType documentType)
     {
         return documentRepository.findAllByType(documentType);
     }
 
 
-    public DocumentEntity save(DocumentEntity document)
+    public DocumentModel save(DocumentModel document)
     {
         return documentRepository.save(document);
     }

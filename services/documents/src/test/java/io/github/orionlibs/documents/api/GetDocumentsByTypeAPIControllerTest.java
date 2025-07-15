@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.orionlibs.documents.DocumentService;
-import io.github.orionlibs.documents.model.DocumentEntity;
+import io.github.orionlibs.documents.model.DocumentModel;
 import io.github.orionlibs.documents.model.DocumentType;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
@@ -56,8 +56,8 @@ class GetDocumentsByTypeAPIControllerTest
     @Test
     void getDocumentsByType()
     {
-        DocumentEntity doc1 = saveDocument("https://company.com/1.pdf");
-        DocumentEntity doc2 = saveDocument("https://company.com/2.pdf");
+        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
+        DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
         RestAssured.baseURI += "/" + DocumentType.DOCUMENTATION.name();
         Response response = given()
                         .contentType(ContentType.JSON)
@@ -73,9 +73,9 @@ class GetDocumentsByTypeAPIControllerTest
     }
 
 
-    private DocumentEntity saveDocument(String documentURL)
+    private DocumentModel saveDocument(String documentURL)
     {
-        DocumentEntity doc = new DocumentEntity(documentURL, DocumentType.DOCUMENTATION, "doc title 1", "doc description 1");
+        DocumentModel doc = new DocumentModel(documentURL, DocumentType.DOCUMENTATION, "doc title 1", "doc description 1");
         return documentService.save(doc);
     }
 }

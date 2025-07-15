@@ -24,3 +24,4 @@ bin/main/application.yaml
 .DS_Store
 
 *.log
+credentials.txt
