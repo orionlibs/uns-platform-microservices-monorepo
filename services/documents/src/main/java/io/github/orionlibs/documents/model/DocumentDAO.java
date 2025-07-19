@@ -12,5 +12,5 @@ public interface DocumentDAO extends JpaRepository<DocumentModel, Integer>
      * @param type The type of document
      * @return The documents of given type
      */
-    List<DocumentModel> findAllByType(DocumentType type);
+    List<DocumentModel> findAllByType(DocumentType.Type type);
 }

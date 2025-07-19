@@ -27,7 +27,7 @@ public class DocumentModel
     private String documentURL;
     @Enumerated(EnumType.STRING)
     @Column(name = "document_type", length = 20, nullable = false)
-    private DocumentType type;
+    private DocumentType.Type type;
     @Column(name = "title", length = 700, nullable = false)
     private String title;
     @Lob
@@ -46,7 +46,7 @@ public class DocumentModel
     }
 
 
-    public DocumentModel(String documentURL, DocumentType type, String title, String description)
+    public DocumentModel(String documentURL, DocumentType.Type type, String title, String description)
     {
         this.documentURL = documentURL;
         this.type = type;
@@ -79,13 +79,13 @@ public class DocumentModel
     }
 
 
-    public DocumentType getType()
+    public DocumentType.Type getType()
     {
         return type;
     }
 
 
-    public void setType(DocumentType type)
+    public void setType(DocumentType.Type type)
     {
         this.type = type;
     }

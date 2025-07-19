@@ -1,0 +1,89 @@
+In documents service, make it either store doc URL or the document itself in a blob. Create API "POST /documents", "PATCH /documents/{id}", "DELETE /documents/{id}", "GET /documents/{id}"
+
+
+Create user management projects in the folder "services/user-management"
+1--Create project "user-registration-service". The default config is to use the localhost database. Other config comes from env variables. If they exist then that is the user database to use. See how to inject env variables to application.yml. Create API:
+"POST /users"
+2--create project "user-update-service" with API:
+"PATCH /users/passwords",
+"POST /users/passwords/forgot-requests"
+3--create project "user-details-service" with API:
+"GET /users/{id}"
+4--create project "user-settings-service" with API:
+"GET /users/settings", 
+"PUT /users/settings"
+5--create project "user-login-service" with API:
+"POST /users/login" uses spring JWT
+6--create project "user-logout-service" with API:
+"POST /users/logout"
+
+
+Create a command line utility project allowing users to run certain tasks by calling (internally) the APIs. Find how to generate a client SDK in java from all APIs. The utility will use this SDK
+
+
+Create project "databases-service" with API:
+1--get number of registered databases
+2--get number of connected databases
+3--get number of databases the system failed to connect to
+4--get configured databases
+5--get currently running queries per database
+6--get long-running queries per database
+7--get queries per second per database
+8--get queries per second fro all databases
+
+
+Create project "mqtt-service":
+1--get number of MQTT connections
+
+
+Create project "device-service":
+1--get number of configured devices
+
+
+Create project "store-and-forward-engine-service":
+1--get store-and-forward engines that have quarantined items along with the number of quarantined items for each engine
+2--get engines along with number of stored commands
+
+
+Create project "alarms-service":
+1--get number of active alarms
+2--get active alarms
+3--get inactive alarms
+4--get alarm details
+
+
+Create project "tags-service":
+1--get number of tags
+2--get number of realtime tag providers
+3--get number of historical tag providers
+4--get realtime tag providers
+5--get historical tag providers
+
+
+
+Create project "script-service":
+1--get number of scripts configured
+2--get scripts
+
+
+Create project "logger-service":
+1--get logs
+
+
+Create project "diagnostics-service":
+1--
+
+
+Download status report as txt that has all status info or selected info
+
+
+Create project "metrics-service"
+
+
+Create project "analytics-service"
+
+
+Create project "project-service"
+
+
+Create project "email-service"

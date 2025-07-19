@@ -1,7 +1,24 @@
 package io.github.orionlibs.documents.model;
 
-public enum DocumentType
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class DocumentType
 {
-    DOCUMENTATION,
-    OTHER
+    public enum Type
+    {
+        DOCUMENTATION,
+        OTHER
+    }
+
+
+    @NotNull(message = "document type must be provided")
+    private Type type;
 }

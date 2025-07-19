@@ -24,6 +24,8 @@ class GetDocumentsByTypeAPIControllerTest
 {
     @Autowired
     private DocumentService documentService;
+    @Autowired
+    private TestUtils utils;
     @Value("http://localhost:8080/v1/documents/types")
     private String testUrl;
 
@@ -40,7 +42,7 @@ class GetDocumentsByTypeAPIControllerTest
     @Test
     void getDocumentsByType_noResults()
     {
-        RestAssured.baseURI += "/" + DocumentType.DOCUMENTATION.name();
+        RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = given()
                         .contentType(ContentType.JSON)
                         .when()
@@ -56,9 +58,9 @@ class GetDocumentsByTypeAPIControllerTest
     @Test
     void getDocumentsByType()
     {
-        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
-        DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
-        RestAssured.baseURI += "/" + DocumentType.DOCUMENTATION.name();
+        DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
+        DocumentModel doc2 = utils.saveDocument("https://company.com/2.pdf");
+        RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = given()
                         .contentType(ContentType.JSON)
                         .when()
@@ -70,12 +72,5 @@ class GetDocumentsByTypeAPIControllerTest
         assertThat(body.documents().size()).isEqualTo(2);
         assertThat(body.documents().get(0).documentURL()).isEqualTo("https://company.com/1.pdf");
         assertThat(body.documents().get(1).documentURL()).isEqualTo("https://company.com/2.pdf");
-    }
-
-
-    private DocumentModel saveDocument(String documentURL)
-    {
-        DocumentModel doc = new DocumentModel(documentURL, DocumentType.DOCUMENTATION, "doc title 1", "doc description 1");
-        return documentService.save(doc);
     }
 }

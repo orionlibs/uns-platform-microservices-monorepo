@@ -15,7 +15,11 @@ public class DocumentEntityToDTOConverter implements Converter<DocumentModel, Do
         {
             return null;
         }
-        return new DocumentDTO(objectToConvert.getDocumentURL(), objectToConvert.getTitle(), objectToConvert.getDescription(),
-                        objectToConvert.getCreatedAt(), objectToConvert.getUpdatedAt());
+        return new DocumentDTO(objectToConvert.getDocumentURL(),
+                        objectToConvert.getType(),
+                        objectToConvert.getTitle(),
+                        objectToConvert.getDescription(),
+                        objectToConvert.getCreatedAt(),
+                        objectToConvert.getUpdatedAt());
     }
 }

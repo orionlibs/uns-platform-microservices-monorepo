@@ -1,7 +1,9 @@
-package io.github.orionlibs.documents.model;
+package io.github.orionlibs.documents;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.orionlibs.documents.model.DocumentModel;
+import io.github.orionlibs.documents.model.DocumentType;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,16 +13,16 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
 @ActiveProfiles("test")
-public class DocumentRepositoryTest
+public class DocumentServiceTest
 {
     @Autowired
-    private DocumentDAO documentRepository;
+    private DocumentService documentService;
 
 
     @BeforeEach
     void setup()
     {
-        documentRepository.deleteAll();
+        documentService.deleteAll();
     }
 
 
@@ -30,13 +32,14 @@ public class DocumentRepositoryTest
         // given
         DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
         // when
-        DocumentModel savedDoc = documentRepository.save(doc1);
+        List<DocumentModel> savedDoc = documentService.getDocumentsByType(DocumentType.Type.DOCUMENTATION);
         // then
         assertThat(savedDoc).isNotNull();
-        assertThat(savedDoc.getId()).isGreaterThan(0);
-        assertThat(savedDoc.getDocumentURL()).isEqualTo("https://company.com/1.pdf");
-        assertThat(savedDoc.getCreatedAt().toString()).isNotBlank();
-        assertThat(savedDoc.getUpdatedAt().toString()).isNotBlank();
+        assertThat(savedDoc.size()).isEqualTo(1);
+        assertThat(savedDoc.get(0).getId()).isGreaterThan(0);
+        assertThat(savedDoc.get(0).getDocumentURL()).isEqualTo("https://company.com/1.pdf");
+        assertThat(savedDoc.get(0).getCreatedAt().toString()).isNotBlank();
+        assertThat(savedDoc.get(0).getUpdatedAt().toString()).isNotBlank();
     }
 
 
@@ -47,9 +50,7 @@ public class DocumentRepositoryTest
         DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
         DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
         // when
-        DocumentModel savedDoc1 = documentRepository.save(doc1);
-        DocumentModel savedDoc2 = documentRepository.save(doc2);
-        List<DocumentModel> docs = documentRepository.findAllByType(DocumentType.Type.DOCUMENTATION);
+        List<DocumentModel> docs = documentService.getDocumentsByType(DocumentType.Type.DOCUMENTATION);
         // then
         assertThat(docs).isNotNull();
         assertThat(docs.size()).isEqualTo(2);
@@ -67,6 +68,6 @@ public class DocumentRepositoryTest
     private DocumentModel saveDocument(String documentURL)
     {
         DocumentModel doc = new DocumentModel(documentURL, DocumentType.Type.DOCUMENTATION, "doc title 1", "doc description 1");
-        return documentRepository.save(doc);
+        return documentService.save(doc);
     }
 }
