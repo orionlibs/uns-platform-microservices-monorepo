@@ -1,6 +1,3 @@
-In documents service, make it either store doc URL or the document itself in a blob. Create API "POST /documents", "PATCH /documents/{id}", "DELETE /documents/{id}", "GET /documents/{id}"
-
-
 Create user management projects in the folder "services/user-management"
 1--Create project "user-registration-service". The default config is to use the localhost database. Other config comes from env variables. If they exist then that is the user database to use. See how to inject env variables to application.yml. Create API:
 "POST /users"

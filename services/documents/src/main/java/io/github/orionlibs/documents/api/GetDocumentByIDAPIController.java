@@ -2,15 +2,13 @@ package io.github.orionlibs.documents.api;
 
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.documents.model.DocumentModel;
-import io.github.orionlibs.documents.model.DocumentType;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import java.util.List;
+import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(ControllerUtils.baseAPIPath)
 @Tag(name = "Documents", description = "Document manager")
-public class GetDocumentsByTypeAPIController
+public class GetDocumentByIDAPIController
 {
     @Autowired
     private DocumentService documentService;
@@ -31,26 +29,29 @@ public class GetDocumentsByTypeAPIController
 
 
     @Operation(
-                    summary = "Get documents by document type",
-                    description = "Get documents by document type",
+                    summary = "Get document by ID",
+                    description = "Get document by ID",
                     parameters = @io.swagger.v3.oas.annotations.Parameter(
+                                    name = "documentID",
+                                    description = "The ID of the document to retrieve",
                                     required = true,
-                                    in = ParameterIn.QUERY,
-                                    content = @Content(schema = @Schema(implementation = DocumentType.Type.class))
+                                    in = ParameterIn.PATH,
+                                    schema = @Schema(type = "integer", format = "int32")
                     ),
-                    responses = {@ApiResponse(responseCode = "200", description = "Cases found",
+                    responses = {@ApiResponse(responseCode = "200", description = "Document found",
                                     content = @Content(
                                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                                    schema = @Schema(implementation = DocumentsDTO.class)
-                                    ))}
+                                                    schema = @Schema(implementation = DocumentDTO.class)
+                                    )),
+                                    @ApiResponse(responseCode = "404", description = "Document not found")}
     )
-    @GetMapping(value = "/documents/types/{documentType}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DocumentsDTO> getDocumentsByType(@PathVariable(name = "documentType") DocumentType.Type documentType)
+    @GetMapping(value = "/documents/{documentID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<DocumentDTO> getDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
-        List<DocumentModel> documentsFound = documentService.getByType(documentType);
-        List<DocumentDTO> documentsToReturn = documentsFound.stream()
-                        .map(doc -> documentEntityToDTOConverter.convert(doc))
-                        .toList();
-        return ResponseEntity.ok(new DocumentsDTO(documentsToReturn));
+        return documentService.getByID(documentID)
+                        .map(documentEntityToDTOConverter::convert)
+                        .filter(Objects::nonNull)
+                        .map(ResponseEntity::ok)
+                        .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

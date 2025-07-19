@@ -39,7 +39,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         NewDocumentDTO docToSave = saveDocumentRequest("https://company.com/1.pdf");
-        Response response = utils.makeAPICall(docToSave);
+        Response response = utils.makePostAPICall(docToSave);
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
     }
@@ -50,7 +50,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         NewDocumentDTO docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
-        Response response = utils.makeAPICall(docToSave);
+        Response response = utils.makePostAPICall(docToSave);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("type must not be blank", body.fieldErrors().get(0).message());

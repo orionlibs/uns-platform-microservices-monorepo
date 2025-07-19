@@ -27,7 +27,19 @@ class TestUtils
     }
 
 
-    Response makeAPICall(Object objectToSave)
+    Response makeGetAPICall()
+    {
+        return given()
+                        .contentType(ContentType.JSON)
+                        .accept(ContentType.JSON)
+                        .when()
+                        .get()
+                        .then()
+                        .extract().response();
+    }
+
+
+    Response makePostAPICall(Object objectToSave)
     {
         return given()
                         .contentType(ContentType.JSON)
@@ -35,6 +47,31 @@ class TestUtils
                         .body(jsonService.toJson(objectToSave))
                         .when()
                         .post()
+                        .then()
+                        .extract().response();
+    }
+
+
+    Response makePutAPICall(Object objectToSave)
+    {
+        return given()
+                        .contentType(ContentType.JSON)
+                        .accept(ContentType.JSON)
+                        .body(jsonService.toJson(objectToSave))
+                        .when()
+                        .put()
+                        .then()
+                        .extract().response();
+    }
+
+
+    Response makeDeleteAPICall()
+    {
+        return given()
+                        .contentType(ContentType.JSON)
+                        .accept(ContentType.JSON)
+                        .when()
+                        .delete()
                         .then()
                         .extract().response();
     }

@@ -27,47 +27,47 @@ public class DocumentServiceTest
 
 
     @Test
-    void saveDocumentAndReturnDocument()
-    {
-        // given
-        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
-        // when
-        List<DocumentModel> savedDoc = documentService.getDocumentsByType(DocumentType.Type.DOCUMENTATION);
-        // then
-        assertThat(savedDoc).isNotNull();
-        assertThat(savedDoc.size()).isEqualTo(1);
-        assertThat(savedDoc.get(0).getId()).isGreaterThan(0);
-        assertThat(savedDoc.get(0).getDocumentURL()).isEqualTo("https://company.com/1.pdf");
-        assertThat(savedDoc.get(0).getCreatedAt().toString()).isNotBlank();
-        assertThat(savedDoc.get(0).getUpdatedAt().toString()).isNotBlank();
-    }
-
-
-    @Test
     void saveDocumentsAndReturnByType()
     {
         // given
-        DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
-        DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
+        DocumentModel doc1 = saveDocument("https://company.com/1.pdf", DocumentType.Type.DOCUMENTATION);
+        DocumentModel doc2 = saveDocument("https://company.com/2.pdf", DocumentType.Type.DOCUMENTATION);
+        DocumentModel doc3 = saveDocument("https://company.com/3.pdf", DocumentType.Type.OTHER);
         // when
-        List<DocumentModel> docs = documentService.getDocumentsByType(DocumentType.Type.DOCUMENTATION);
+        List<DocumentModel> docs1 = documentService.getByType(DocumentType.Type.DOCUMENTATION);
+        List<DocumentModel> docs2 = documentService.getByType(DocumentType.Type.OTHER);
         // then
-        assertThat(docs).isNotNull();
-        assertThat(docs.size()).isEqualTo(2);
-        assertThat(docs.get(0).getId()).isGreaterThan(0);
-        assertThat(docs.get(1).getId()).isGreaterThan(0);
-        assertThat(docs.get(0).getDocumentURL()).isEqualTo("https://company.com/1.pdf");
-        assertThat(docs.get(1).getDocumentURL()).isEqualTo("https://company.com/2.pdf");
-        assertThat(docs.get(0).getCreatedAt().toString()).isNotBlank();
-        assertThat(docs.get(0).getUpdatedAt().toString()).isNotBlank();
-        assertThat(docs.get(1).getCreatedAt().toString()).isNotBlank();
-        assertThat(docs.get(1).getUpdatedAt().toString()).isNotBlank();
+        assertThat(docs1).isNotNull();
+        assertThat(docs2).isNotNull();
+        assertThat(docs1.size()).isEqualTo(2);
+        assertThat(docs2.size()).isEqualTo(1);
+        assertThat(docs1.get(0).getId()).isGreaterThan(0);
+        assertThat(docs1.get(1).getId()).isGreaterThan(0);
+        assertThat(docs2.get(0).getId()).isGreaterThan(0);
+        assertThat(docs1.get(0).getDocumentURL()).isEqualTo("https://company.com/1.pdf");
+        assertThat(docs1.get(1).getDocumentURL()).isEqualTo("https://company.com/2.pdf");
+        assertThat(docs2.get(0).getDocumentURL()).isEqualTo("https://company.com/3.pdf");
+        assertThat(docs1.get(0).getType()).isEqualTo(DocumentType.Type.DOCUMENTATION);
+        assertThat(docs1.get(1).getType()).isEqualTo(DocumentType.Type.DOCUMENTATION);
+        assertThat(docs2.get(0).getType()).isEqualTo(DocumentType.Type.OTHER);
+        assertThat(docs1.get(0).getTitle()).isEqualTo("doc title 1");
+        assertThat(docs1.get(1).getTitle()).isEqualTo("doc title 1");
+        assertThat(docs2.get(0).getTitle()).isEqualTo("doc title 1");
+        assertThat(docs1.get(0).getDescription()).isEqualTo("doc description 1");
+        assertThat(docs1.get(1).getDescription()).isEqualTo("doc description 1");
+        assertThat(docs2.get(0).getDescription()).isEqualTo("doc description 1");
+        assertThat(docs1.get(0).getCreatedAt().toString()).isNotBlank();
+        assertThat(docs1.get(1).getCreatedAt().toString()).isNotBlank();
+        assertThat(docs2.get(0).getCreatedAt().toString()).isNotBlank();
+        assertThat(docs1.get(0).getUpdatedAt().toString()).isNotBlank();
+        assertThat(docs1.get(1).getUpdatedAt().toString()).isNotBlank();
+        assertThat(docs2.get(0).getUpdatedAt().toString()).isNotBlank();
     }
 
 
-    private DocumentModel saveDocument(String documentURL)
+    private DocumentModel saveDocument(String documentURL, DocumentType.Type type)
     {
-        DocumentModel doc = new DocumentModel(documentURL, DocumentType.Type.DOCUMENTATION, "doc title 1", "doc description 1");
+        DocumentModel doc = new DocumentModel(documentURL, type, "doc title 1", "doc description 1");
         return documentService.save(doc);
     }
 }
