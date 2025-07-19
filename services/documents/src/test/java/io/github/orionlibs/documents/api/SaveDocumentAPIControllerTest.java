@@ -4,6 +4,7 @@ import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.document.json.JSONService;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentType;
@@ -49,9 +50,27 @@ class SaveDocumentAPIControllerTest
     }
 
 
+    @Test
+    void saveDocument_invalidDocumentType()
+    {
+        RestAssured.baseURI = basePath;
+        NewDocumentDTO docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
+        Response response = makeAPICallToSaveDocument(docToSave);
+        assertEquals(400, response.statusCode());
+        APIError body = response.as(APIError.class);
+        assertEquals("type must not be blank", body.fieldErrors().get(0).message());
+    }
+
+
     private NewDocumentDTO saveDocumentRequest(String docURL)
     {
         return new NewDocumentDTO(docURL, DocumentType.Type.DOCUMENTATION, "title", "description", LocalDateTime.now(), LocalDateTime.now());
+    }
+
+
+    private NewDocumentDTO saveDocumentRequestWithoutType(String docURL)
+    {
+        return new NewDocumentDTO(docURL, null, "title", "description", LocalDateTime.now(), LocalDateTime.now());
     }
 
 

@@ -47,7 +47,8 @@ public class SaveDocumentAPIController
                                     content = @Content(
                                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                                     schema = @Schema(implementation = DocumentsDTO.class)
-                                    ))}
+                                    )),
+                                    @ApiResponse(responseCode = "400", description = "Invalid input")}
     )
     @PostMapping(value = "/documents", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveDocument(@Valid @RequestBody NewDocumentDTO documentToSave)
