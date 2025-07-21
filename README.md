@@ -1,5 +1,5 @@
 # UNS Microservices
-This Gradle-powered monorepo hosts a number of Spring Boot Dockerised microservices, and a few commons libraries, that constitute the platform for a Unified Namespace-powered enterprise (e.g. Industrial Internet of Things -- IIoT, or any enterprise) that is digitally transforming/transformed. Continuous Integration is performed by GitHub Actions.
+This Gradle-powered monorepo hosts a number of Spring Boot Dockerised microservices and commons libraries, that constitute the platform for a Unified Namespace-powered enterprise (e.g. Industrial Internet of Things -- IIoT, or any enterprise) that is digitally transforming/transformed. Continuous Integration is performed by GitHub Actions. This project consists only of backend services. No frontend.
 
 To build and install the libraries only (not the services) to local maven run
 ```shell
