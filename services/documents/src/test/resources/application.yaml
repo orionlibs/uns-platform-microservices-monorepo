@@ -16,3 +16,25 @@ spring:
       ddl-auto: create-drop
       dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
+
+---
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    properties:
+      security:
+        protocol: SASL_SSL
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      group-id: kafka-consumer-group-id
+      auto-offset-reset: earliest
+
+event:
+  topics:
+    - document-saved
+    - document-updated
+    - document-deleted

@@ -38,6 +38,8 @@ public class DocumentService
     @Transactional
     public DocumentModel save(NewDocumentDTO newDocument)
     {
+        newDocument.setCreatedAt(LocalDateTime.now());
+        newDocument.setUpdatedAt(LocalDateTime.now());
         DocumentModel toSave = newDocumentDTOToEntityConverter.convert(newDocument);
         return save(toSave);
     }

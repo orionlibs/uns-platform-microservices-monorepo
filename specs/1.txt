@@ -1,5 +1,5 @@
 Create user management projects in the folder "services/user-management"
-1--Create project "user-registration-service". The default config is to use the localhost database. Other config comes from env variables. If they exist then that is the user database to use. See how to inject env variables to application.yml. Create API:
+1--Create project "user-registration-service". Create API:
 "POST /users"
 2--create project "user-update-service" with API:
 "PATCH /users/passwords",
