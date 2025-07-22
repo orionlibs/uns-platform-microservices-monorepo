@@ -1,7 +1,7 @@
 .gradle
 /build/
-/libs/build/
-/services/build/
+/libs/**/build/
+/services/**/build/
 !gradle/wrapper/gradle-wrapper.jar
 *.class
 bin/main/application.yaml
