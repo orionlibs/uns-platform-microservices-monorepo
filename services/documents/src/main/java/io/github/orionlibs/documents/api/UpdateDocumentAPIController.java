@@ -61,9 +61,12 @@ public class UpdateDocumentAPIController
         boolean isDocumentFound = documentService.update(documentID, documentToSave);
         if(isDocumentFound)
         {
-            kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentUpdatedEvent.builder()
-                            .documentID(documentID)
-                            .build()));
+            if(kafkaTemplate != null)
+            {
+                kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentUpdatedEvent.builder()
+                                .documentID(documentID)
+                                .build()));
+            }
             return ResponseEntity.ok(null);
         }
         else

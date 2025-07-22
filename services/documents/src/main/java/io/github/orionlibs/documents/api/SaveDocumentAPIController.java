@@ -62,10 +62,13 @@ public class SaveDocumentAPIController
     {
         DocumentModel newDocument = documentService.save(documentToSave);
         String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
-        kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentSavedEvent.builder()
-                        .documentID(newDocument.getId())
-                        .documentLocation(newDocumentURL)
-                        .build()));
+        if(kafkaTemplate != null)
+        {
+            kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentSavedEvent.builder()
+                            .documentID(newDocument.getId())
+                            .documentLocation(newDocumentURL)
+                            .build()));
+        }
         return created(URI.create(newDocumentURL)).build();
     }
 }

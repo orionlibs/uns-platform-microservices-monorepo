@@ -14,25 +14,26 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class GetDocumentsByTypeAPIControllerTest
 {
+    @LocalServerPort
+    private int port;
     @Autowired
     private DocumentService documentService;
     @Autowired
     private TestUtils utils;
-    @Value("http://localhost:8080/v1/documents/types")
-    private String testUrl;
 
 
     @BeforeEach
     public void setUp()
     {
         documentService.deleteAll();
-        RestAssured.baseURI = testUrl;
+        RestAssured.baseURI = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents/types";
         RestAssured.useRelaxedHTTPSValidation();
     }
 

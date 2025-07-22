@@ -47,9 +47,12 @@ public class DeleteDocumentAPIController
     public ResponseEntity<?> deleteDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         documentService.delete(documentID);
-        kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentDeletedEvent.builder()
-                        .documentID(documentID)
-                        .build()));
+        if(kafkaTemplate != null)
+        {
+            kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentDeletedEvent.builder()
+                            .documentID(documentID)
+                            .build()));
+        }
         return ResponseEntity.ok(null);
     }
 }
