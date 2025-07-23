@@ -6,15 +6,18 @@ services can use kafka to publish events. Implement MQTT publishing, as well usi
 
 
 Create user management projects in the folder "services/user-management"
-1--Create project "user-registration-service". Create API:
-"POST /users"
+1--Create project "user-registration-service". The default config is to use the localhost database. Other config comes from env variables. If they exist then that is the user database to use. See how to inject env variables to application.yml. Create API:
+"POST /users". Check if username already exists. If not then register authority, user, details and settings (call settings service)
 2--create project "user-update-service" with API:
 "PATCH /users/passwords",
 "POST /users/passwords/forgot-requests"
+"PATCH /users/enablements" to enable/disable accounts
+"DELETE /users"
 3--create project "user-details-service" with API:
 "GET /users/{id}"
 4--create project "user-settings-service" with API:
-"GET /users/settings", 
+"POST /users/settings
+"GET /users/settings",
 "PUT /users/settings"
 5--create project "user-login-service" with API:
 "POST /users/login" uses spring JWT
@@ -135,3 +138,9 @@ Create tag historian service project
 
 Create sequential function chart service project
 --create an SFC which is a sequence of scripts to be executed
+
+
+Create feedback service for people to submit feedback
+
+
+Create support service for users to create support requests and support users to create and manage support tickets

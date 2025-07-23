@@ -20,23 +20,22 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "users", schema = "uns", indexes = {
-                @Index(name = "idx_id", columnList = "id"),
-                @Index(name = "idx_username", columnList = "username")
+                @Index(name = "idx_uns_users", columnList = "id,username")
 })
 public class UserModel implements UserDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "id", updatable = false, nullable = false)
+    @Column(updatable = false, nullable = false)
     private UUID id;
-    @Column(name = "username", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private String username;
-    @Column(name = "password", nullable = false)
+    @Column(nullable = false)
     private String password;
-    @Column(name = "authority", nullable = false)
+    @Column(nullable = false)
     private String authority;
     @Column(name = "is_enabled", nullable = false)
-    private boolean isEnabled = true;
+    private boolean isEnabled;
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
@@ -47,11 +46,13 @@ public class UserModel implements UserDetails
 
     public UserModel()
     {
+        isEnabled = true;
     }
 
 
     public UserModel(String username, String password, String authority)
     {
+        this();
         this.username = username;
         this.password = password;
         this.authority = authority;
@@ -129,6 +130,24 @@ public class UserModel implements UserDetails
     @Override
     public boolean isEnabled()
     {
-        return isEnabled();
+        return isEnabled;
+    }
+
+
+    public void setPassword(String password)
+    {
+        this.password = password;
+    }
+
+
+    public void setAuthority(String authority)
+    {
+        this.authority = authority;
+    }
+
+
+    public void setEnabled(boolean enabled)
+    {
+        isEnabled = enabled;
     }
 }
