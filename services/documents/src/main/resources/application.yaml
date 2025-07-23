@@ -57,18 +57,18 @@ spring:
           non_contextual_creation: true
     show-sql: true
 
----
-spring:
-  kafka:
-    bootstrap-servers: ${KAFKA_SERVER_URL:}
-    properties:
-      security:
-        protocol: ${KAFKA_SECURITY_PROTOCOL:}
-    producer:
-      key-serializer: org.apache.kafka.common.serialization.StringSerializer
-      value-serializer: org.apache.kafka.common.serialization.StringSerializer
-    consumer:
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: ${KAFKA_CONSUMER_GROUP_ID:}
-      auto-offset-reset: earliest
+#---
+#spring:
+#  kafka:
+#    bootstrap-servers: ${KAFKA_SERVER_URL:}
+#    properties:
+#      security:
+#        protocol: ${KAFKA_SECURITY_PROTOCOL:}
+#    producer:
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+#    consumer:
+#      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      group-id: ${KAFKA_CONSUMER_GROUP_ID:}
+#      auto-offset-reset: earliest

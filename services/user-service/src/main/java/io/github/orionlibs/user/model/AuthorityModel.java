@@ -6,31 +6,26 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import java.util.UUID;
 
 @Entity
 @Table(name = "authorities", schema = "uns", indexes = {
-                @Index(name = "idx_id", columnList = "user_id")
+                @Index(name = "idx_id", columnList = "id")
 })
 public class AuthorityModel
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "user_id", length = 40, nullable = false)
-    private String userID;
-    @Column(name = "username", nullable = false)
-    private String username;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID id;
     @Column(name = "authority", nullable = false)
     private String authority;
-    @CreationTimestamp
-    @Column(name = "created_at", nullable = false)
-    private LocalDateTime createdAt;
-    @UpdateTimestamp
-    @Column(name = "updated_at", nullable = false)
-    private LocalDateTime updatedAt;
+    @OneToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private UserModel user;
 
 
     public AuthorityModel()
@@ -38,34 +33,15 @@ public class AuthorityModel
     }
 
 
-    public AuthorityModel(String username, String authority)
+    public AuthorityModel(String authority)
     {
-        this.username = username;
         this.authority = authority;
     }
 
 
-    public String getUserID()
+    public UUID getId()
     {
-        return userID;
-    }
-
-
-    public void setUserID(String userID)
-    {
-        this.userID = userID;
-    }
-
-
-    public String getUsername()
-    {
-        return username;
-    }
-
-
-    public void setUsername(String username)
-    {
-        this.username = username;
+        return id;
     }
 
 
@@ -75,32 +51,8 @@ public class AuthorityModel
     }
 
 
-    public void setAuthority(String authority)
+    public UserModel getUser()
     {
-        this.authority = authority;
-    }
-
-
-    public LocalDateTime getCreatedAt()
-    {
-        return createdAt;
-    }
-
-
-    public void setCreatedAt(LocalDateTime createdAt)
-    {
-        this.createdAt = createdAt;
-    }
-
-
-    public LocalDateTime getUpdatedAt()
-    {
-        return updatedAt;
-    }
-
-
-    public void setUpdatedAt(LocalDateTime updatedAt)
-    {
-        this.updatedAt = updatedAt;
+        return user;
     }
 }

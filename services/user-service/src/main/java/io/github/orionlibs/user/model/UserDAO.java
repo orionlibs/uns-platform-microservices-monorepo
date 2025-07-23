@@ -5,6 +5,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AuthorityDAO extends JpaRepository<AuthorityModel, UUID>
+public interface UserDAO extends JpaRepository<UserModel, UUID>
 {
 }
