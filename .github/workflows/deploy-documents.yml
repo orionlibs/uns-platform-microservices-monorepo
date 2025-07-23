@@ -1,3 +1,4 @@
+# Trigger workflow only when files in services/documents or workflow itself change
 name: CI/CD
 
 on:
@@ -14,7 +15,17 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Use paths-filter to detect changes in the documents service
+      - name: Detect changes in documents service
+        id: changes
+        uses: dorny/paths-filter@v3
+        with:
+          filters:
+            documents:
+              - 'services/documents/**'
+
       - name: Set up JDK 21
+        if: steps.changes.outputs.documents == 'true'
         uses: actions/setup-java@v4
         with:
           java-version: '21'
@@ -22,10 +33,16 @@ jobs:
           cache: 'gradle'
 
       - name: Make gradlew executable
+        if: steps.changes.outputs.documents == 'true'
         run: chmod +x gradlew
 
       - name: Build & test
+        if: steps.changes.outputs.documents == 'true'
         run: ./gradlew :services:documents:build --no-daemon
+
+      - name: Skip build
+        if: steps.changes.outputs.documents != 'true'
+        run: echo "No changes in services/documents; skipping build."
 
       #- name: Configure AWS credentials
       #  uses: aws-actions/configure-aws-credentials@v4
