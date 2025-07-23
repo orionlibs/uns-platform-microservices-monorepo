@@ -1,5 +1,6 @@
 package io.github.orionlibs.documents.event;
 
+import io.github.orionlibs.core.event.Event;
 import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,8 +13,10 @@ import lombok.Setter;
 @Builder
 @Getter
 @Setter
+@Event
 public class DocumentSavedEvent implements Serializable
 {
+    public static final String EVENT_NAME = "document-saved";
     private Integer documentID;
     private String documentLocation;
 }

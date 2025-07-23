@@ -3,6 +3,7 @@ package io.github.orionlibs.documents.api;
 import static org.springframework.http.ResponseEntity.created;
 
 import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
 import io.github.orionlibs.documents.event.DocumentSavedEvent;
@@ -17,7 +18,6 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,11 +34,12 @@ public class SaveDocumentAPIController
     private DocumentService documentService;
     @Autowired
     private DocumentEntityToDTOConverter documentEntityToDTOConverter;
-    @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
+    /*@Autowired
+    private KafkaTemplate<String, String> kafkaTemplate;*/
     @Autowired
     private JSONService jsonService;
-    private static final String TOPIC = "document-saved";
+    @Autowired
+    private EventPublisher publisher;
 
 
     @Operation(
@@ -62,13 +63,14 @@ public class SaveDocumentAPIController
     {
         DocumentModel newDocument = documentService.save(documentToSave);
         String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
-        if(kafkaTemplate != null)
-        {
-            kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentSavedEvent.builder()
-                            .documentID(newDocument.getId())
-                            .documentLocation(newDocumentURL)
-                            .build()));
-        }
+        publisher.publish(DocumentSavedEvent.EVENT_NAME, jsonService.toJson(DocumentSavedEvent.builder()
+                        .documentID(newDocument.getId())
+                        .documentLocation(newDocumentURL)
+                        .build()));
+        /*kafkaTemplate.send(DocumentSavedEvent.EVENT_NAME, jsonService.toJson(DocumentSavedEvent.builder()
+                        .documentID(newDocument.getId())
+                        .documentLocation(newDocumentURL)
+                        .build()));*/
         return created(URI.create(newDocumentURL)).build();
     }
 }

@@ -1,3 +1,10 @@
+write tests for the core project
+
+The user registration service should validate input, check if the user already exists by calling the user authority service. The user registration service will orchestrate the registration process by calling the authority service, the user service, the details service and the settings service by passing the necessary JSON input to them. Move the AuthorityModel to the user authority service
+
+services can use kafka to publish events. Implement MQTT publishing, as well using HiveMQ
+
+
 Create user management projects in the folder "services/user-management"
 1--Create project "user-registration-service". Create API:
 "POST /users"

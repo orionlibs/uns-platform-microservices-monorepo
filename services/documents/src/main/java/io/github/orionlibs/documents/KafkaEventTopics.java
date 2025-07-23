@@ -1,9 +1,8 @@
 package io.github.orionlibs.documents;
 
 import java.util.List;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@ConfigurationProperties(prefix = "event")
+//@ConfigurationProperties(prefix = "event")
 public class KafkaEventTopics
 {
     private List<String> topics;

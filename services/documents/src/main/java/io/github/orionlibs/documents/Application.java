@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -41,5 +43,12 @@ public class Application
     public JSONService jsonService(ObjectMapper objectMapper)
     {
         return new JSONService(objectMapper);
+    }
+
+
+    @Bean
+    public EventPublisher eventPublisherFake()
+    {
+        return new EventPublisherFake();
     }
 }

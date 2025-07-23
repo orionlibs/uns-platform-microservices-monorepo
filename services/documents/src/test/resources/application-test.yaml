@@ -32,9 +32,3 @@ spring:
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       group-id: kafka-consumer-group-id
       auto-offset-reset: earliest
-
-event:
-  topics:
-    - document-saved
-    - document-updated
-    - document-deleted

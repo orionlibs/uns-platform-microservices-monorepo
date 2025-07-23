@@ -1,30 +1,26 @@
 package io.github.orionlibs.documents;
 
-import org.apache.kafka.clients.admin.NewTopic;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Bean;
+import io.github.orionlibs.core.event.EventNameScanner;
+import java.util.List;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.config.TopicBuilder;
-import org.springframework.kafka.core.KafkaAdmin.NewTopics;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.core.ProducerFactory;
 
 @Configuration
-@ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
-@EnableConfigurationProperties(KafkaEventTopics.class)
+//@ConditionalOnProperty(name = "spring.kafka.bootstrap-servers")
+//@EnableConfigurationProperties(KafkaEventTopics.class)
 public class KafkaProducerConfiguration
 {
     private final KafkaEventTopics eventTopics;
 
 
-    public KafkaProducerConfiguration(KafkaEventTopics eventTopics)
+    public KafkaProducerConfiguration()
     {
-        this.eventTopics = eventTopics;
+        this.eventTopics = new KafkaEventTopics();
+        List<String> allEventNames = EventNameScanner.scanEventNames("io.github.orionlibs.documents.event");
+        eventTopics.setTopics(allEventNames);
     }
 
 
-    @Bean
+    /*@Bean
     public KafkaTemplate<String, String> kafkaTemplate(ProducerFactory<String, String> pf)
     {
         return new KafkaTemplate<>(pf);
@@ -41,5 +37,5 @@ public class KafkaProducerConfiguration
                                         .build())
                         .toArray(NewTopic[]::new);
         return new NewTopics(topics);
-    }
+    }*/
 }

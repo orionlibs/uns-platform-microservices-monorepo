@@ -2,32 +2,19 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentType;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import java.io.File;
 import java.time.LocalDateTime;
-import java.util.concurrent.CompletableFuture;
-import org.apache.kafka.clients.producer.Callback;
-import org.apache.kafka.clients.producer.Producer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.clients.producer.RecordMetadata;
-import org.apache.kafka.common.TopicPartition;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.OngoingStubbing;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
-import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
                 "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration"
@@ -37,10 +24,10 @@ class SaveDocumentAPIControllerTest
 {
     @LocalServerPort
     private int port;
-    @MockitoBean
+    /*@MockitoBean
     private ProducerFactory<String, String> producerFactory;
     @MockitoBean
-    private Producer<String, String> producer;
+    private Producer<String, String> producer;*/
     @Autowired
     private DocumentService documentService;
     @Autowired
@@ -55,7 +42,7 @@ class SaveDocumentAPIControllerTest
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
         documentService.deleteAll();
         RestAssured.useRelaxedHTTPSValidation();
-        System.setProperty(
+        /*System.setProperty(
                         "java.security.auth.login.config",
                         new File("src/test/resources/jaas.conf").getAbsolutePath()
         );
@@ -69,15 +56,14 @@ class SaveDocumentAPIControllerTest
                             Callback cb = invocation.getArgument(1);
                             RecordMetadata meta = new RecordMetadata(
                                             new TopicPartition(record.topic(), record.partition() != null ? record.partition() : 0),
-                                            0L,
-                                            0,
+                                            0L,                                            0,
                                             System.currentTimeMillis(),
                                             record.key() != null ? record.key().length() : 0,
                                             record.value() != null ? record.value().length() : 0
                             );
                             cb.onCompletion(meta, null);
                             return CompletableFuture.completedFuture(meta);
-                        });
+                        });*/
     }
 
 

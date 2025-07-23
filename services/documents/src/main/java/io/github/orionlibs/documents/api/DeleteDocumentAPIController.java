@@ -1,6 +1,7 @@
 package io.github.orionlibs.documents.api;
 
 import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.event.DocumentDeletedEvent;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,10 +25,9 @@ public class DeleteDocumentAPIController
     @Autowired
     private DocumentService documentService;
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @Autowired
     private JSONService jsonService;
-    private static final String TOPIC = "document-deleted";
+    @Autowired
+    private EventPublisher publisher;
 
 
     @Operation(
@@ -47,12 +46,9 @@ public class DeleteDocumentAPIController
     public ResponseEntity<?> deleteDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         documentService.delete(documentID);
-        if(kafkaTemplate != null)
-        {
-            kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentDeletedEvent.builder()
-                            .documentID(documentID)
-                            .build()));
-        }
+        publisher.publish(DocumentDeletedEvent.EVENT_NAME, jsonService.toJson(DocumentDeletedEvent.builder()
+                        .documentID(documentID)
+                        .build()));
         return ResponseEntity.ok(null);
     }
 }

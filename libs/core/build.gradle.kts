@@ -20,6 +20,7 @@ repositories {
 
 dependencies {
     implementation(libs.guava)
+    implementation("org.springframework:spring-context")
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.core:jackson-annotations")
     api("com.fasterxml.jackson.core:jackson-core")
@@ -29,7 +30,6 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     api(libs.commons.math3)
-
 }
 
 

@@ -1,6 +1,7 @@
 package io.github.orionlibs.documents.api;
 
 import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
 import io.github.orionlibs.documents.event.DocumentUpdatedEvent;
@@ -13,7 +14,6 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -32,10 +32,9 @@ public class UpdateDocumentAPIController
     @Autowired
     private DocumentEntityToDTOConverter documentEntityToDTOConverter;
     @Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @Autowired
     private JSONService jsonService;
-    private static final String TOPIC = "document-updated";
+    @Autowired
+    private EventPublisher publisher;
 
 
     @Operation(
@@ -61,12 +60,9 @@ public class UpdateDocumentAPIController
         boolean isDocumentFound = documentService.update(documentID, documentToSave);
         if(isDocumentFound)
         {
-            if(kafkaTemplate != null)
-            {
-                kafkaTemplate.send(TOPIC, jsonService.toJson(DocumentUpdatedEvent.builder()
-                                .documentID(documentID)
-                                .build()));
-            }
+            publisher.publish(DocumentUpdatedEvent.EVENT_NAME, jsonService.toJson(DocumentUpdatedEvent.builder()
+                            .documentID(documentID)
+                            .build()));
             return ResponseEntity.ok(null);
         }
         else
