@@ -1,6 +1,7 @@
 package io.github.orionlibs.user.model;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,8 +30,10 @@ public class UserModel implements UserDetails
     @Column(updatable = false, nullable = false)
     private UUID id;
     @Column(unique = true, nullable = false)
+    @Convert(converter = AesGcmColumnConverter.class)
     private String username;
     @Column(nullable = false)
+    @Convert(converter = PasswordColumnConverter.class)
     private String password;
     @Column(nullable = false)
     private String authority;
