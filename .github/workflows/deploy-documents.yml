@@ -1,13 +1,12 @@
 # Trigger workflow only when files in services/documents or workflow itself change
 name: CI/CD of services/documents
 
-#on:
-#  push:
-#    branches: [ "main" ]
-#    paths:
-#      - 'services/documents/**'
-#      - '.github/workflows/deploy-documents.yml'
-on: []
+on:
+  push:
+    branches: [ "no_branch_in_order_to_disable_this_workflow" ]#use main to enable this workflow file
+    paths:
+      - 'services/documents/**'
+      - '.github/workflows/deploy-documents.yml'
 
 jobs:
   build-image:
