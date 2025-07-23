@@ -2,9 +2,11 @@ package io.github.orionlibs.user.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Set;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest
@@ -19,20 +21,20 @@ public class UserDAOTest
     void saveUser()
     {
         // given
-        UserModel user = saveUser("me@email.com", "4528");
+        UserModel user = saveUser("me@email.com", "4528", "ADMINISTRATOR,CUSTOMER");
         // then
         assertThat(user).isNotNull();
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
         assertThat(user.getPassword()).isEqualTo("");
-        assertThat(user.getAuthorities()).isEqualTo("ADMINISTRATOR");
-        assertThat(user.getAuthority()).isNull();
+        assertThat(user.getAuthority()).isEqualTo("ADMINISTRATOR,CUSTOMER");
+        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("ADMINISTRATOR"), new SimpleGrantedAuthority("CUSTOMER")));
     }
 
 
-    private UserModel saveUser(String username, String password)
+    private UserModel saveUser(String username, String password, String authority)
     {
-        UserModel userModel = new UserModel(username, password);
+        UserModel userModel = new UserModel(username, password, authority);
         return userDAO.save(userModel);
     }
 }

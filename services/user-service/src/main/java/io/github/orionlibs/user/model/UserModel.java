@@ -50,10 +50,11 @@ public class UserModel implements UserDetails
     }
 
 
-    public UserModel(String username, String password)
+    public UserModel(String username, String password, String authority)
     {
         this.username = username;
         this.password = password;
+        this.authority = authority;
     }
 
 
