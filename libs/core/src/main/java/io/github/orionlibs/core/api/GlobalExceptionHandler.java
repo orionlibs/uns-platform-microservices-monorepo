@@ -1,7 +1,5 @@
-package io.github.orionlibs.documents.api;
+package io.github.orionlibs.core.api;
 
-import io.github.orionlibs.core.api.APIError;
-import io.github.orionlibs.core.api.APIField;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
@@ -10,9 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @RestControllerAdvice
-public class GlobalValidationHandler
+public class GlobalExceptionHandler extends ResponseEntityExceptionHandler
 {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIError> onValidationError(MethodArgumentNotValidException ex)
@@ -32,5 +31,18 @@ public class GlobalValidationHandler
                         fields
         );
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<APIError> handleAll(Exception ex)
+    {
+        APIError apiError = new APIError(
+                        OffsetDateTime.now(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "An unexpected error occurred",
+                        null
+        );
+        return ResponseEntity.status(apiError.status()).body(apiError);
     }
 }

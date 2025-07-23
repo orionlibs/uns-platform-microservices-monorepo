@@ -68,6 +68,12 @@ public class UserModel implements UserDetails
     }
 
 
+    public void setUsername(String username)
+    {
+        this.username = username;
+    }
+
+
     public LocalDateTime getUpdatedAt()
     {
         return updatedAt;
