@@ -1,4 +1,4 @@
-package io.github.orionlibs.user_management.registration;
+package io.github.orionlibs.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;

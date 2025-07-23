@@ -1,4 +1,4 @@
-package io.github.orionlibs.user_management.registration.model;
+package io.github.orionlibs.user.model;
 
 import org.hibernate.validator.constraints.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;

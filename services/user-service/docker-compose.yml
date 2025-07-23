@@ -4,10 +4,10 @@ services:
   app:
     build:
       context: ../../
-      dockerfile: services/user-management/user-registration-service/Dockerfile
+      dockerfile: services/user-service/Dockerfile
       args:
-        serviceName: user-registration-service
-    image: user-registration-service:latest
+        serviceName: user-service
+    image: user-service:latest
     ports:
       - "8080:8080"
     environment:

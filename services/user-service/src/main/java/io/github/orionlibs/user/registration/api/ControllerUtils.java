@@ -1,4 +1,4 @@
-package io.github.orionlibs.user_management.registration.api;
+package io.github.orionlibs.user.registration.api;
 
 public class ControllerUtils
 {
