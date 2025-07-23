@@ -43,7 +43,7 @@ class UpdateDocumentAPIControllerTest
     void updateDocument_notFound()
     {
         RestAssured.baseURI += "/100";
-        NewDocumentDTO doc = updateDocumentRequest("https://company.com/1.pdf");
+        DocumentRequest doc = updateDocumentRequest("https://company.com/1.pdf");
         Response response = utils.makePutAPICall(doc);
         assertEquals(404, response.statusCode());
     }
@@ -54,7 +54,7 @@ class UpdateDocumentAPIControllerTest
     {
         DocumentModel doc = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc.getId();
-        NewDocumentDTO docToUpdate = updateDocumentRequest("https://company.com/1.pdf");
+        DocumentRequest docToUpdate = updateDocumentRequest("https://company.com/1.pdf");
         docToUpdate.setDocumentURL("https://company.com/2.pdf");
         docToUpdate.setType(DocumentType.Type.OTHER);
         docToUpdate.setTitle("new title");
@@ -71,8 +71,8 @@ class UpdateDocumentAPIControllerTest
     }
 
 
-    private NewDocumentDTO updateDocumentRequest(String docURL)
+    private DocumentRequest updateDocumentRequest(String docURL)
     {
-        return new NewDocumentDTO(docURL, DocumentType.Type.DOCUMENTATION, "title", "description", LocalDateTime.now(), LocalDateTime.now());
+        return new DocumentRequest(docURL, DocumentType.Type.DOCUMENTATION, "title", "description", LocalDateTime.now(), LocalDateTime.now());
     }
 }

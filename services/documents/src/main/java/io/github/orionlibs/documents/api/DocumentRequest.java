@@ -18,7 +18,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class NewDocumentDTO implements Serializable
+public class DocumentRequest implements Serializable
 {
     @NotBlank(message = "document_url must not be blank")
     @JsonProperty("document_url")

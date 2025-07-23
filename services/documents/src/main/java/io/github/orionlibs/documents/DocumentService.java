@@ -1,6 +1,6 @@
 package io.github.orionlibs.documents;
 
-import io.github.orionlibs.documents.api.NewDocumentDTO;
+import io.github.orionlibs.documents.api.DocumentRequest;
 import io.github.orionlibs.documents.converter.NewDocumentDTOToEntityConverter;
 import io.github.orionlibs.documents.model.DocumentDAO;
 import io.github.orionlibs.documents.model.DocumentModel;
@@ -36,7 +36,7 @@ public class DocumentService
 
 
     @Transactional
-    public DocumentModel save(NewDocumentDTO newDocument)
+    public DocumentModel save(DocumentRequest newDocument)
     {
         newDocument.setCreatedAt(LocalDateTime.now());
         newDocument.setUpdatedAt(LocalDateTime.now());
@@ -55,7 +55,7 @@ public class DocumentService
 
 
     @Transactional
-    public boolean update(Integer documentID, NewDocumentDTO document)
+    public boolean update(Integer documentID, DocumentRequest document)
     {
         Optional<DocumentModel> docTemp = getByID(documentID);
         if(docTemp.isPresent())

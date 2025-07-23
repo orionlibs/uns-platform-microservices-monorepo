@@ -48,7 +48,7 @@ public class SaveDocumentAPIController
                     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                                     required = true,
                                     content = @Content(
-                                                    schema = @Schema(implementation = NewDocumentDTO.class)
+                                                    schema = @Schema(implementation = DocumentRequest.class)
                                     )
                     ),
                     responses = {@ApiResponse(responseCode = "201", description = "Document saved",
@@ -59,7 +59,7 @@ public class SaveDocumentAPIController
                                     @ApiResponse(responseCode = "400", description = "Invalid input")}
     )
     @PostMapping(value = "/documents", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> saveDocument(@Valid @RequestBody NewDocumentDTO documentToSave)
+    public ResponseEntity<?> saveDocument(@Valid @RequestBody DocumentRequest documentToSave)
     {
         DocumentModel newDocument = documentService.save(documentToSave);
         String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
