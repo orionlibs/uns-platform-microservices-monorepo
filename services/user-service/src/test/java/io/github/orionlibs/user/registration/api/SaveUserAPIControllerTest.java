@@ -85,7 +85,7 @@ class SaveUserAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
-                        .username("me")
+                        .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority("")
                         .build();
