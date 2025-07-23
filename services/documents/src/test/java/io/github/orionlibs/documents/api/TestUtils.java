@@ -22,7 +22,7 @@ class TestUtils
 
     DocumentModel saveDocument(String documentURL)
     {
-        DocumentModel doc = new DocumentModel(documentURL, DocumentType.Type.DOCUMENTATION, "doc title 1", "doc description 1");
+        DocumentModel doc = new DocumentModel(documentURL, DocumentType.Type.DOCUMENTATION, "document title 1", "document description 1");
         return documentService.save(doc);
     }
 
