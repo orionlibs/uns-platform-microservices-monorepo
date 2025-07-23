@@ -2,6 +2,7 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentModel;
 import io.github.orionlibs.documents.model.DocumentType;
@@ -27,6 +28,8 @@ class UpdateDocumentAPIControllerTest
     private DocumentService documentService;
     @Autowired
     private TestUtils utils;
+    @Autowired
+    private APITestUtils apiUtils;
 
 
     @BeforeEach
@@ -44,7 +47,7 @@ class UpdateDocumentAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         SaveDocumentRequest doc = updateDocumentRequest("https://company.com/1.pdf");
-        Response response = utils.makePutAPICall(doc);
+        Response response = apiUtils.makePutAPICall(doc);
         assertEquals(404, response.statusCode());
     }
 
@@ -59,9 +62,9 @@ class UpdateDocumentAPIControllerTest
         docToUpdate.setType(DocumentType.Type.OTHER);
         docToUpdate.setTitle("new title");
         docToUpdate.setDescription("new description");
-        Response response = utils.makePutAPICall(docToUpdate);
+        Response response = apiUtils.makePutAPICall(docToUpdate);
         assertEquals(200, response.statusCode());
-        response = utils.makeGetAPICall();
+        response = apiUtils.makeGetAPICall();
         assertEquals(200, response.statusCode());
         DocumentDTO body = response.as(DocumentDTO.class);
         assertEquals("https://company.com/2.pdf", body.documentURL());

@@ -2,6 +2,7 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentModel;
 import io.restassured.RestAssured;
@@ -26,6 +27,8 @@ class DeleteDocumentAPIControllerTest
     private DocumentService documentService;
     @Autowired
     private TestUtils utils;
+    @Autowired
+    private APITestUtils apiUtils;
 
 
     @BeforeEach
@@ -42,7 +45,7 @@ class DeleteDocumentAPIControllerTest
     void getDocumentByID_noResults()
     {
         RestAssured.baseURI += "/100";
-        Response response = utils.makeDeleteAPICall();
+        Response response = apiUtils.makeDeleteAPICall();
         assertEquals(200, response.statusCode());
     }
 
@@ -52,9 +55,9 @@ class DeleteDocumentAPIControllerTest
     {
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
-        Response response = utils.makeDeleteAPICall();
+        Response response = apiUtils.makeDeleteAPICall();
         assertEquals(200, response.statusCode());
-        response = utils.makeGetAPICall();
+        response = apiUtils.makeGetAPICall();
         assertEquals(404, response.statusCode());
     }
 }

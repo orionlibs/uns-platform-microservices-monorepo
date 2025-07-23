@@ -21,6 +21,8 @@ repositories {
 dependencies {
     implementation(libs.guava)
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("io.rest-assured:rest-assured")
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.core:jackson-annotations")
     api("com.fasterxml.jackson.core:jackson-core")
@@ -30,9 +32,6 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.assertj:assertj-core")
-    //testImplementation(libs.junit.jupiter)
-
-    //api(libs.commons.math3)
 }
 
 

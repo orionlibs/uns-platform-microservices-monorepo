@@ -6,22 +6,33 @@ import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.orionlibs.core.api.GlobalExceptionHandler;
 import io.github.orionlibs.core.document.json.JSONService;
+import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.web.servlet.HandlerAdapter;
+import org.springframework.web.servlet.HandlerMapping;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
+import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "io.github.orionlibs")
+@EnableWebMvc
 @Import(GlobalExceptionHandler.class)
 @Configuration
-public class Application
+public class Application extends SpringBootServletInitializer implements WebMvcConfigurer
 {
     public static void main(String[] args)
     {
         SpringApplication.run(Application.class, args);
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 
@@ -42,5 +53,29 @@ public class Application
     public JSONService jsonService(ObjectMapper objectMapper)
     {
         return new JSONService(objectMapper);
+    }
+
+
+    @Bean
+    public HandlerMapping handlerMapping()
+    {
+        return new RequestMappingHandlerMapping();
+    }
+
+
+    @Bean
+    public HandlerAdapter handlerAdapter()
+    {
+        return new RequestMappingHandlerAdapter();
+    }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry)
+    {
+        registry.addMapping("/**")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS", "websocket", "ws")
+                        .allowedHeaders("*");
     }
 }

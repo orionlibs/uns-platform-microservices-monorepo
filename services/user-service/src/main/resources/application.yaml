@@ -56,3 +56,6 @@ spring:
         lob:
           non_contextual_creation: true
     show-sql: true
+
+password:
+  pattern: ^(?=.{8,})(?=.*[A-Z])(?=.*\\d).*$)

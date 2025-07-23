@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.orionlibs.core.api.APIError;
+import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentType;
 import io.restassured.RestAssured;
@@ -32,6 +33,8 @@ class SaveDocumentAPIControllerTest
     private DocumentService documentService;
     @Autowired
     private TestUtils utils;
+    @Autowired
+    private APITestUtils apiUtils;
     private String basePath;
 
 
@@ -72,7 +75,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
-        Response response = utils.makePostAPICall(docToSave);
+        Response response = apiUtils.makePostAPICall(docToSave);
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
     }
@@ -83,7 +86,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
-        Response response = utils.makePostAPICall(docToSave);
+        Response response = apiUtils.makePostAPICall(docToSave);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("type must not be blank", body.fieldErrors().get(0).message());

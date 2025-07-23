@@ -16,7 +16,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "io.github.orionlibs")
 @Configuration
 @Import({GlobalExceptionHandler.class, KafkaProducerConfiguration.class})
 public class Application
