@@ -1,15 +1,15 @@
 package io.github.orionlibs.documents.converter;
 
 import io.github.orionlibs.core.converter.Converter;
-import io.github.orionlibs.documents.api.DocumentRequest;
+import io.github.orionlibs.documents.api.SaveDocumentRequest;
 import io.github.orionlibs.documents.model.DocumentModel;
 import org.springframework.stereotype.Component;
 
 @Component
-public class NewDocumentDTOToEntityConverter implements Converter<DocumentRequest, DocumentModel>
+public class NewDocumentDTOToEntityConverter implements Converter<SaveDocumentRequest, DocumentModel>
 {
     @Override
-    public DocumentModel convert(DocumentRequest objectToConvert)
+    public DocumentModel convert(SaveDocumentRequest objectToConvert)
     {
         if(objectToConvert == null)
         {

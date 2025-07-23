@@ -71,7 +71,7 @@ class SaveDocumentAPIControllerTest
     void saveDocument()
     {
         RestAssured.baseURI = basePath;
-        DocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
+        SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
         Response response = utils.makePostAPICall(docToSave);
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
@@ -82,7 +82,7 @@ class SaveDocumentAPIControllerTest
     void saveDocument_invalidDocumentType()
     {
         RestAssured.baseURI = basePath;
-        DocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
+        SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
         Response response = utils.makePostAPICall(docToSave);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
@@ -90,14 +90,14 @@ class SaveDocumentAPIControllerTest
     }
 
 
-    private DocumentRequest saveDocumentRequest(String docURL)
+    private SaveDocumentRequest saveDocumentRequest(String docURL)
     {
-        return new DocumentRequest(docURL, DocumentType.Type.DOCUMENTATION, "title", "description", LocalDateTime.now(), LocalDateTime.now());
+        return new SaveDocumentRequest(docURL, DocumentType.Type.DOCUMENTATION, "title", "description", LocalDateTime.now(), LocalDateTime.now());
     }
 
 
-    private DocumentRequest saveDocumentRequestWithoutType(String docURL)
+    private SaveDocumentRequest saveDocumentRequestWithoutType(String docURL)
     {
-        return new DocumentRequest(docURL, null, "title", "description", LocalDateTime.now(), LocalDateTime.now());
+        return new SaveDocumentRequest(docURL, null, "title", "description", LocalDateTime.now(), LocalDateTime.now());
     }
 }

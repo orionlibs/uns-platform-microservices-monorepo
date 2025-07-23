@@ -43,7 +43,7 @@ public class UpdateDocumentAPIController
                     requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                                     required = true,
                                     content = @Content(
-                                                    schema = @Schema(implementation = DocumentRequest.class)
+                                                    schema = @Schema(implementation = UpdateDocumentRequest.class)
                                     )
                     ),
                     responses = {@ApiResponse(responseCode = "201", description = "Document updated",
@@ -55,9 +55,9 @@ public class UpdateDocumentAPIController
                                     @ApiResponse(responseCode = "404", description = "Document not found")}
     )
     @PutMapping(value = "/documents/{documentID}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateDocument(@PathVariable(name = "documentID") Integer documentID, @Valid @RequestBody DocumentRequest documentToSave)
+    public ResponseEntity<?> updateDocument(@PathVariable(name = "documentID") Integer documentID, @Valid @RequestBody UpdateDocumentRequest documentToUpdate)
     {
-        boolean isDocumentFound = documentService.update(documentID, documentToSave);
+        boolean isDocumentFound = documentService.update(documentID, documentToUpdate);
         if(isDocumentFound)
         {
             publisher.publish(DocumentUpdatedEvent.EVENT_NAME, jsonService.toJson(DocumentUpdatedEvent.builder()

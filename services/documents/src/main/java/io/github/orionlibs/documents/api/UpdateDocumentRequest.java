@@ -12,13 +12,13 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Data Transfer Object used as request bean in the API holding the data of a new document to be saved
+ * Data Transfer Object used as request bean in the API holding the data of a document to be updated
  */
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class DocumentRequest implements Serializable
+public class UpdateDocumentRequest implements Serializable
 {
     @NotBlank(message = "document_url must not be blank")
     @JsonProperty("document_url")
