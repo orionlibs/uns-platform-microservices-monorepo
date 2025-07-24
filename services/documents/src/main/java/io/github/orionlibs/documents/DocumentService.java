@@ -36,7 +36,6 @@ public class DocumentService
     }
 
 
-    @Transactional
     public DocumentModel save(SaveDocumentRequest newDocument)
     {
         newDocument.setCreatedAt(LocalDateTime.now());
@@ -50,7 +49,7 @@ public class DocumentService
     public DocumentModel save(DocumentModel toSave)
     {
         toSave = documentRepository.save(toSave);
-        log.info("Saved new document");
+        log.info("Saved document");
         return toSave;
     }
 
@@ -68,6 +67,7 @@ public class DocumentService
             doc.setDescription(document.getDescription());
             doc.setUpdatedAt(LocalDateTime.now());
             save(doc);
+            log.info("Updated document");
             return true;
         }
         else
@@ -80,11 +80,13 @@ public class DocumentService
     public void delete(Integer documentID)
     {
         documentRepository.deleteById(documentID);
+        log.info("Deleted document");
     }
 
 
     public void deleteAll()
     {
         documentRepository.deleteAll();
+        log.info("Deleted all documents");
     }
 }

@@ -5,10 +5,12 @@ import static io.restassured.RestAssured.given;
 import io.github.orionlibs.core.document.json.JSONService;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class APITestUtils
 {
     @Autowired
@@ -17,6 +19,7 @@ public class APITestUtils
 
     public Response makeGetAPICall()
     {
+        log.info("[JUnit] making GET call");
         return given()
                         .contentType(ContentType.JSON)
                         .accept(ContentType.JSON)
@@ -29,6 +32,7 @@ public class APITestUtils
 
     public Response makePostAPICall(Object objectToSave)
     {
+        log.info("[JUnit] making POST call");
         return given()
                         .contentType(ContentType.JSON)
                         .accept(ContentType.JSON)
@@ -42,6 +46,7 @@ public class APITestUtils
 
     public Response makePutAPICall(Object objectToSave)
     {
+        log.info("[JUnit] making PUT call");
         return given()
                         .contentType(ContentType.JSON)
                         .accept(ContentType.JSON)
@@ -55,6 +60,7 @@ public class APITestUtils
 
     public Response makeDeleteAPICall()
     {
+        log.info("[JUnit] making DELETE call");
         return given()
                         .contentType(ContentType.JSON)
                         .accept(ContentType.JSON)
