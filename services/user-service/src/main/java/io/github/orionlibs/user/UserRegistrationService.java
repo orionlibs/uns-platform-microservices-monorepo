@@ -1,9 +1,11 @@
 package io.github.orionlibs.user;
 
+import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,9 +17,16 @@ public class UserRegistrationService
 
 
     @Transactional
-    public void registerUser(UserRegistrationRequest request)
+    public void registerUser(UserRegistrationRequest request) throws DuplicateRecordException
     {
         UserModel newUser = new UserModel(request.getUsername(), request.getPassword(), request.getAuthority());
-        userDAO.save(newUser);
+        try
+        {
+            userDAO.save(newUser);
+        }
+        catch(DataIntegrityViolationException e)
+        {
+            throw new DuplicateRecordException(e, "This user already exists");
+        }
     }
 }

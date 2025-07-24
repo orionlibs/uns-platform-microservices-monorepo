@@ -1,5 +1,6 @@
 package io.github.orionlibs.user.model;
 
+import io.github.orionlibs.core.cryptology.EncryptionKeyProvider;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.nio.ByteBuffer;

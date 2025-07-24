@@ -6,6 +6,8 @@ import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +62,24 @@ class SaveUserAPIControllerTest
         Response response = apiUtils.makePostAPICall(userToSave);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
-        assertEquals("must be a well-formed email address", body.fieldErrors().get(0).message());
+        assertEquals("Invalid email address format", body.fieldErrors().get(0).message());
+    }
+
+
+    @Test
+    void saveUser_duplicateUsername()
+    {
+        RestAssured.baseURI = basePath;
+        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+                        .username("me@email.com")
+                        .password("bunkzh3Z!")
+                        .authority("ADMINISTRATOR,CUSTOMER")
+                        .build();
+        apiUtils.makePostAPICall(userToSave);
+        Response response = apiUtils.makePostAPICall(userToSave);
+        assertEquals(400, response.statusCode());
+        APIError body = response.as(APIError.class);
+        assertEquals("This user already exists", body.message());
     }
 
 
@@ -92,6 +111,25 @@ class SaveUserAPIControllerTest
         Response response = apiUtils.makePostAPICall(userToSave);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
-        assertEquals("authority must not be blank", body.fieldErrors().get(0).message());
+        assertEquals("Authority must not be blank", body.fieldErrors().get(0).message());
+    }
+
+
+    @Test
+    void saveUser_invalidUsernamePasswordAuthority()
+    {
+        RestAssured.baseURI = basePath;
+        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+                        .username("me")
+                        .password("4528")
+                        .authority("")
+                        .build();
+        Response response = apiUtils.makePostAPICall(userToSave);
+        assertEquals(400, response.statusCode());
+        APIError body = response.as(APIError.class);
+        Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());
+        assertEquals(Set.of("Authority must not be blank",
+                        "Password does not meet security requirements",
+                        "Invalid email address format"), errorMessages);
     }
 }

@@ -1,5 +1,7 @@
 package io.github.orionlibs.user.model;
 
+import io.github.orionlibs.core.cryptology.EncryptionKeyProvider;
+import io.github.orionlibs.core.cryptology.HmacSha256;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -8,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collection;
@@ -22,16 +25,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name = "users", schema = "uns", indexes = {
                 @Index(name = "idx_uns_users", columnList = "id,username")
-})
+},
+                uniqueConstraints = @UniqueConstraint(name = "uq_users_username", columnNames = "username_hash"))
 public class UserModel implements UserDetails
 {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
     private UUID id;
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     @Convert(converter = AesGcmColumnConverter.class)
     private String username;
+    @Column(name = "username_hash", length = 64, nullable = false, updatable = false)
+    private String usernameHash;
     @Column(nullable = false)
     @Convert(converter = PasswordColumnConverter.class)
     private String password;
@@ -57,6 +63,7 @@ public class UserModel implements UserDetails
     {
         this();
         this.username = username;
+        this.usernameHash = HmacSha256.getNewHMACBase64(username, EncryptionKeyProvider.loadDataHashingKey());
         this.password = password;
         this.authority = authority;
     }
@@ -71,6 +78,7 @@ public class UserModel implements UserDetails
     public void setUsername(String username)
     {
         this.username = username;
+        this.usernameHash = HmacSha256.getNewHMACBase64(username, EncryptionKeyProvider.loadDataHashingKey());
     }
 
 

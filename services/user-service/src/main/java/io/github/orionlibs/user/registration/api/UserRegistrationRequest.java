@@ -18,14 +18,13 @@ import lombok.Setter;
 @Setter
 public class UserRegistrationRequest implements Serializable
 {
-    @NotBlank(message = "username must not be blank")
-    @Email
+    @Email(message = "Invalid email address format")
     @JsonProperty("username")
     private String username;
     @Password
     @JsonProperty("password")
     private String password;
-    @NotBlank(message = "authority must not be blank")
+    @NotBlank(message = "Authority must not be blank")
     @JsonProperty("authority")
     private String authority;
 }
