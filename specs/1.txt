@@ -1,4 +1,21 @@
+Use SLF4J
+
+
+Store document if you are authorized
+https://chatgpt.com/s/t_68822dd8f9b4819189966396f15be2c7
+
+
+Make things configurable
+
+
+Use virtual threads where possible
+
+
+Device control service allows us to send commands to devices via some protocol
+
+
 The user registration service will orchestrate the registration process by calling the authority service, the user service, the details service and the settings service by passing the necessary JSON input to them
+
 
 services can use kafka to publish events. Implement MQTT publishing, as well using HiveMQ
 
@@ -142,3 +159,12 @@ Create feedback service for people to submit feedback
 
 
 Create support service for users to create support requests and support users to create and manage support tickets
+
+
+https://openautomationsoftware.com/knowledge-base/options-reference/
+
+
+https://openautomationsoftware.com/knowledge-base/parameter-properties/
+
+
+https://www.gevernova.com/software/documentation/proficy-plant-applications/version2023/index_api_endpoint.html

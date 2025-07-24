@@ -104,7 +104,7 @@ public class UserModel implements UserDetails
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         return Arrays.stream(authority.split(","))
-                        .map(authority -> new SimpleGrantedAuthority(authority))
+                        .map(SimpleGrantedAuthority::new)
                         .collect(Collectors.toSet());
     }
 
