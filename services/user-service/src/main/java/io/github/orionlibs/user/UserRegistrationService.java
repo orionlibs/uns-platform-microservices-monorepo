@@ -7,6 +7,7 @@ import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -22,9 +23,9 @@ public class UserRegistrationService
         UserModel newUser = new UserModel(request.getUsername(), request.getPassword(), request.getAuthority());
         try
         {
-            userDAO.save(newUser);
+            userDAO.saveAndFlush(newUser);
         }
-        catch(DataIntegrityViolationException e)
+        catch(DataIntegrityViolationException | UnexpectedRollbackException e)
         {
             throw new DuplicateRecordException(e, "This user already exists");
         }

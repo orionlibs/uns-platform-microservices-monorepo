@@ -1,8 +1,8 @@
 package io.github.orionlibs.core.data;
 
-import io.github.orionlibs.core.asserts.CheckedException;
+import io.github.orionlibs.core.asserts.UncheckedException;
 
-public class DuplicateRecordException extends CheckedException
+public class DuplicateRecordException extends UncheckedException
 {
     private static final String DefaultErrorMessage = "There was an error.";
 

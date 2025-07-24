@@ -1,5 +1,6 @@
 package io.github.orionlibs.core.api;
 
+import io.github.orionlibs.core.data.DuplicateRecordException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import org.springframework.http.HttpHeaders;
@@ -33,8 +34,20 @@ public class GlobalExceptionHandler
     }
 
 
+    @ExceptionHandler(DuplicateRecordException.class)
+    public ResponseEntity<APIError> onDuplicateRecordException(DuplicateRecordException ex)
+    {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
+                        OffsetDateTime.now(),
+                        HttpStatus.CONFLICT.value(),
+                        ex.getMessage(),
+                        null
+        ));
+    }
+
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<APIError> handleAll(Exception ex)
+    public ResponseEntity<APIError> handleAllUncheckedExceptions(Exception ex)
     {
         APIError apiError = new APIError(
                         OffsetDateTime.now(),

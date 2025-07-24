@@ -2,8 +2,6 @@ package io.github.orionlibs.user.registration.api;
 
 import static org.springframework.http.ResponseEntity.created;
 
-import io.github.orionlibs.core.api.APIError;
-import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.user.UserRegistrationService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -11,9 +9,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.time.OffsetDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -42,24 +38,13 @@ public class SaveUserAPIController
                                     )
                     ),
                     responses = {@ApiResponse(responseCode = "201", description = "User saved"),
-                                    @ApiResponse(responseCode = "400", description = "Invalid input")}
+                                    @ApiResponse(responseCode = "400", description = "Invalid input"),
+                                    @ApiResponse(responseCode = "409", description = "Duplicate username found")}
     )
     @PostMapping(value = "/users", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> saveUser(@Valid @RequestBody UserRegistrationRequest userToSave)
     {
-        try
-        {
-            userRegistrationService.registerUser(userToSave);
-            return created(null).build();
-        }
-        catch(DuplicateRecordException e)
-        {
-            return ResponseEntity.badRequest().body(new APIError(
-                            OffsetDateTime.now(),
-                            HttpStatus.BAD_REQUEST.value(),
-                            e.getMessage(),
-                            null
-            ));
-        }
+        userRegistrationService.registerUser(userToSave);
+        return created(null).build();
     }
 }

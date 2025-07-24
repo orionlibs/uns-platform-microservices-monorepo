@@ -77,7 +77,7 @@ class SaveUserAPIControllerTest
                         .build();
         apiUtils.makePostAPICall(userToSave);
         Response response = apiUtils.makePostAPICall(userToSave);
-        assertEquals(400, response.statusCode());
+        assertEquals(409, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("This user already exists", body.message());
     }
