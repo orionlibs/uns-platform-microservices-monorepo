@@ -7,6 +7,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public final class HmacSha256
 {
+    public static final String JWT_SIGNING_KEY = "hmac-for-jwt-key";
     private static final String HMAC_ALGO = "HmacSHA256";
 
 

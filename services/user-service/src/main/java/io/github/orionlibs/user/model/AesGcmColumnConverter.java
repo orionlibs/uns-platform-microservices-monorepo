@@ -1,6 +1,6 @@
 package io.github.orionlibs.user.model;
 
-import io.github.orionlibs.core.cryptology.EncryptionKeyProvider;
+import io.github.orionlibs.core.cryptology.AESEncryptionKeyProvider;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import java.nio.ByteBuffer;
@@ -26,7 +26,7 @@ public class AesGcmColumnConverter implements AttributeConverter<String, String>
 
     public AesGcmColumnConverter()
     {
-        this.secretKey = EncryptionKeyProvider.loadDataEncryptionKey();
+        this.secretKey = AESEncryptionKeyProvider.loadDataEncryptionKey();
     }
 
 

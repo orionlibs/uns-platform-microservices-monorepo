@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
+import io.github.orionlibs.user.ControllerUtils;
+import io.github.orionlibs.user.UserAuthority;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.Set;
@@ -42,7 +44,7 @@ class SaveUserAPIControllerTest
         UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")
-                        .authority("ADMINISTRATOR,CUSTOMER")
+                        .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(userToSave);
         System.out.println(response.body().prettyPrint());
@@ -57,7 +59,7 @@ class SaveUserAPIControllerTest
         UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
                         .username("me")
                         .password("bunkzh3Z!")
-                        .authority("ADMINISTRATOR,CUSTOMER")
+                        .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(userToSave);
         assertEquals(400, response.statusCode());
@@ -73,7 +75,7 @@ class SaveUserAPIControllerTest
         UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")
-                        .authority("ADMINISTRATOR,CUSTOMER")
+                        .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         apiUtils.makePostAPICall(userToSave);
         Response response = apiUtils.makePostAPICall(userToSave);
@@ -90,7 +92,7 @@ class SaveUserAPIControllerTest
         UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("4528")
-                        .authority("ADMINISTRATOR,CUSTOMER")
+                        .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(userToSave);
         assertEquals(400, response.statusCode());

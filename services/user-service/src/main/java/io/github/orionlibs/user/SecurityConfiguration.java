@@ -1,9 +1,17 @@
 package io.github.orionlibs.user;
 
+import io.github.orionlibs.user.authentication.JWTFilter;
+import io.github.orionlibs.user.authentication.JWTService;
+import io.github.orionlibs.user.authentication.PostAuthenticationChecks;
+import io.github.orionlibs.user.authentication.PreAuthenticationChecks;
 import java.util.Arrays;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
@@ -16,6 +24,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue;
 import org.springframework.web.cors.CorsConfiguration;
@@ -24,6 +33,12 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfiguration
 {
+    @Autowired
+    private JWTService jwtService;
+    @Autowired
+    private UserService userDetailsService;
+
+
     @Bean
     public PasswordEncoder passwordEncoder()
     {
@@ -123,11 +138,34 @@ public class SecurityConfiguration
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
+        JWTFilter jwtFilter = new JWTFilter(jwtService, userDetailsService);
         http.cors(corsCustomizer())
                         .csrf(csrfCustomizer())
                         .headers(headersCustomizer())
                         .sessionManagement(sessionManagementCustomizer())
-                        .authorizeHttpRequests(authorizeHttpRequestsCustomizer());
+                        .authorizeHttpRequests(authorizeHttpRequestsCustomizer())
+                        .authenticationProvider(daoAuthenticationProvider())
+                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
+    }
+
+
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
+    {
+        return config.getAuthenticationManager();
+    }
+
+
+    @Bean
+    public DaoAuthenticationProvider daoAuthenticationProvider()
+    {
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setHideUserNotFoundExceptions(false);
+        authProvider.setPreAuthenticationChecks(new PreAuthenticationChecks());
+        authProvider.setPostAuthenticationChecks(new PostAuthenticationChecks());
+        return authProvider;
     }
 }

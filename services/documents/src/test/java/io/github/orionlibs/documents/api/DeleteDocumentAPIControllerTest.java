@@ -3,6 +3,7 @@ package io.github.orionlibs.documents.api;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.github.orionlibs.core.tests.APITestUtils;
+import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.model.DocumentModel;
 import io.restassured.RestAssured;

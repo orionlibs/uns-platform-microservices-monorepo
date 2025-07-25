@@ -2,6 +2,7 @@ package io.github.orionlibs.user.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.orionlibs.user.UserAuthority;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -24,7 +25,7 @@ public class UserDAOTest
     void setup()
     {
         userDAO.deleteAll();
-        user = saveUser("me@email.com", "4528", "ADMINISTRATOR,CUSTOMER");
+        user = saveUser("me@email.com", "4528", UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER");
     }
 
 
@@ -35,8 +36,8 @@ public class UserDAOTest
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
         assertThat(user.getPassword()).isEqualTo("");
-        assertThat(user.getAuthority()).isEqualTo("ADMINISTRATOR,CUSTOMER");
-        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("ADMINISTRATOR"), new SimpleGrantedAuthority("CUSTOMER")));
+        assertThat(user.getAuthority()).isEqualTo(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER");
+        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority(UserAuthority.ADMINISTRATOR.name()), new SimpleGrantedAuthority("CUSTOMER")));
         assertThat(user.isEnabled()).isTrue();
     }
 
@@ -46,14 +47,14 @@ public class UserDAOTest
     {
         user.setEnabled(false);
         user.setPassword("1234");
-        user.setAuthority("ADMINISTRATOR,CUSTOMER,SUPPORT");
+        user.setAuthority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER,SUPPORT");
         userDAO.save(user);
         assertThat(user).isNotNull();
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
         assertThat(user.getPassword()).isEqualTo("");
-        assertThat(user.getAuthority()).isEqualTo("ADMINISTRATOR,CUSTOMER,SUPPORT");
-        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("ADMINISTRATOR"),
+        assertThat(user.getAuthority()).isEqualTo(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER,SUPPORT");
+        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority(UserAuthority.ADMINISTRATOR.name()),
                         new SimpleGrantedAuthority("CUSTOMER"),
                         new SimpleGrantedAuthority("SUPPORT")));
         assertThat(user.isEnabled()).isFalse();

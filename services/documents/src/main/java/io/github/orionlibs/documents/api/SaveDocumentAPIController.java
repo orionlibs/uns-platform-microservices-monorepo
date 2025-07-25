@@ -4,6 +4,7 @@ import static org.springframework.http.ResponseEntity.created;
 
 import io.github.orionlibs.core.document.json.JSONService;
 import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
 import io.github.orionlibs.documents.converter.DocumentEntityToDTOConverter;
 import io.github.orionlibs.documents.event.DocumentSavedEvent;
@@ -18,6 +19,7 @@ import java.net.URI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -59,6 +61,7 @@ public class SaveDocumentAPIController
                                     @ApiResponse(responseCode = "400", description = "Invalid input")}
     )
     @PostMapping(value = "/documents", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCUMENT_MANAGER')")
     public ResponseEntity<?> saveDocument(@Valid @RequestBody SaveDocumentRequest documentToSave)
     {
         DocumentModel newDocument = documentService.save(documentToSave);
