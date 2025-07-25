@@ -1,7 +1,3 @@
-Store document if you are authorized
-https://chatgpt.com/s/t_68822dd8f9b4819189966396f15be2c7
-
-
 Make things configurable
 
 

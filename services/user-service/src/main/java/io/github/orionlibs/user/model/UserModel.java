@@ -36,7 +36,7 @@ public class UserModel implements UserDetails
     @Column(nullable = false)
     @Convert(converter = AesGcmColumnConverter.class)
     private String username;
-    @Column(name = "username_hash", length = 64, nullable = false, updatable = false)
+    @Column(name = "username_hash", length = 300, nullable = false, updatable = false)
     private String usernameHash;
     @Column(nullable = false)
     @Convert(converter = PasswordColumnConverter.class)
@@ -112,7 +112,7 @@ public class UserModel implements UserDetails
     @Override
     public String getPassword()
     {
-        return "";
+        return password;
     }
 
 

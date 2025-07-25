@@ -6,6 +6,7 @@ import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.user.ControllerUtils;
 import io.github.orionlibs.user.UserAuthority;
+import io.github.orionlibs.user.model.UserDAO;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.Set;
@@ -26,12 +27,15 @@ class SaveUserAPIControllerTest
     @Autowired
     private APITestUtils apiUtils;
     private String basePath;
+    @Autowired
+    private UserDAO userDAO;
 
 
     @BeforeEach
     @SuppressWarnings("unchecked")
     public void setUp()
     {
+        userDAO.deleteAll();
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/users";
         RestAssured.useRelaxedHTTPSValidation();
     }
@@ -41,13 +45,12 @@ class SaveUserAPIControllerTest
     void saveUser()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(userToSave);
-        System.out.println(response.body().prettyPrint());
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(201, response.statusCode());
     }
 
@@ -56,12 +59,12 @@ class SaveUserAPIControllerTest
     void saveUser_invalidUsername()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(userToSave);
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Invalid email address format", body.fieldErrors().get(0).message());
@@ -72,16 +75,16 @@ class SaveUserAPIControllerTest
     void saveUser_duplicateUsername()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        apiUtils.makePostAPICall(userToSave);
-        Response response = apiUtils.makePostAPICall(userToSave);
+        apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(409, response.statusCode());
         APIError body = response.as(APIError.class);
-        assertEquals("This user already exists", body.message());
+        assertEquals("Duplicate database record found: This user already exists", body.message());
     }
 
 
@@ -89,12 +92,12 @@ class SaveUserAPIControllerTest
     void saveUser_invalidPassword()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("4528")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(userToSave);
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Password does not meet security requirements", body.fieldErrors().get(0).message());
@@ -105,12 +108,12 @@ class SaveUserAPIControllerTest
     void saveUser_invalidAuthority()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority("")
                         .build();
-        Response response = apiUtils.makePostAPICall(userToSave);
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Authority must not be blank", body.fieldErrors().get(0).message());
@@ -121,12 +124,12 @@ class SaveUserAPIControllerTest
     void saveUser_invalidUsernamePasswordAuthority()
     {
         RestAssured.baseURI = basePath;
-        UserRegistrationRequest userToSave = UserRegistrationRequest.builder()
+        UserRegistrationRequest request = UserRegistrationRequest.builder()
                         .username("me")
                         .password("4528")
                         .authority("")
                         .build();
-        Response response = apiUtils.makePostAPICall(userToSave);
+        Response response = apiUtils.makePostAPICall(request);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());

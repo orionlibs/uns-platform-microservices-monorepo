@@ -35,7 +35,7 @@ public class UserDAOTest
         assertThat(user).isNotNull();
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
-        assertThat(user.getPassword()).isEqualTo("");
+        assertThat(user.getPassword()).isEqualTo("4528");
         assertThat(user.getAuthority()).isEqualTo(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER");
         assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority(UserAuthority.ADMINISTRATOR.name()), new SimpleGrantedAuthority("CUSTOMER")));
         assertThat(user.isEnabled()).isTrue();
@@ -46,13 +46,13 @@ public class UserDAOTest
     void updateUser()
     {
         user.setEnabled(false);
-        user.setPassword("1234");
+        user.setPassword("4528");
         user.setAuthority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER,SUPPORT");
         userDAO.save(user);
         assertThat(user).isNotNull();
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
-        assertThat(user.getPassword()).isEqualTo("");
+        assertThat(user.getPassword()).isEqualTo("4528");
         assertThat(user.getAuthority()).isEqualTo(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER,SUPPORT");
         assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority(UserAuthority.ADMINISTRATOR.name()),
                         new SimpleGrantedAuthority("CUSTOMER"),

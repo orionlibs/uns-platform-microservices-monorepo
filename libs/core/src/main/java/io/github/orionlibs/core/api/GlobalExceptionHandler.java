@@ -1,6 +1,7 @@
 package io.github.orionlibs.core.api;
 
 import io.github.orionlibs.core.data.DuplicateRecordException;
+import io.github.orionlibs.core.data.ResourceNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,20 @@ public class GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.CONFLICT.value(),
-                        ex.getMessage(),
+                        "Duplicate database record found: " + ex.getMessage(),
+                        null
+        ));
+    }
+
+
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ResponseEntity<APIError> onResourceNotFoundException(ResourceNotFoundException ex)
+    {
+        log.error("Resource not found: {}", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIError(
+                        OffsetDateTime.now(),
+                        HttpStatus.NOT_FOUND.value(),
+                        "Resource not found: " + ex.getMessage(),
                         null
         ));
     }

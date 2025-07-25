@@ -7,8 +7,8 @@ import javax.crypto.spec.SecretKeySpec;
 
 public final class HMACSHAEncryptionKeyProvider
 {
-    public static final String JWT_SIGNING_KEY = "hmac-for-jwt-key";
-    private static final String HMAC_ALGO = "HmacSHA256";
+    public static final String JWT_SIGNING_KEY = "hmac-for-jwt-key-0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
+    private static final String HMAC_ALGO = "HmacSHA512";
 
 
     private HMACSHAEncryptionKeyProvider()
@@ -17,7 +17,7 @@ public final class HMACSHAEncryptionKeyProvider
 
 
     /**
-     * Computes a Base64‑encoded HMAC‑SHA256 of the given data using the provided key bytes.
+     * Computes a Base64‑encoded HMAC‑SHA512 of the given data using the provided key bytes.
      */
     public static String getNewHMACBase64(String data, byte[] key)
     {

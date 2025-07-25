@@ -1,10 +1,13 @@
 package io.github.orionlibs.user.authentication;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
 import java.security.Key;
+import java.util.Collection;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
@@ -15,7 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class JWTService
 {
-    private static final long EXPIRATION_MS = 3600000;
+    private static final long EXPIRATION_IN_MILLISECONDS = 3600000;
 
 
     public Key convertSigningKeyToSecretKeyObject(String signingKey)
@@ -34,7 +37,37 @@ public class JWTService
                                         .map(GrantedAuthority::getAuthority)
                                         .toList())
                         .issuedAt(new Date())
-                        .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
+                        .expiration(new Date(System.currentTimeMillis() + EXPIRATION_IN_MILLISECONDS))
+                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .compact();
+    }
+
+
+    public String generateToken(String username, Collection<? extends GrantedAuthority> authorities)
+    {
+        return Jwts.builder()
+                        .subject(username)
+                        .claim("authorities", authorities
+                                        .stream()
+                                        .map(GrantedAuthority::getAuthority)
+                                        .toList())
+                        .issuedAt(new Date())
+                        .expiration(new Date(System.currentTimeMillis() + EXPIRATION_IN_MILLISECONDS))
+                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .compact();
+    }
+
+
+    public String generateToken(UserDetails userDetails, Date issuedAt, Date expiresAt)
+    {
+        return Jwts.builder()
+                        .subject(userDetails.getUsername())
+                        .claim("authorities", userDetails.getAuthorities()
+                                        .stream()
+                                        .map(GrantedAuthority::getAuthority)
+                                        .toList())
+                        .issuedAt(issuedAt)
+                        .expiration(expiresAt)
                         .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
                         .compact();
     }
@@ -49,23 +82,49 @@ public class JWTService
 
     public String extractUsername(String token)
     {
-        return Jwts.parser()
-                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY))
-                        .build()
-                        .parseEncryptedClaims(token)
-                        .getBody()
-                        .getSubject();
+        try
+        {
+            Claims claims = parseClaims(token);
+            return claims.getSubject();
+        }
+        catch(Exception e)
+        {
+            return "";
+        }
     }
 
 
     private boolean isTokenExpired(String token)
     {
-        Date exp = Jwts.parser()
-                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY))
+        try
+        {
+            Claims claims = parseClaims(token);
+            return claims.getExpiration().before(new Date());
+        }
+        catch(ExpiredJwtException e)
+        {
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+
+    private Claims parseClaims(String token)
+    {
+        SecretKey key = (SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY);
+        return Jwts.parser()
+                        .setSigningKey(key)
                         .build()
-                        .parseEncryptedClaims(token)
-                        .getBody()
-                        .getExpiration();
-        return exp.before(new Date());
+                        .parseClaimsJws(token)
+                        .getBody();
+        /*ExpiredJwtException
+        UnsupportedJwtException
+        MalformedJwtException
+        SignatureException
+        SecurityException
+        IllegalArgumentException*/
     }
 }

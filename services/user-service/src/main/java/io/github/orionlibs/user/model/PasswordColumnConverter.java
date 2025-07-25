@@ -21,6 +21,6 @@ public class PasswordColumnConverter implements AttributeConverter<String, Strin
     @Override
     public String convertToEntityAttribute(String s)
     {
-        return "";
+        return s;
     }
 }

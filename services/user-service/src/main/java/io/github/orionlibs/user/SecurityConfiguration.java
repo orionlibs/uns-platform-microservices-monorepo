@@ -22,8 +22,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.SupplierJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
@@ -142,7 +140,7 @@ public class SecurityConfiguration
                         .headers(headersCustomizer())
                         .sessionManagement(sessionManagementCustomizer())
                         //.authorizeHttpRequests(authorizeHttpRequestsCustomizer())
-                        .authorizeHttpRequests(authorize -> authorize.requestMatchers("/health/**", "/api/**", "/v1/users/login")
+                        .authorizeHttpRequests(authorize -> authorize.requestMatchers("/health/**", "/api/**", "/v1/users", "/v1/users/login")
                                         .permitAll()
                                         //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**")
                                         //.hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
@@ -155,18 +153,11 @@ public class SecurityConfiguration
 
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
-    {
-        return config.getAuthenticationManager();
-    }
-
-
-    @Bean
     public DaoAuthenticationProvider daoAuthenticationProvider()
     {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
-        authProvider.setPasswordEncoder(passwordEncoder());
+        authProvider.setPasswordEncoder(new BCryptPasswordEncoder());
         authProvider.setHideUserNotFoundExceptions(false);
         authProvider.setPreAuthenticationChecks(new PreAuthenticationChecks());
         authProvider.setPostAuthenticationChecks(new PostAuthenticationChecks());
@@ -174,10 +165,9 @@ public class SecurityConfiguration
     }
 
 
-    /*@Bean
-    public JwtDecoder jwtDecoder()
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception
     {
-        SupplierJwtDecoder supplierJwtDecoder = new SupplierJwtDecoder();
-        return authProvider;
-    }*/
+        return config.getAuthenticationManager();
+    }
 }
