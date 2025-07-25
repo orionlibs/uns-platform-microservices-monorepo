@@ -1,7 +1,7 @@
 package io.github.orionlibs.user.model;
 
 import io.github.orionlibs.core.cryptology.SHAEncodingKeyProvider;
-import io.github.orionlibs.core.cryptology.HmacSha256;
+import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -63,7 +63,7 @@ public class UserModel implements UserDetails
     {
         this();
         this.username = username;
-        this.usernameHash = HmacSha256.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
+        this.usernameHash = HMACSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
         this.password = password;
         this.authority = authority;
     }
@@ -78,7 +78,7 @@ public class UserModel implements UserDetails
     public void setUsername(String username)
     {
         this.username = username;
-        this.usernameHash = HmacSha256.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
+        this.usernameHash = HMACSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
     }
 
 

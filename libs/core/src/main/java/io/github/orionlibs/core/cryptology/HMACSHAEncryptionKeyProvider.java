@@ -5,13 +5,13 @@ import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-public final class HmacSha256
+public final class HMACSHAEncryptionKeyProvider
 {
     public static final String JWT_SIGNING_KEY = "hmac-for-jwt-key";
     private static final String HMAC_ALGO = "HmacSHA256";
 
 
-    private HmacSha256()
+    private HMACSHAEncryptionKeyProvider()
     {
     }
 

@@ -1,7 +1,6 @@
 package io.github.orionlibs.user.authentication;
 
-import io.github.orionlibs.core.cryptology.AESEncryptionKeyProvider;
-import io.github.orionlibs.core.cryptology.HmacSha256;
+import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.xml.bind.DatatypeConverter;
@@ -36,7 +35,7 @@ public class JWTService
                                         .toList())
                         .issuedAt(new Date())
                         .expiration(new Date(System.currentTimeMillis() + EXPIRATION_MS))
-                        .signWith(convertSigningKeyToSecretKeyObject(HmacSha256.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
                         .compact();
     }
 
@@ -51,7 +50,7 @@ public class JWTService
     public String extractUsername(String token)
     {
         return Jwts.parser()
-                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HmacSha256.JWT_SIGNING_KEY))
+                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY))
                         .build()
                         .parseEncryptedClaims(token)
                         .getBody()
@@ -62,7 +61,7 @@ public class JWTService
     private boolean isTokenExpired(String token)
     {
         Date exp = Jwts.parser()
-                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HmacSha256.JWT_SIGNING_KEY))
+                        .decryptWith((SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY))
                         .build()
                         .parseEncryptedClaims(token)
                         .getBody()

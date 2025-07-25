@@ -8,6 +8,7 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
@@ -108,14 +109,11 @@ public class SecurityConfiguration
     }
 
 
-    @Bean
+    /*@Bean
     public Customizer<AuthorizeHttpRequestsConfigurer<HttpSecurity>.AuthorizationManagerRequestMatcherRegistry> authorizeHttpRequestsCustomizer()
     {
         return http -> http.anyRequest().permitAll();
-        /*return http -> http.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                        .requestMatchers("/**").permitAll()
-                        .anyRequest().permitAll();*/
-    }
+    }*/
 
 
     @Bean
@@ -143,7 +141,13 @@ public class SecurityConfiguration
                         .csrf(csrfCustomizer())
                         .headers(headersCustomizer())
                         .sessionManagement(sessionManagementCustomizer())
-                        .authorizeHttpRequests(authorizeHttpRequestsCustomizer())
+                        //.authorizeHttpRequests(authorizeHttpRequestsCustomizer())
+                        .authorizeHttpRequests(authorize -> authorize.requestMatchers("/health/**", "/api/**", "/v1/users/login")
+                                        .permitAll()
+                                        //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**")
+                                        //.hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
+                                        .anyRequest().hasAuthority("USER"))
+                        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                         .authenticationProvider(daoAuthenticationProvider())
                         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
