@@ -10,9 +10,11 @@ import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,12 +46,13 @@ public class DeleteDocumentAPIController
                     responses = {@ApiResponse(responseCode = "200", description = "Document deleted")}
     )
     @DeleteMapping(value = "/documents/{documentID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCUMENT_MANAGER')")
     public ResponseEntity<?> deleteDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         documentService.delete(documentID);
         publisher.publish(DocumentDeletedEvent.EVENT_NAME, jsonService.toJson(DocumentDeletedEvent.builder()
                         .documentID(documentID)
                         .build()));
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(Map.of());
     }
 }

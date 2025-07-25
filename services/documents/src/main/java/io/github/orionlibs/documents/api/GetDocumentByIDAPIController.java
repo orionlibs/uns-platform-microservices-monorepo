@@ -13,6 +13,7 @@ import java.util.Objects;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,6 +48,7 @@ public class GetDocumentByIDAPIController
                                     @ApiResponse(responseCode = "404", description = "Document not found")}
     )
     @GetMapping(value = "/documents/{documentID}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCUMENT_MANAGER')")
     public ResponseEntity<DocumentDTO> getDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         return documentService.getByID(documentID)

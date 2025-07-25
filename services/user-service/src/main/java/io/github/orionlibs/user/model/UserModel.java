@@ -1,7 +1,7 @@
 package io.github.orionlibs.user.model;
 
-import io.github.orionlibs.core.cryptology.SHAEncodingKeyProvider;
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
+import io.github.orionlibs.core.cryptology.SHAEncodingKeyProvider;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;

@@ -12,9 +12,11 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -56,6 +58,7 @@ public class UpdateDocumentAPIController
                                     @ApiResponse(responseCode = "404", description = "Document not found")}
     )
     @PutMapping(value = "/documents/{documentID}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasAuthority('DOCUMENT_MANAGER')")
     public ResponseEntity<?> updateDocument(@PathVariable(name = "documentID") Integer documentID, @Valid @RequestBody UpdateDocumentRequest documentToUpdate)
     {
         boolean isDocumentFound = documentService.update(documentID, documentToUpdate);
@@ -64,7 +67,7 @@ public class UpdateDocumentAPIController
             publisher.publish(DocumentUpdatedEvent.EVENT_NAME, jsonService.toJson(DocumentUpdatedEvent.builder()
                             .documentID(documentID)
                             .build()));
-            return ResponseEntity.ok(null);
+            return ResponseEntity.ok(Map.of());
         }
         else
         {

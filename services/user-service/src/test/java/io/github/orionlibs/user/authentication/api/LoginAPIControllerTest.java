@@ -39,7 +39,6 @@ class LoginAPIControllerTest
     public void setUp()
     {
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/users/login";
-        RestAssured.useRelaxedHTTPSValidation();
         userDAO.deleteAll();
         userRegistrationService.registerUser(UserRegistrationRequest.builder()
                         .username("me@email.com")
@@ -57,7 +56,7 @@ class LoginAPIControllerTest
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(200);
     }
 
@@ -70,7 +69,7 @@ class LoginAPIControllerTest
                         .username("")
                         .password("bunkzh3Z!")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(404);
         APIError body = response.as(APIError.class);
         assertThat(body.message()).isEqualTo("Resource not found: User not found");
@@ -85,7 +84,7 @@ class LoginAPIControllerTest
                         .username("me@email.com")
                         .password("4528")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
         assertThat(body.message()).isEqualTo("Validation failed for one or more fields");
@@ -101,7 +100,7 @@ class LoginAPIControllerTest
                         .username("me")
                         .password("4528")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
         Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());

@@ -4,6 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.orionlibs.core.api.APIError;
+import io.github.orionlibs.core.api.HTTPHeader;
+import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -16,6 +18,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
@@ -37,15 +40,19 @@ class SaveDocumentAPIControllerTest
     @Autowired
     private APITestUtils apiUtils;
     private String basePath;
+    private String jwtToken;
+    private HttpHeaders headers;
 
 
     @BeforeEach
-    @SuppressWarnings("unchecked")
     public void setUp()
     {
-        basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
         documentService.deleteAll();
-        RestAssured.useRelaxedHTTPSValidation();
+        //utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
+        //jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
+        headers = new HttpHeaders();
+        //headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
+        basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
         /*System.setProperty(
                         "java.security.auth.login.config",
                         new File("src/test/resources/jaas.conf").getAbsolutePath()
@@ -76,7 +83,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
-        Response response = apiUtils.makePostAPICall(docToSave);
+        Response response = apiUtils.makePostAPICall(docToSave, headers);
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
     }
@@ -87,7 +94,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
-        Response response = apiUtils.makePostAPICall(docToSave);
+        Response response = apiUtils.makePostAPICall(docToSave, headers);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("type must not be blank", body.fieldErrors().get(0).message());

@@ -37,7 +37,6 @@ class SaveUserAPIControllerTest
     {
         userDAO.deleteAll();
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/users";
-        RestAssured.useRelaxedHTTPSValidation();
     }
 
 
@@ -50,7 +49,7 @@ class SaveUserAPIControllerTest
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(201, response.statusCode());
     }
 
@@ -64,7 +63,7 @@ class SaveUserAPIControllerTest
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Invalid email address format", body.fieldErrors().get(0).message());
@@ -80,8 +79,8 @@ class SaveUserAPIControllerTest
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        apiUtils.makePostAPICall(request);
-        Response response = apiUtils.makePostAPICall(request);
+        apiUtils.makePostAPICall(request, null);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(409, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Duplicate database record found: This user already exists", body.message());
@@ -97,7 +96,7 @@ class SaveUserAPIControllerTest
                         .password("4528")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Password does not meet security requirements", body.fieldErrors().get(0).message());
@@ -113,7 +112,7 @@ class SaveUserAPIControllerTest
                         .password("bunkzh3Z!")
                         .authority("")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         assertEquals("Authority must not be blank", body.fieldErrors().get(0).message());
@@ -129,7 +128,7 @@ class SaveUserAPIControllerTest
                         .password("4528")
                         .authority("")
                         .build();
-        Response response = apiUtils.makePostAPICall(request);
+        Response response = apiUtils.makePostAPICall(request, null);
         assertEquals(400, response.statusCode());
         APIError body = response.as(APIError.class);
         Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());

@@ -2,6 +2,8 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.orionlibs.core.api.HTTPHeader;
+import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -13,6 +15,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,14 +30,19 @@ class GetDocumentByIDAPIControllerTest
     private TestUtils utils;
     @Autowired
     private APITestUtils apiUtils;
+    private String jwtToken;
+    private HttpHeaders headers;
 
 
     @BeforeEach
     public void setUp()
     {
         documentService.deleteAll();
+        utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
+        jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
+        headers = new HttpHeaders();
+        headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
         RestAssured.baseURI = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
-        RestAssured.useRelaxedHTTPSValidation();
     }
 
 
@@ -42,7 +50,7 @@ class GetDocumentByIDAPIControllerTest
     void getDocumentByID_noResults()
     {
         RestAssured.baseURI += "/100";
-        Response response = apiUtils.makeGetAPICall();
+        Response response = apiUtils.makeGetAPICall(null);
         assertEquals(404, response.statusCode());
     }
 
@@ -52,7 +60,7 @@ class GetDocumentByIDAPIControllerTest
     {
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
-        Response response = apiUtils.makeGetAPICall();
+        Response response = apiUtils.makeGetAPICall(null);
         assertEquals(200, response.statusCode());
         DocumentDTO body = response.as(DocumentDTO.class);
         assertEquals("https://company.com/1.pdf", body.documentURL());

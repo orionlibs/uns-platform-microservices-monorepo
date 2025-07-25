@@ -2,6 +2,8 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import io.github.orionlibs.core.api.HTTPHeader;
+import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -15,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
@@ -31,6 +34,8 @@ class UpdateDocumentAPIControllerTest
     private TestUtils utils;
     @Autowired
     private APITestUtils apiUtils;
+    private String jwtToken;
+    private HttpHeaders headers;
 
 
     @BeforeEach
@@ -38,8 +43,11 @@ class UpdateDocumentAPIControllerTest
     public void setUp()
     {
         documentService.deleteAll();
+        utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
+        jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
+        headers = new HttpHeaders();
+        headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
         RestAssured.baseURI = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
-        RestAssured.useRelaxedHTTPSValidation();
     }
 
 
@@ -48,7 +56,7 @@ class UpdateDocumentAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         SaveDocumentRequest doc = updateDocumentRequest("https://company.com/1.pdf");
-        Response response = apiUtils.makePutAPICall(doc);
+        Response response = apiUtils.makePutAPICall(doc, headers);
         assertEquals(404, response.statusCode());
     }
 
@@ -63,9 +71,9 @@ class UpdateDocumentAPIControllerTest
         docToUpdate.setType(DocumentType.Type.OTHER);
         docToUpdate.setTitle("new title");
         docToUpdate.setDescription("new description");
-        Response response = apiUtils.makePutAPICall(docToUpdate);
+        Response response = apiUtils.makePutAPICall(docToUpdate, headers);
         assertEquals(200, response.statusCode());
-        response = apiUtils.makeGetAPICall();
+        response = apiUtils.makeGetAPICall(null);
         assertEquals(200, response.statusCode());
         DocumentDTO body = response.as(DocumentDTO.class);
         assertEquals("https://company.com/2.pdf", body.documentURL());
