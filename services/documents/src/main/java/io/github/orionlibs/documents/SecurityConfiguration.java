@@ -19,8 +19,8 @@ public class SecurityConfiguration
                                         .permitAll()
                                         .requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**")
                                         .hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
-                                        .anyRequest().hasAuthority("USER"))
-                        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
+                                        .anyRequest().hasAuthority("USER"));
+                        //.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()));
         return http.build();
     }
 }

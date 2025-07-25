@@ -2,16 +2,11 @@ package io.github.orionlibs.user.model;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Converter
 public class PasswordColumnConverter implements AttributeConverter<String, String>
 {
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-
     @Override
     public String convertToDatabaseColumn(String s)
     {
@@ -19,7 +14,7 @@ public class PasswordColumnConverter implements AttributeConverter<String, Strin
         {
             return null;
         }
-        return passwordEncoder.encode(s);
+        return new BCryptPasswordEncoder().encode(s);
     }
 
 

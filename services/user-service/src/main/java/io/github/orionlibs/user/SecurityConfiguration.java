@@ -8,14 +8,12 @@ import java.util.Arrays;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.AuthorizeHttpRequestsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
@@ -24,6 +22,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.SupplierJwtDecoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
@@ -147,7 +147,7 @@ public class SecurityConfiguration
                                         //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**")
                                         //.hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
                                         .anyRequest().hasAuthority("USER"))
-                        .oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
+                        //.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                         .authenticationProvider(daoAuthenticationProvider())
                         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
@@ -172,4 +172,12 @@ public class SecurityConfiguration
         authProvider.setPostAuthenticationChecks(new PostAuthenticationChecks());
         return authProvider;
     }
+
+
+    /*@Bean
+    public JwtDecoder jwtDecoder()
+    {
+        SupplierJwtDecoder supplierJwtDecoder = new SupplierJwtDecoder();
+        return authProvider;
+    }*/
 }
