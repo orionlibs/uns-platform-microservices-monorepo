@@ -52,6 +52,7 @@ class SaveDocumentAPIControllerTest
         //jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
         headers = new HttpHeaders();
         //headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
+        //headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtZUBlbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImlhdCI6MTc1MzQ3OTY1NCwiZXhwIjoxNzUzNDgzMjU0fQ.lIihY-jkrU6G3FbjZK1kOyl3ms6ZH3oF-CCS-zelXRmsTuhDVO7onUyluK_ojbQqLjz9CmuBYTc7LcTUXXRNHw");
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
         /*System.setProperty(
                         "java.security.auth.login.config",
