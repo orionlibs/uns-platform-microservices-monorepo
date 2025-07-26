@@ -1,4 +1,64 @@
-Make things configurable
+ignition JavaDocs
+https://files.inductiveautomation.com/sdk/javadoc/earlyaccess/ignition83/8.3.0-SNAPSHOT/index.html
+
+
+Move JWT service to the core library
+
+
+https://chatgpt.com/s/t_68841db3c4188191951ae61d1a0f0c1b
+https://chatgpt.com/s/t_68841e371c748191b032546b40665a4a
+
+
+https://chatgpt.com/s/t_68842151d63c8191a8a2b42885d02b57
+
+
+https://chatgpt.com/s/t_688428315c5881918e79bd69e30b6117
+
+
+This standalone Java 21 CLI (`UnsUtil.java`) does:
+https://chatgpt.com/canvas/shared/688424f25f6081919b6d8ab6f2908820
+
+
+https://chatgpt.com/s/t_68842653b0ac81919b2d3f37c0a38dc6
+https://chatgpt.com/s/t_68842a009dd081918b3102e6f71f835d
+
+
+Enabling Standard Hibernate SQL logs with timestamps
+If you only need **timestamps** (without execution time) and are okay with raw Hibernate logs, you can:
+
+1. Turn on SQL logging in `application.yml`:
+
+   ```yaml
+   spring:
+     jpa:
+       show-sql: true
+       properties:
+         hibernate:
+           format_sql: true
+   logging:
+     level:
+       org.hibernate.SQL: DEBUG
+       org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+   ```
+2. In your `src/main/resources/logback-spring.xml`, customize the logger pattern to include `%d{HH:mm:ss.SSS}`:
+
+   ```xml
+   <configuration>
+     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+       <encoder>
+         <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+       </encoder>
+     </appender>
+     <root level="INFO">
+       <appender-ref ref="STDOUT"/>
+     </root>
+     <logger name="org.hibernate.SQL" level="DEBUG"/>
+     <logger name="org.hibernate.type.descriptor.sql.BasicBinder" level="TRACE"/>
+   </configuration>
+   ```
+
+
+Make things configurable. Create pojo classes that hold config and the config is loaded during startup using @Value("${prop}") and add environment props inside the application.YAML file and then use @ConditionalProperties inside the config pojo
 
 
 Use virtual threads where possible
@@ -24,8 +84,9 @@ Create user management projects in the folder "services/user-management"
 3--create project "user-details-service" with API:
 "GET /users/{id}"
 4--create project "user-settings-service" with API:
-"POST /users/settings
 "GET /users/settings",
+GET /users/settings/{settingID}
+PATCH /users/settings/{settingID}
 "PUT /users/settings"
 5--create project "user-login-service" with API:
 "POST /users/login" uses spring JWT

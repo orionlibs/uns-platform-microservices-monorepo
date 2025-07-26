@@ -1,7 +1,7 @@
 package io.github.orionlibs.user;
 
 import io.github.orionlibs.user.authentication.JWTFilter;
-import io.github.orionlibs.user.authentication.JWTService;
+import io.github.orionlibs.core.jwt.JWTService;
 import io.github.orionlibs.user.authentication.PostAuthenticationChecks;
 import io.github.orionlibs.user.authentication.PreAuthenticationChecks;
 import java.util.Arrays;

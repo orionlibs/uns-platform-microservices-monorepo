@@ -1,6 +1,7 @@
 package io.github.orionlibs.user.authentication;
 
 import io.github.orionlibs.core.data.ResourceNotFoundException;
+import io.github.orionlibs.core.jwt.JWTService;
 import io.github.orionlibs.user.UserService;
 import io.github.orionlibs.user.authentication.api.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;

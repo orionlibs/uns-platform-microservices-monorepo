@@ -2,6 +2,7 @@ package io.github.orionlibs.user.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.orionlibs.core.jwt.JWTService;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;

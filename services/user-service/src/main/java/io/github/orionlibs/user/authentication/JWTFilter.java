@@ -1,5 +1,6 @@
 package io.github.orionlibs.user.authentication;
 
+import io.github.orionlibs.core.jwt.JWTService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

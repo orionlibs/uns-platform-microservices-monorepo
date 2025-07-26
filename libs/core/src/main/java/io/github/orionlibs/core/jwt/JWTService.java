@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.authentication;
+package io.github.orionlibs.core.jwt;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.jsonwebtoken.Claims;
