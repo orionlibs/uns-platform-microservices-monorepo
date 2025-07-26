@@ -4,8 +4,6 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import io.github.orionlibs.core.api.HTTPHeader;
-import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -41,10 +39,7 @@ class GetDocumentsByTypeAPIControllerTest
     public void setUp()
     {
         documentService.deleteAll();
-        utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
-        jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
         headers = new HttpHeaders();
-        headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
         RestAssured.baseURI = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents/types";
     }
 
@@ -53,10 +48,19 @@ class GetDocumentsByTypeAPIControllerTest
     void getDocumentsByType_noResults()
     {
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
-        Response response = apiUtils.makeGetAPICall(null);
+        Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(200, response.statusCode());
         DocumentsDTO body = response.as(DocumentsDTO.class);
         assertTrue(body.documents().isEmpty());
+    }
+
+
+    @Test
+    void getDocumentsByType_noResults_anonymous()
+    {
+        RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
+        Response response = apiUtils.makeGetAPICall(null);
+        assertEquals(403, response.statusCode());
     }
 
 
@@ -66,11 +70,22 @@ class GetDocumentsByTypeAPIControllerTest
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         DocumentModel doc2 = utils.saveDocument("https://company.com/2.pdf");
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
-        Response response = apiUtils.makeGetAPICall(null);
+        Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(200, response.statusCode());
         DocumentsDTO body = response.as(DocumentsDTO.class);
         assertThat(body.documents().size()).isEqualTo(2);
         assertThat(body.documents().get(0).documentURL()).isEqualTo("https://company.com/1.pdf");
         assertThat(body.documents().get(1).documentURL()).isEqualTo("https://company.com/2.pdf");
+    }
+
+
+    @Test
+    void getDocumentsByType_anonymous()
+    {
+        DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
+        DocumentModel doc2 = utils.saveDocument("https://company.com/2.pdf");
+        RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
+        Response response = apiUtils.makeGetAPICall(null);
+        assertEquals(403, response.statusCode());
     }
 }

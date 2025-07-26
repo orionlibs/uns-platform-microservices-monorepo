@@ -2,8 +2,6 @@ package io.github.orionlibs.documents.api;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import io.github.orionlibs.core.api.HTTPHeader;
-import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -19,9 +17,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT, properties = {
-                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration"
-})
+@SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class DeleteDocumentAPIControllerTest
 {
@@ -42,10 +38,7 @@ class DeleteDocumentAPIControllerTest
     public void setUp()
     {
         documentService.deleteAll();
-        utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
-        jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
         headers = new HttpHeaders();
-        headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
         RestAssured.baseURI = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
     }
 
@@ -54,8 +47,17 @@ class DeleteDocumentAPIControllerTest
     void getDocumentByID_noResults()
     {
         RestAssured.baseURI += "/100";
-        Response response = apiUtils.makeDeleteAPICall(headers);
+        Response response = apiUtils.makeDeleteAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(200, response.statusCode());
+    }
+
+
+    @Test
+    void getDocumentByID_noResults_anonymous()
+    {
+        RestAssured.baseURI += "/100";
+        Response response = apiUtils.makeDeleteAPICall(headers);
+        assertEquals(403, response.statusCode());
     }
 
 
@@ -64,9 +66,19 @@ class DeleteDocumentAPIControllerTest
     {
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
-        Response response = apiUtils.makeDeleteAPICall(headers);
+        Response response = apiUtils.makeDeleteAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(200, response.statusCode());
-        response = apiUtils.makeGetAPICall(headers);
+        response = apiUtils.makeGetAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(404, response.statusCode());
+    }
+
+
+    @Test
+    void getDocumentByID_anonymous()
+    {
+        DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
+        RestAssured.baseURI += "/" + doc1.getId();
+        Response response = apiUtils.makeDeleteAPICall(headers);
+        assertEquals(403, response.statusCode());
     }
 }
