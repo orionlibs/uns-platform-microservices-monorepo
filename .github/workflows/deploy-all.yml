@@ -22,7 +22,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build & publish libs to local
-        run: ./gradlew -p libs clean build --refresh-dependencies --no-daemon
+        run: ./gradlew -p libs clean build publishToMavenLocal --refresh-dependencies --no-daemon
 
       - name: Build services
         run: ./gradlew -p services clean build --refresh-dependencies --no-daemon

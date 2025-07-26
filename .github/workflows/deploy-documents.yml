@@ -36,6 +36,9 @@ jobs:
         if: steps.changes.outputs.documents == 'true'
         run: chmod +x gradlew
 
+      - name: Build & publish libs to local
+        run: ./gradlew -p libs clean build publishToMavenLocal --refresh-dependencies --no-daemon
+
       - name: Build & test
         if: steps.changes.outputs.documents == 'true'
         run: ./gradlew :services:documents:build --no-daemon

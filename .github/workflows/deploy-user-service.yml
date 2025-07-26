@@ -36,8 +36,8 @@ jobs:
         if: steps.changes.outputs.user-service == 'true'
         run: chmod +x gradlew
 
-      - name: Publish core to local Maven
-        run: ./gradlew :libs:core:publishToMavenLocal
+      - name: Build & publish libs to local
+        run: ./gradlew -p libs clean build publishToMavenLocal --refresh-dependencies --no-daemon
 
       - name: Build & test
         if: steps.changes.outputs.user-service == 'true'
