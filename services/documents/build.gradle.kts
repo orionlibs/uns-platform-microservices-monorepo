@@ -102,6 +102,13 @@ dependencies {
     testImplementation("com.h2database:h2")
 }
 
+tasks.register<Copy>("exportOpenApi") {
+    dependsOn("bootJar")
+    from(layout.buildDirectory.file("resources/main/static")) // or use curl
+    into(layout.buildDirectory.dir("openapi"))
+    include("v1/api-docs/**")
+    rename("v1/api-docs", "openapi.json")
+}
 // BootJar customization
 tasks.named<BootJar>("bootJar") {
     archiveFileName.set("app.jar")
@@ -109,3 +116,6 @@ tasks.named<BootJar>("bootJar") {
         attributes("Implementation-Version" to project.version.toString())
     }
 }
+
+
+

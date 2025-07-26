@@ -97,10 +97,20 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
 }
 
+
 // BootJar customization
 tasks.named<BootJar>("bootJar") {
     archiveFileName.set("app.jar")
     manifest {
         attributes("Implementation-Version" to project.version.toString())
     }
+}
+
+
+tasks.register<Copy>("exportOpenApi") {
+    dependsOn("bootJar")
+    from(layout.buildDirectory.file("resources/main/static")) // or use curl
+    into(layout.buildDirectory.dir("openapi"))
+    include("v1/api-docs/**")
+    rename("v1/api-docs", "openapi.json")
 }

@@ -15,7 +15,7 @@ public class KafkaProducerConfiguration
     public KafkaProducerConfiguration()
     {
         this.eventTopics = new KafkaEventTopics();
-        List<String> allEventNames = EventNameScanner.scanEventNames("io.github.orionlibs.documents.event");
+        List<String> allEventNames = EventNameScanner.scanEventNames("io.github.orionlibs.document.event");
         eventTopics.setTopics(allEventNames);
     }
 

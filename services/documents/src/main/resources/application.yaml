@@ -17,7 +17,7 @@ management:
         include: health
 
 springdoc:
-  packagesToScan: io.github.orionlibs.documents.api
+  packagesToScan: io.github.orionlibs.document.api
   writer-with-order-by-keys: true
   api-docs:
     path: /api/docs

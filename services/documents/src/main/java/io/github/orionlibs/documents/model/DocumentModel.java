@@ -11,6 +11,7 @@ import jakarta.persistence.Index;
 import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -23,6 +24,10 @@ public class DocumentModel
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "user_id_of_uploader", updatable = false)
+    private UUID userIDOfUploader;
+    @Column(name = "user_id_of_owner", updatable = false)
+    private UUID userIDOfOwner;
     @Column(name = "document_URL", length = 700, nullable = false)
     private String documentURL;
     @Enumerated(EnumType.STRING)
