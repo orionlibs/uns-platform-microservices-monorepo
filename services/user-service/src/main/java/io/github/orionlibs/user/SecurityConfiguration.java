@@ -1,7 +1,7 @@
 package io.github.orionlibs.user;
 
-import io.github.orionlibs.user.authentication.JWTFilter;
 import io.github.orionlibs.core.jwt.JWTService;
+import io.github.orionlibs.user.authentication.JWTFilter;
 import io.github.orionlibs.user.authentication.PostAuthenticationChecks;
 import io.github.orionlibs.user.authentication.PreAuthenticationChecks;
 import java.util.Arrays;
@@ -27,6 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter.ReferrerPolicy;
 import org.springframework.security.web.header.writers.XXssProtectionHeaderWriter.HeaderValue;
 import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsUtils;
 
 @Configuration
 @EnableWebSecurity
@@ -134,20 +135,19 @@ public class SecurityConfiguration
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception
     {
         SecurityContextHolder.setStrategyName(SecurityContextHolder.MODE_INHERITABLETHREADLOCAL);
-        JWTFilter jwtFilter = new JWTFilter(jwtService, userDetailsService);
         http.cors(corsCustomizer())
                         .csrf(csrfCustomizer())
                         .headers(headersCustomizer())
                         .sessionManagement(sessionManagementCustomizer())
                         //.authorizeHttpRequests(authorizeHttpRequestsCustomizer())
-                        .authorizeHttpRequests(authorize -> authorize.requestMatchers("/health/**", "/api/**", "/v1/users", "/v1/users/login")
-                                        .permitAll()
-                                        //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**")
-                                        //.hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
-                                        .anyRequest().hasAuthority("USER"))
+                        .authorizeHttpRequests(authorize -> authorize.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
+                                        .requestMatchers("/health/**", "/api/**", "/v1/**").permitAll())
+                                        //.requestMatchers("/v1/users/login").not().authenticated()
+                                        //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**").hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
+                                        //.anyRequest().hasAuthority("USER"))
                         //.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                         .authenticationProvider(daoAuthenticationProvider())
-                        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+                        .addFilterBefore(new JWTFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

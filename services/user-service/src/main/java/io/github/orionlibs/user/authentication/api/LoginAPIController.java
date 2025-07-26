@@ -12,6 +12,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -41,6 +42,7 @@ public class LoginAPIController
                                     @ApiResponse(responseCode = "400", description = "Invalid input")}
     )
     @PostMapping(value = "/users/login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("!isAuthenticated()")
     public ResponseEntity<?> login(@Valid @RequestBody LoginRequest requestBean)
     {
         return ResponseEntity.ok(Map.of("token", loginService.loginUser(requestBean)));

@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.authentication;
+package io.github.orionlibs.core.authentication;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -10,22 +10,24 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.crypto.SecretKey;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
-@ActiveProfiles("test")
 public class JWTServiceTest
 {
     private static final String RAW_SIGNING_KEY = "0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
     private static final String SIGNING_KEY_BASE64 = Base64.getEncoder().encodeToString(RAW_SIGNING_KEY.getBytes(StandardCharsets.UTF_8));
-    @Autowired
     private JWTService jwtService;
+
+
+    @BeforeEach
+    void setup()
+    {
+        jwtService = new JWTService();
+    }
 
 
     @Test
