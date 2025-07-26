@@ -13,6 +13,21 @@ plugins {
     id("com.github.ben-manes.versions") version "0.52.0"
     id("org.sonarqube") version "6.2.0.5505"
     id("com.vanniktech.dependency.graph.generator") version "0.7.0"
+    id("org.springdoc.openapi-gradle-plugin") version "1.9.0"
+}
+
+openApi {
+  apiDocsUrl.set("http://localhost:8080/api/docs")
+  outputDir.set(layout.buildDirectory.dir("openapi"))
+  outputFileName.set("openapi.json")
+  waitTimeInSeconds.set(30)
+  customBootRun {
+    systemProperties.put("spring.profiles.active", "test")
+  }
+}
+
+tasks.named("build") {
+  dependsOn("generateOpenApiDocs")
 }
 
 group = "io.github.orionlibs"
@@ -44,7 +59,6 @@ publishing {
     }
 }
 
-// -- compile & test settings ------------------------------------------------
 
 tasks.withType<JavaCompile> {
     options.encoding = "UTF-8"
@@ -104,6 +118,7 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    runtimeOnly("com.h2database:h2")
 
     implementation("io.github.orionlibs:core:0.0.1")
 
@@ -112,7 +127,6 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    testImplementation("com.h2database:h2")
 }
 
 
@@ -127,8 +141,13 @@ tasks.named<BootJar>("bootJar") {
 
 tasks.register<Copy>("exportOpenApi") {
     dependsOn("bootJar")
-    from(layout.buildDirectory.file("resources/main/static")) // or use curl
+    from(layout.buildDirectory.file("resources/main/static/v3/api-docs"))
     into(layout.buildDirectory.dir("openapi"))
-    include("v1/api-docs/**")
-    rename("v1/api-docs", "openapi.json")
+    rename("v3/api-docs", "openapi.json")
+}
+
+
+
+tasks.named("exportOpenApi") {
+  dependsOn("compileJava")
 }

@@ -15,13 +15,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
-import org.springframework.web.servlet.HandlerAdapter;
-import org.springframework.web.servlet.HandlerMapping;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter;
-import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping;
 
 @SpringBootApplication(scanBasePackages = "io.github.orionlibs")
 @Configuration
@@ -36,7 +31,7 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 
     @Bean(name = "apiObjectMapper")
-    public ObjectMapper objectMapper()
+    public ObjectMapper apiObjectMapper()
     {
         ObjectMapper mapper = new Jackson2ObjectMapperBuilder().serializationInclusion(Include.NON_NULL)
                         .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,

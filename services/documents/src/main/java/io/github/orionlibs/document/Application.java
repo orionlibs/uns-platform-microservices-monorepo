@@ -8,6 +8,7 @@ import io.github.orionlibs.core.api.GlobalExceptionHandler;
 import io.github.orionlibs.core.document.json.JSONService;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
+import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -27,11 +28,12 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
     public static void main(String[] args)
     {
         SpringApplication.run(Application.class, args);
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
 
     @Bean(name = "apiObjectMapper")
-    public ObjectMapper objectMapper()
+    public ObjectMapper apiObjectMapper()
     {
         ObjectMapper mapper = new Jackson2ObjectMapperBuilder().serializationInclusion(Include.NON_NULL)
                         .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,

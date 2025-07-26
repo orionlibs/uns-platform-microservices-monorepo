@@ -10,8 +10,15 @@ dependencies {
   implementation("com.squareup.okhttp3:okhttp:5.1.0")
 }
 
+tasks.named("openApiGenerate") {
+  dependsOn(":services:user-service:generateOpenApiDocs")
+}
+
 openApiGenerate {
-  inputSpec.set("${projectDir}/../user-service/build/openapi/openapi.json")
+  //inputSpec.set("${projectDir}/../user-service/build/openapi/openapi.json")
+  inputSpec.set(file("../user-service/build/openapi/openapi.json")
+    .toURI()
+    .toString())
   generatorName.set("java")
   library.set("okhttp-gson")
   outputDir.set("$buildDir/generated")  
@@ -34,6 +41,7 @@ sourceSets {
   }
 }
 
-tasks.named("compileKotlin") {
-  dependsOn("openApiGenerate")
+
+tasks.named("compileJava") {
+    dependsOn("openApiGenerate")
 }

@@ -79,7 +79,7 @@ public class GlobalExceptionHandler
     }
 
 
-    @ExceptionHandler(Exception.class)
+    /*@ExceptionHandler(RuntimeException.class)
     public ResponseEntity<APIError> handleAllUncheckedExceptions(Exception ex)
     {
         APIError apiError = new APIError(
@@ -88,7 +88,21 @@ public class GlobalExceptionHandler
                         "An unexpected error occurred",
                         null
         );
-        log.error("Uncaught exception: {}", ex.getMessage());
+        log.error("Uncaught unchecked exception: {}", ex.getMessage());
+        return ResponseEntity.status(apiError.status()).body(apiError);
+    }*/
+
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<APIError> handleAllCheckedExceptions(Exception ex)
+    {
+        APIError apiError = new APIError(
+                        OffsetDateTime.now(),
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        "An unexpected error occurred",
+                        null
+        );
+        log.error("Uncaught checked exception: {}", ex.getMessage());
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 }

@@ -33,3 +33,17 @@ subprojects {
         useJUnitPlatform()
     }
 }
+
+
+tasks.register("prepareApiSdk") {
+  group = "build setup"
+  description = "Generate OpenAPI spec and SDK"
+  dependsOn(
+    ":services:user-service:generateOpenApiDocs",
+    ":services:user-sdk:openApiGenerate"
+  )
+}
+
+tasks.named("build") {
+  dependsOn("prepareApiSdk")
+}

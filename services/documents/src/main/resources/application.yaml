@@ -28,6 +28,9 @@ spring:
   application:
     name: Documents
 
+jwt:
+  secret: ${JWT_SECRET_BASE64_ENCODED}
+
 # Production profile (default)
 ---
 spring:
@@ -57,9 +60,6 @@ spring:
           non_contextual_creation: true
     show-sql: true
 
----
-jwt:
-  secret: ${JWT_SECRET_BASE64_ENCODED}
 
 #---
 #spring:
@@ -76,3 +76,40 @@ jwt:
 #      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 #      group-id: ${KAFKA_CONSUMER_GROUP_ID:}
 #      auto-offset-reset: earliest
+
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL;\INIT=CREATE SCHEMA IF NOT EXISTS uns;
+    username: sa
+    password:
+  jpa:
+    database: H2
+    hibernate:
+      ddl-auto: create-drop
+      dialect: org.hibernate.dialect.H2Dialect
+    show-sql: false
+
+  springdoc:
+    packagesToScan: io.github.orionlibs.user.document.api
+    writer-with-order-by-keys: true
+    api-docs:
+      enabled: true
+      path: /api/docs
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+
+---
+jwt:
+  secret: nMgkahztuFdyw9BfUSOvI9I78r7CnOzRvB8Ezqt4Q/r+Fw5Vctr6wXedK7uv0byMNvRRUzxpNzBx2Btiv/A1BA==
