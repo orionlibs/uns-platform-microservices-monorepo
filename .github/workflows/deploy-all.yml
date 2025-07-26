@@ -21,8 +21,11 @@ jobs:
       - name: Make gradlew executable
         run: chmod +x gradlew
 
-      - name: Build & test
-        run: ./gradlew clean build --refresh-dependencies --no-daemon
+      - name: Build & publish libs to local
+        run: ./gradlew -p libs clean build --refresh-dependencies --no-daemon
+
+      - name: Build services
+        run: ./gradlew -p services clean build --refresh-dependencies --no-daemon
 
       #- name: Configure AWS credentials
       #  uses: aws-actions/configure-aws-credentials@v4
