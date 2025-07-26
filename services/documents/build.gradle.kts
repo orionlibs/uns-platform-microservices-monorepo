@@ -6,17 +6,22 @@ import org.springframework.boot.gradle.tasks.bundling.BootJar
 plugins {
     application
     jacoco
+    `base`
+    `maven-publish`
     id("io.spring.dependency-management") version "1.1.7"
     id("org.springframework.boot") version "3.5.3"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("org.sonarqube") version "6.2.0.5505"
+    id("com.vanniktech.dependency.graph.generator") version "0.7.0"
 }
 
 group = "io.github.orionlibs"
 version = "0.0.1"
 
 repositories {
+    mavenLocal()
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 java {
@@ -29,9 +34,21 @@ application {
     mainClass.set("io.github.orionlibs.${project.name}.Application")
 }
 
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            groupId = "io.github.orionlibs"
+            artifactId = "${project.name}"
+            version = "0.0.1"
+        }
+    }
+}
+
 // -- compile & test settings ------------------------------------------------
 
 tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
     options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Werror"))
 }
 
@@ -42,7 +59,6 @@ tasks.withType<Test> {
     }
 }
 
-// Jacoco report (uses default executionData)
 tasks.named<JacocoReport>("jacocoTestReport") {
     reports {
         xml.required.set(true)
@@ -51,7 +67,6 @@ tasks.named<JacocoReport>("jacocoTestReport") {
     }
 }
 
-// Sonar
 tasks.named("sonarqube") {
     dependsOn("jacocoTestReport")
 }
@@ -62,7 +77,6 @@ sonarqube {
     }
 }
 
-// Dependency updates
 tasks.named<DependencyUpdatesTask>("dependencyUpdates") {
     rejectVersionIf {
         val v = candidate.version
@@ -91,8 +105,8 @@ dependencies {
 
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
-    
-    implementation(project(":libs:core"))
+
+    implementation("io.github.orionlibs:core:0.0.1")
 
     testImplementation(platform("org.junit:junit-bom:5.13.3"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")

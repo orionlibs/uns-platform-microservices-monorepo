@@ -1,7 +1,9 @@
 plugins {
     `java-library`
+    `base`
     `maven-publish`
     id("io.spring.dependency-management") version "1.1.7"
+    id("com.vanniktech.dependency.graph.generator") version "0.7.0"
 }
 
 val springBootVersion = "3.5.3"
@@ -18,8 +20,26 @@ repositories {
     maven { url = uri("https://jitpack.io") }
 }
 
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+publishing {
+    publications {
+        create<MavenPublication>("maven") {
+            from(components["java"])
+            groupId = "io.github.orionlibs"
+            artifactId = "core"
+            version = "0.0.1"
+        }
+    }
+}
+
 dependencies {
-    implementation(libs.guava)
+    //implementation(libs.guava)
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
@@ -41,24 +61,11 @@ dependencies {
     testImplementation("org.assertj:assertj-core")
 }
 
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-publishing {
-    publications {
-        create<MavenPublication>("maven") {
-            from(components["java"])
-            groupId = "com.onelivery.libs"
-            artifactId = "core"
-            version = "0.0.1"
-        }
-    }
-}
-
 tasks.named<Test>("test") {
     useJUnitPlatform()
+}
+
+tasks.withType<JavaCompile> {
+    options.encoding = "UTF-8"
+    options.compilerArgs.addAll(listOf("-Xlint:unchecked", "-Werror"))
 }

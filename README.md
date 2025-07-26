@@ -7,6 +7,12 @@ $ ./gradlew clean publishToMavenLocal
 ```
 
 
+To build and install a particular library only to local maven run
+```shell
+$ ./gradlew :libs:core:publishToMavenLocal
+```
+
+
 To build the entire monorepo run
 ```shell
 $ ./gradlew --stop
