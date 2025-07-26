@@ -59,3 +59,7 @@ spring:
 
 password:
   pattern: ^(?=.{8,})(?=.*[A-Z])(?=.*\\d).*$)
+
+---
+jwt:
+  secret: ${JWT_SECRET_BASE64_ENCODED}

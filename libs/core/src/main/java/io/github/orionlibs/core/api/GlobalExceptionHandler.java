@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -61,6 +62,20 @@ public class GlobalExceptionHandler
                         "Resource not found: " + ex.getMessage(),
                         null
         ));
+    }
+
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<APIError> handleForbiddenExceptions(Exception ex)
+    {
+        APIError apiError = new APIError(
+                        OffsetDateTime.now(),
+                        HttpStatus.FORBIDDEN.value(),
+                        "Access denied",
+                        null
+        );
+        log.error("Access denied: {}", ex.getMessage());
+        return ResponseEntity.status(apiError.status()).body(apiError);
     }
 
 

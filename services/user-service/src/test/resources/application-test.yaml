@@ -16,3 +16,7 @@ spring:
       ddl-auto: create-drop
       dialect: org.hibernate.dialect.H2Dialect
     show-sql: false
+
+---
+jwt:
+  secret: nMgkahztuFdyw9BfUSOvI9I78r7CnOzRvB8Ezqt4Q/r+Fw5Vctr6wXedK7uv0byMNvRRUzxpNzBx2Btiv/A1BA==

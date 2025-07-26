@@ -24,8 +24,6 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class APITestUtils
 {
-    //private static final String RAW_SECRET = "myTestSecretKey1234567890";
-    //private static final String BASE64_SECRET = Base64.getEncoder().encodeToString(RAW_SECRET.getBytes());
     @Autowired
     private JSONService jsonService;
     @Value("${jwt.secret}")
@@ -39,10 +37,10 @@ public class APITestUtils
     }
 
 
-    private String jwtWithAuthorities(String... authorities)
+    private String jwtWithAuthorities(String subject, String... authorities)
     {
         return Jwts.builder()
-                        .setSubject("Jimmy")
+                        .setSubject(subject)
                         .claim("authorities", List.of(authorities))
                         .setIssuedAt(new Date())
                         .setExpiration(new Date(System.currentTimeMillis() + 3600_000))
@@ -58,6 +56,24 @@ public class APITestUtils
         headers = getHttpHeaders(headers);
         return given()
                         //.contentType(ContentType.JSON)
+                        .headers(headers)
+                        .accept(ContentType.JSON)
+                        .when()
+                        .get()
+                        .then()
+                        .extract()
+                        .response();
+    }
+
+
+    public Response makeGetAPICall(HttpHeaders headers, String subject, String commaSeparatedAuthorities)
+    {
+        log.info("[JUnit] making GET call");
+        RestAssured.defaultParser = Parser.JSON;
+        headers = getHttpHeaders(headers);
+        return given()
+                        //.contentType(ContentType.JSON)
+                        .auth().oauth2(jwtWithAuthorities(subject, commaSeparatedAuthorities.split(",")))
                         .headers(headers)
                         .accept(ContentType.JSON)
                         .when()
@@ -86,13 +102,13 @@ public class APITestUtils
     }
 
 
-    public Response makePostAPICall(Object objectToSave, HttpHeaders headers, String commaSeparatedAuthorities)
+    public Response makePostAPICall(Object objectToSave, HttpHeaders headers, String subject, String commaSeparatedAuthorities)
     {
         log.info("[JUnit] making POST call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
-                        .auth().oauth2(jwtWithAuthorities(commaSeparatedAuthorities.split(",")))
+                        .auth().oauth2(jwtWithAuthorities(subject, commaSeparatedAuthorities.split(",")))
                         .contentType(ContentType.JSON)
                         .headers(headers)
                         .accept(ContentType.JSON)
@@ -123,12 +139,49 @@ public class APITestUtils
     }
 
 
+    public Response makePutAPICall(Object objectToSave, HttpHeaders headers, String subject, String commaSeparatedAuthorities)
+    {
+        log.info("[JUnit] making PUT call");
+        RestAssured.defaultParser = Parser.JSON;
+        headers = getHttpHeaders(headers);
+        return given()
+                        .auth().oauth2(jwtWithAuthorities(subject, commaSeparatedAuthorities.split(",")))
+                        .contentType(ContentType.JSON)
+                        .headers(headers)
+                        .accept(ContentType.JSON)
+                        .body(jsonService.toJson(objectToSave))
+                        .when()
+                        .put()
+                        .then()
+                        .extract()
+                        .response();
+    }
+
+
     public Response makeDeleteAPICall(HttpHeaders headers)
     {
         log.info("[JUnit] making DELETE call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
+                        .contentType(ContentType.JSON)
+                        .headers(headers)
+                        .accept(ContentType.JSON)
+                        .when()
+                        .delete()
+                        .then()
+                        .extract()
+                        .response();
+    }
+
+
+    public Response makeDeleteAPICall(HttpHeaders headers, String subject, String commaSeparatedAuthorities)
+    {
+        log.info("[JUnit] making DELETE call");
+        RestAssured.defaultParser = Parser.JSON;
+        headers = getHttpHeaders(headers);
+        return given()
+                        .auth().oauth2(jwtWithAuthorities(subject, commaSeparatedAuthorities.split(",")))
                         .contentType(ContentType.JSON)
                         .headers(headers)
                         .accept(ContentType.JSON)

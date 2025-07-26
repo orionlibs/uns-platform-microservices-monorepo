@@ -76,14 +76,34 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
-        Response response = apiUtils.makePostAPICall(docToSave, headers, "DOCUMENT_MANAGER");
+        Response response = apiUtils.makePostAPICall(docToSave, headers, "Jimmy", "DOCUMENT_MANAGER");
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
     }
 
 
     @Test
+    void saveDocument_anonymous()
+    {
+        RestAssured.baseURI = basePath;
+        SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
+        Response response = apiUtils.makePostAPICall(docToSave, headers);
+        assertEquals(403, response.statusCode());
+    }
+
+
+    @Test
     void saveDocument_invalidDocumentType()
+    {
+        RestAssured.baseURI = basePath;
+        SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
+        Response response = apiUtils.makePostAPICall(docToSave, headers, "Jimmy", "DOCUMENT_MANAGER");
+        assertEquals(400, response.statusCode());
+        APIError body = response.as(APIError.class);
+        assertEquals("type must not be blank", body.fieldErrors().get(0).message());
+    }
+    @Test
+    void saveDocument_invalidDocumentType_anonymous()
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
