@@ -4,8 +4,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.orionlibs.core.api.APIError;
-import io.github.orionlibs.core.api.HTTPHeader;
-import io.github.orionlibs.core.api.HTTPHeaderValue;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.documents.ControllerUtils;
 import io.github.orionlibs.documents.DocumentService;
@@ -21,9 +19,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, properties = {
-                "spring.autoconfigure.exclude=org.springframework.boot.autoconfigure.kafka.KafkaAutoConfiguration"
-})
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles("test")
 class SaveDocumentAPIControllerTest
 {
@@ -48,11 +44,7 @@ class SaveDocumentAPIControllerTest
     public void setUp()
     {
         documentService.deleteAll();
-        //utils.saveUser(port, ControllerUtils.baseAPIPath + "/users", "me@email.com", "bunkzh3Z!", "USER,DOCUMENT_MANAGER");
-        //jwtToken = utils.loginUserAndGetJWT(port, ControllerUtils.baseAPIPath + "/users/login", "me@email.com", "bunkzh3Z!");
         headers = new HttpHeaders();
-        //headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + jwtToken);
-        //headers.add(HTTPHeader.Authorization.get(), HTTPHeaderValue.Bearer.get() + "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJtZUBlbWFpbC5jb20iLCJhdXRob3JpdGllcyI6WyJVU0VSIl0sImlhdCI6MTc1MzQ3OTY1NCwiZXhwIjoxNzUzNDgzMjU0fQ.lIihY-jkrU6G3FbjZK1kOyl3ms6ZH3oF-CCS-zelXRmsTuhDVO7onUyluK_ojbQqLjz9CmuBYTc7LcTUXXRNHw");
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/documents";
         /*System.setProperty(
                         "java.security.auth.login.config",
@@ -84,7 +76,7 @@ class SaveDocumentAPIControllerTest
     {
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
-        Response response = apiUtils.makePostAPICall(docToSave, headers);
+        Response response = apiUtils.makePostAPICall(docToSave, headers, "DOCUMENT_MANAGER");
         assertEquals(201, response.statusCode());
         assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
     }

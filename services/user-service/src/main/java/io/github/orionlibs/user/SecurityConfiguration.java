@@ -141,10 +141,10 @@ public class SecurityConfiguration
                         .sessionManagement(sessionManagementCustomizer())
                         //.authorizeHttpRequests(authorizeHttpRequestsCustomizer())
                         .authorizeHttpRequests(authorize -> authorize.requestMatchers(CorsUtils::isPreFlightRequest).permitAll()
-                                        .requestMatchers("/health/**", "/api/**", "/v1/**").permitAll())
+                                        .requestMatchers("/health/**", "/api/**", "/v1/**").permitAll()
                                         //.requestMatchers("/v1/users/login").not().authenticated()
                                         //.requestMatchers(HttpMethod.POST, ControllerUtils.baseAPIPath + "/documents/**").hasRole(DocumentUserAuthority.DOCUMENT_MANAGER.name())
-                                        //.anyRequest().hasAuthority("USER"))
+                                        .anyRequest().authenticated())
                         //.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
                         .authenticationProvider(daoAuthenticationProvider())
                         .addFilterBefore(new JWTFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
