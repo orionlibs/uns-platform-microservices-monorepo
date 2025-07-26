@@ -15,13 +15,12 @@ tasks.named("openApiGenerate") {
 }
 
 openApiGenerate {
-  //inputSpec.set("${projectDir}/../user-service/build/openapi/openapi.json")
   inputSpec.set(file("../user-service/build/openapi/openapi.json")
     .toURI()
     .toString())
   generatorName.set("java")
   library.set("okhttp-gson")
-  outputDir.set("$buildDir/generated")  
+  outputDir.set("$projectDir/sdk-src")
   apiPackage.set("io.github.orionlibs.sdk.user.api")
   modelPackage.set("io.github.orionlibs.sdk.user.model")
   invokerPackage.set("io.github.orionlibs.sdk.user.invoker")

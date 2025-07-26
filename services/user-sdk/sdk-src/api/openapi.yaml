@@ -1,0 +1,104 @@
+openapi: 3.1.0
+info:
+  title: OpenAPI definition
+  version: v0
+servers:
+- description: Generated server url
+  url: http://localhost:8080
+tags:
+- description: User manager
+  name: Users
+- description: User manager
+  name: User login
+paths:
+  /v1/users:
+    post:
+      description: Save user
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      operationId: saveUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserRegistrationRequest"
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: User saved
+        "400":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Invalid input
+        "409":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Duplicate username found
+      summary: Save user
+      tags:
+      - Users
+  /v1/users/login:
+    post:
+      description: Login user
+      x-content-type: application/json
+      x-accepts:
+      - application/json
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/LoginRequest"
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: User logged in
+        "400":
+          content:
+            application/json:
+              schema:
+                type: object
+          description: Invalid input
+      summary: Login user
+      tags:
+      - User login
+components:
+  schemas:
+    LoginRequest:
+      example:
+        password: password
+        username: username
+      properties:
+        password:
+          type: string
+        username:
+          type: string
+    UserRegistrationRequest:
+      example:
+        password: password
+        authority: authority
+        username: username
+      properties:
+        authority:
+          minLength: 1
+          type: string
+        password:
+          type: string
+        username:
+          type: string
+      required:
+      - authority
+
