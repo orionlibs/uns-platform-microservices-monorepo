@@ -21,7 +21,6 @@ version = "0.0.1"
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url = uri("https://jitpack.io") }
 }
 
 java {
@@ -124,6 +123,6 @@ tasks.register<Copy>("exportOpenApi") {
     dependsOn("bootJar")
     from(layout.buildDirectory.file("resources/main/static")) // or use curl
     into(layout.buildDirectory.dir("openapi"))
-    include("v1/api-docs/**")
+    include("api/docs/**")
     rename("v1/api-docs", "openapi.json")
 }

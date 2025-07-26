@@ -10,12 +10,11 @@ dependencyResolutionManagement {
   repositories {
     mavenLocal()
     mavenCentral()
-    maven { url = uri("https://jitpack.io") }
   }
 }
 
 
 rootProject.name = "uns-platform-microservices-monorepo"
 include("libs:core")
-include("services:user-service")
+include("services:user-service", "services:user-sdk")
 include("services:documents")
