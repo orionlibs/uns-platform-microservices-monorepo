@@ -107,10 +107,10 @@ tasks.named<BootJar>("bootJar") {
 }
 
 
-/*tasks.register<Copy>("exportOpenApi") {
+tasks.register<Copy>("exportOpenApi") {
     dependsOn("bootJar")
     from(layout.buildDirectory.file("resources/main/static")) // or use curl
     into(layout.buildDirectory.dir("openapi"))
     include("v1/api-docs/**")
     rename("v1/api-docs", "openapi.json")
-}*/
+}

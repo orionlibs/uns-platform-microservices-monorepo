@@ -1,2 +1,2 @@
-rootProject.name = "documents"
+rootProject.name = "document"
 include("src")

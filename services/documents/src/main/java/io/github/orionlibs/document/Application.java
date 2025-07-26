@@ -10,16 +10,19 @@ import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication(scanBasePackages = "io.github.orionlibs")
 @Configuration
 @Import({GlobalExceptionHandler.class, KafkaProducerConfiguration.class})
-public class Application
+public class Application extends SpringBootServletInitializer implements WebMvcConfigurer
 {
     public static void main(String[] args)
     {
@@ -51,5 +54,15 @@ public class Application
     public EventPublisher eventPublisherFake()
     {
         return new EventPublisherFake();
+    }
+
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry)
+    {
+        registry.addMapping("/**")
+                        .allowedOriginPatterns("*")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS", "websocket", "ws")
+                        .allowedHeaders("*");
     }
 }

@@ -1,2 +1,2 @@
-rootProject.name = "user-service"
+rootProject.name = "user"
 include("src")

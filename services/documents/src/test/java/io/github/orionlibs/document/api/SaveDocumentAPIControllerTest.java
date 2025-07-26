@@ -104,6 +104,8 @@ class SaveDocumentAPIControllerTest
         APIError body = response.as(APIError.class);
         assertEquals("type must not be blank", body.fieldErrors().get(0).message());
     }
+
+
     @Test
     void saveDocument_invalidDocumentType_anonymous()
     {

@@ -55,7 +55,7 @@ public class APITestUtils
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
-                        //.contentType(ContentType.JSON)
+                        .contentType(ContentType.JSON)
                         .headers(headers)
                         .accept(ContentType.JSON)
                         .when()
@@ -72,7 +72,7 @@ public class APITestUtils
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
-                        //.contentType(ContentType.JSON)
+                        .contentType(ContentType.JSON)
                         .auth().oauth2(jwtWithAuthorities(subject, commaSeparatedAuthorities.split(",")))
                         .headers(headers)
                         .accept(ContentType.JSON)
