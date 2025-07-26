@@ -45,7 +45,7 @@ java {
 }
 
 application {
-    mainClass.set("io.github.orionlibs.${project.name}.Application")
+    mainClass.set("io.github.orionlibs.document.Application")
 }
 
 publishing {
