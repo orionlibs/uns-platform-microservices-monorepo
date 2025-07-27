@@ -1,3 +1,27 @@
+https://chatgpt.com/s/t_68854fcf5e488191a899de7469d7d4bd
+
+
+https://chatgpt.com/s/t_6885501443748191b3fbe096ca00e08b
+
+
+https://chatgpt.com/s/t_6885504742b0819197e8caf230dfc88f
+
+
+https://chatgpt.com/s/t_68855074022081919db3b28ec7d53808
+
+
+https://chatgpt.com/s/t_688550a9334c81918ac839c6f86db964
+
+
+How can we have a microservice call another microservice using JWT for authentication and authorization if the user makes an API call to one microservice using their own JWT API key
+
+
+Use the abstract event publisher for all API endpoints
+
+
+Mention all features in the readme.md
+
+
 This standalone Java 21 CLI (`UnsUtil.java`) does:
 https://chatgpt.com/canvas/shared/688424f25f6081919b6d8ab6f2908820
 

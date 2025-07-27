@@ -2,8 +2,8 @@ server:
   port: 8080
   shutdown: graceful
   error:
-    include-binding-errors: never
-    include-message: never
+    include-binding-errors: always
+    include-message: always
     include-stacktrace: never
 
 management:
@@ -12,9 +12,16 @@ management:
       show-details: always
   endpoints:
     web:
-      base-path: /
+      base-path: /actuator
       exposure:
-        include: health
+        include: "*"
+  metrics:
+    enable:
+      all: true
+    export:
+      prometheus:
+        enabled: true
+        #GET /actuator/prometheus
 
 springdoc:
   packagesToScan: io.github.orionlibs.user.authentication.api,io.github.orionlibs.user.registration.api
@@ -94,8 +101,15 @@ spring:
   management:
     endpoints:
       web:
+        base-path: /actuator
         exposure:
           include: "*"
+    metrics:
+      enable:
+        all: true
+      export:
+        prometheus:
+          enabled: true
 
 ---
 jwt:
