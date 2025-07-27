@@ -1,8 +1,7 @@
-package io.github.orionlibs.user.observability;
+package io.github.orionlibs.document.observability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.micrometer.observation.Observation;
 import io.micrometer.observation.Observation.Context;
 import io.micrometer.observation.ObservationHandler;
 import io.micrometer.observation.ObservationRegistry;
@@ -22,14 +21,14 @@ public class ActioonTracedByObservabilityToolTest
         registry.observationConfig().observationHandler(new ObservationHandler<Context>()
         {
             @Override
-            public boolean supportsContext(Observation.Context context)
+            public boolean supportsContext(Context context)
             {
                 return true;
             }
 
 
             @Override
-            public void onStop(Observation.Context context)
+            public void onStop(Context context)
             {
                 collected.add(context);
             }
@@ -37,7 +36,7 @@ public class ActioonTracedByObservabilityToolTest
         ActionTracedByObservabilityTool service = new ActionTracedByObservabilityTool(registry);
         service.doSomethingObserved();
         assertThat(collected.size()).isEqualTo(1);
-        Observation.Context context = collected.get(0);
+        Context context = collected.get(0);
         assertThat(context.getName()).isEqualTo("my.custom.observation");
     }
 }

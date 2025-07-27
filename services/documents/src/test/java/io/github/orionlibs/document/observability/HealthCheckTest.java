@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.observability;
+package io.github.orionlibs.document.observability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

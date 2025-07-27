@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.observability;
+package io.github.orionlibs.document.observability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -21,7 +21,7 @@ public class BuildInfoTest
         Object build = info.getDetails().get("build");
         assertThat(build).isInstanceOf(Map.class);
         @SuppressWarnings("unchecked")
-        java.util.Map<String, Object> details = (java.util.Map<String, Object>)build;
+        Map<String, Object> details = (Map<String, Object>)build;
         assertThat(details.get("version")).isEqualTo("1.0.2");
         assertThat(details.get("environment")).isEqualTo("production");
     }
