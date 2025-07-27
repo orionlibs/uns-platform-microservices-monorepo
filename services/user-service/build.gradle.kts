@@ -111,6 +111,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-validation")
+    implementation("com.github.gavlyukovskiy:datasource-proxy-spring-boot-starter:1.12.0")
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-resource-server")
     implementation("com.mysql:mysql-connector-j:9.3.0")
     implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.8.9")
     implementation("io.rest-assured:rest-assured")

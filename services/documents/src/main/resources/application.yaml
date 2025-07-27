@@ -56,7 +56,21 @@ spring:
       idleTimeout: 10000
       maxLifetime: 1800000
       connectionTimeout: 30000
-
+  logging-datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${USERS_DATABASE_URL}
+    username: ${USERS_DATABASE_USERNAME}
+    password: ${USERS_DATABASE_PASSWORD}
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 10000
+      maxLifetime: 1800000
+      connectionTimeout: 30000
+  #logging:
+  #  level:
+  #    org.hibernate.SQL: DEBUG
+  #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
   jpa:
     database: MYSQL
     hibernate:
@@ -65,7 +79,10 @@ spring:
       jdbc:
         lob:
           non_contextual_creation: true
-    show-sql: true
+    #show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
 
 #---
@@ -97,12 +114,24 @@ spring:
     url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL;\INIT=CREATE SCHEMA IF NOT EXISTS uns;
     username: sa
     password:
+  logging-datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;MODE=MySQL;\INIT=CREATE SCHEMA IF NOT EXISTS uns;
+    username: sa
+    password:
+  #logging:
+  #  level:
+  #    org.hibernate.SQL: DEBUG
+  #    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
   jpa:
     database: H2
     hibernate:
       ddl-auto: create-drop
       dialect: org.hibernate.dialect.H2Dialect
-    show-sql: false
+    #show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 
   springdoc:
     packagesToScan: io.github.orionlibs.user.document.api
