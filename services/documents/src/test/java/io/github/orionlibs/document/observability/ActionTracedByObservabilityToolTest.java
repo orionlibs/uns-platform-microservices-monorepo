@@ -11,7 +11,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.test.context.ActiveProfiles;
 
 @ActiveProfiles("test")
-public class ActioonTracedByObservabilityToolTest
+public class ActionTracedByObservabilityToolTest
 {
     @Test
     void doSomethingObservedRegistersObservation()

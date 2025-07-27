@@ -21,20 +21,7 @@ public class ActionTracedByObservabilityTool
         Observation.createNotStarted("my.custom.observation", observationRegistry)
                         .lowCardinalityKeyValue("step", "one")
                         .observe(() -> {
-                            // your code to trace/observe
-                            simulateWork();
+                            //my code to trace/observe a task
                         });
-    }
-
-
-    private void simulateWork()
-    {
-        try
-        {
-            Thread.sleep(200);
-        }
-        catch(InterruptedException ignored)
-        {
-        }
     }
 }
