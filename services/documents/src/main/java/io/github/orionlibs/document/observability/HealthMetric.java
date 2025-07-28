@@ -1,26 +1,22 @@
 package io.github.orionlibs.document.observability;
 
-import io.micrometer.core.instrument.Counter;
+import io.github.orionlibs.core.observability.Metric;
 import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
 //GET /actuator/metrics/custom.login.count
-public class HealthMetric
+public class HealthMetric extends Metric
 {
-    private final Counter loginCounter;
-
-
     public HealthMetric(MeterRegistry meterRegistry)
     {
-        this.loginCounter = Counter.builder("custom.login.count")
-                        .description("Number of user logins")
-                        .register(meterRegistry);
+        super("custom.login.count", "Number of user logins", meterRegistry);
     }
 
 
-    public void recordLogin()
+    @Override
+    public void update()
     {
-        loginCounter.increment();
+        counter.increment();
     }
 }

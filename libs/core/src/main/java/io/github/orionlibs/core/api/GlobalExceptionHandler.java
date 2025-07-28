@@ -38,15 +38,13 @@ public class GlobalExceptionHandler
                         .map(fe -> new APIField(
                                         fe.getField(),
                                         fe.getDefaultMessage(),
-                                        fe.getRejectedValue()
-                        ))
+                                        fe.getRejectedValue()))
                         .toList();
         APIError body = new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.BAD_REQUEST.value(),
                         validationErrorMessage,
-                        fields
-        );
+                        fields);
         log.error("Invalid API input");
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
@@ -60,8 +58,7 @@ public class GlobalExceptionHandler
                         OffsetDateTime.now(),
                         HttpStatus.CONFLICT.value(),
                         duplicateDatabaseRecordErrorMessage + ex.getMessage(),
-                        null
-        ));
+                        null));
     }
 
 
@@ -73,8 +70,7 @@ public class GlobalExceptionHandler
                         OffsetDateTime.now(),
                         HttpStatus.NOT_FOUND.value(),
                         resourceNotFoundErrorMessage + ex.getMessage(),
-                        null
-        ));
+                        null));
     }
 
 
@@ -85,8 +81,7 @@ public class GlobalExceptionHandler
                         OffsetDateTime.now(),
                         HttpStatus.FORBIDDEN.value(),
                         accessDeniedErrorMessage,
-                        null
-        );
+                        null);
         log.error("Access denied: {}", ex.getMessage());
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
@@ -95,7 +90,8 @@ public class GlobalExceptionHandler
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIError> handleAllCheckedExceptions(Exception ex)
     {
-        APIError apiError = new APIError(OffsetDateTime.now(),
+        APIError apiError = new APIError(
+                        OffsetDateTime.now(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         genericErrorErrorMessage,
                         null);

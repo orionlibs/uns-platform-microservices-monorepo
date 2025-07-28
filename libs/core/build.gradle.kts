@@ -46,6 +46,7 @@ dependencies {
     runtimeOnly("io.jsonwebtoken:jjwt-impl:0.12.6")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.12.6")
     implementation("jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+    implementation("io.micrometer:micrometer-core")
     implementation("io.rest-assured:rest-assured")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")

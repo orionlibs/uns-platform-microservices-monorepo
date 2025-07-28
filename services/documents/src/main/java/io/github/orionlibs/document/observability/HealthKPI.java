@@ -1,42 +1,33 @@
 package io.github.orionlibs.document.observability;
 
-import io.micrometer.core.instrument.Counter;
+import io.github.orionlibs.core.observability.TimedMetric;
 import io.micrometer.core.instrument.MeterRegistry;
-import io.micrometer.core.instrument.Timer;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HealthKPI
+public class HealthKPI extends TimedMetric
 {
-    private final Counter registrationCounter;
-    private final Timer loginTimer;
-
-
     public HealthKPI(MeterRegistry meterRegistry)
     {
-        this.registrationCounter = Counter.builder("kpi.user.registrations")
-                        .description("Number of successful user registrations")
-                        .tag("region", "eu") //add custom tags
-                        .register(meterRegistry);
-        this.loginTimer = Timer.builder("user.registration.duration")
-                        .description("registration request duration")
-                        .register(meterRegistry);
+        super("kpi.user.registrations",
+                        "Number of successful user registrations",
+                        meterRegistry,
+                        "user.registration.duration",
+                        "registration request duration");
     }
 
 
-    public void recordUserRegistration()
+    @Override
+    public void update()
     {
-        registrationCounter.increment();
+        counter.increment();
     }
 
 
-    /**
-     * updates counter of number of registrations and records the duration of the registration process
-     * @param executableOfRegistrationProcess
-     */
-    public void recordUserRegistration(Runnable executableOfRegistrationProcess)
+    @Override
+    public void update(Runnable executableOfRegistrationProcess)
     {
-        recordUserRegistration();
-        loginTimer.record(executableOfRegistrationProcess);
+        update();
+        timer.record(executableOfRegistrationProcess);
     }
 }
