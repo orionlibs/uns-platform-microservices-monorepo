@@ -8,7 +8,9 @@ import io.github.orionlibs.core.api.GlobalExceptionHandler;
 import io.github.orionlibs.core.document.json.JSONService;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
+import io.github.orionlibs.core.observability.BuildInfo;
 import java.util.TimeZone;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
@@ -25,6 +27,12 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @Import({GlobalExceptionHandler.class, KafkaProducerConfiguration.class})
 public class Application extends SpringBootServletInitializer implements WebMvcConfigurer
 {
+    @Value("${version:0.0.1}")
+    private String version;
+    @Value("${environment:production}")
+    private String environment;
+
+
     public static void main(String[] args)
     {
         SpringApplication.run(Application.class, args);
@@ -56,6 +64,13 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
     public EventPublisher eventPublisherFake()
     {
         return new EventPublisherFake();
+    }
+
+
+    @Bean
+    public BuildInfo buildInfo()
+    {
+        return new BuildInfo("build", version, environment);
     }
 
 

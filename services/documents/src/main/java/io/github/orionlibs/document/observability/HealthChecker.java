@@ -1,11 +1,11 @@
-package io.github.orionlibs.user.observability;
+package io.github.orionlibs.document.observability;
 
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
 
 @Component
 //GET /actuator/health
-public class HealthCheck implements org.springframework.boot.actuate.health.HealthIndicator
+public class HealthChecker implements org.springframework.boot.actuate.health.HealthIndicator
 {
     @Override
     public Health health()

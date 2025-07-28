@@ -40,6 +40,7 @@ publishing {
 dependencies {
     //implementation(libs.guava)
     implementation("org.springframework.boot:spring-boot-starter-web")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("io.jsonwebtoken:jjwt-api:0.12.6")

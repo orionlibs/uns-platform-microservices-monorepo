@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class HealthMetricTest
 {
-    private HealthMetric customMetric;
+    private MetricTemp customMetric;
     private SimpleMeterRegistry registry;
 
 
@@ -20,7 +20,7 @@ public class HealthMetricTest
     void setUp()
     {
         registry = new SimpleMeterRegistry();
-        customMetric = new HealthMetric(registry);
+        customMetric = new MetricTemp(registry);
     }
 
 

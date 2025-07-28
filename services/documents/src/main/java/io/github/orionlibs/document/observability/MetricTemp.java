@@ -6,9 +6,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 //GET /actuator/metrics/custom.login.count
-public class HealthMetric extends Metric
+public class MetricTemp extends Metric
 {
-    public HealthMetric(MeterRegistry meterRegistry)
+    public MetricTemp(MeterRegistry meterRegistry)
     {
         super("custom.login.count", "Number of user logins", meterRegistry);
     }

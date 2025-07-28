@@ -12,7 +12,7 @@ public class HealthCheckTest
     @Test
     void health()
     {
-        HealthCheck indicator = new HealthCheck();
+        HealthChecker indicator = new HealthChecker();
         Health health = indicator.health();
         assertThat(Health.up().build().getStatus()).isEqualTo(health.getStatus());
         assertThat(health.getDetails().containsKey("custom-check")).isTrue();

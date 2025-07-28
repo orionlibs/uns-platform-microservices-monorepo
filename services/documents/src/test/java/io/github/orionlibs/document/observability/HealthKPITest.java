@@ -13,7 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class HealthKPITest
 {
-    private HealthKPI customKPI;
+    private TimedMetricTemp customKPI;
     private SimpleMeterRegistry registry;
 
 
@@ -21,7 +21,7 @@ public class HealthKPITest
     void setUp()
     {
         registry = new SimpleMeterRegistry();
-        customKPI = new HealthKPI(registry);
+        customKPI = new TimedMetricTemp(registry);
     }
 
 

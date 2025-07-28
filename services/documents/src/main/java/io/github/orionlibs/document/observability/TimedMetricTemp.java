@@ -5,9 +5,9 @@ import io.micrometer.core.instrument.MeterRegistry;
 import org.springframework.stereotype.Component;
 
 @Component
-public class HealthKPI extends TimedMetric
+public class TimedMetricTemp extends TimedMetric
 {
-    public HealthKPI(MeterRegistry meterRegistry)
+    public TimedMetricTemp(MeterRegistry meterRegistry)
     {
         super("kpi.user.registrations",
                         "Number of successful user registrations",
