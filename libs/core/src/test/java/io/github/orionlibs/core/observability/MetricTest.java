@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.observability;
+package io.github.orionlibs.core.observability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -7,12 +7,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-public class HealthMetricTest
+public class MetricTest
 {
-    private HealthMetric customMetric;
+    private Metric customMetric;
     private SimpleMeterRegistry registry;
 
 
@@ -20,7 +18,7 @@ public class HealthMetricTest
     void setUp()
     {
         registry = new SimpleMeterRegistry();
-        customMetric = new HealthMetric(registry);
+        customMetric = new MetricTemp(registry);
     }
 
 
@@ -30,8 +28,8 @@ public class HealthMetricTest
         Counter counter = registry.find("custom.login.count").counter();
         assertThat(counter).isNotNull();
         double before = counter.count();
-        customMetric.recordLogin();
-        customMetric.recordLogin();
+        customMetric.update();
+        customMetric.update();
         double after = counter.count();
         assertThat(before + 2).isEqualTo(after, Offset.<Double>offset(0.001));
     }

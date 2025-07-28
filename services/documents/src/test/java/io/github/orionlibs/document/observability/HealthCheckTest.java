@@ -4,15 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
 public class HealthCheckTest
 {
     @Test
     void health()
     {
-        HealthChecker indicator = new HealthChecker();
+        HealthCheckerForDocument indicator = new HealthCheckerForDocument();
         Health health = indicator.health();
         assertThat(Health.up().build().getStatus()).isEqualTo(health.getStatus());
         assertThat(health.getDetails().containsKey("custom-check")).isTrue();

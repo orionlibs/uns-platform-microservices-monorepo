@@ -1,4 +1,4 @@
-package io.github.orionlibs.document.observability;
+package io.github.orionlibs.core.observability;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -8,12 +8,10 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("test")
-public class HealthKPITest
+public class TimedMetricTest
 {
-    private TimedMetricTemp customKPI;
+    private TimedMetric customKPI;
     private SimpleMeterRegistry registry;
 
 
@@ -32,7 +30,7 @@ public class HealthKPITest
         assertThat(timer).isNotNull();
         long initialCount = timer.count();
         assertThat(initialCount).isEqualTo(0);
-        customKPI.recordUserRegistration(() -> {
+        customKPI.update(() -> {
             try
             {
                 Thread.sleep(10);
@@ -53,7 +51,7 @@ public class HealthKPITest
     void recordRegistration_shouldExecuteRunnable()
     {
         final boolean[] executed = {false};
-        customKPI.recordUserRegistration(() -> executed[0] = true);
+        customKPI.update(() -> executed[0] = true);
         assertThat(executed[0]).isTrue();
     }
 
@@ -64,8 +62,8 @@ public class HealthKPITest
         Counter counter = registry.find("kpi.user.registrations").counter();
         assertThat(counter).isNotNull();
         double before = counter.count();
-        customKPI.recordUserRegistration();
-        customKPI.recordUserRegistration();
+        customKPI.update();
+        customKPI.update();
         double after = counter.count();
         assertThat(before + 2).isEqualTo(after, Offset.<Double>offset(0.001));
     }
