@@ -52,6 +52,9 @@ error:
     duplicate_record:
       message: "Duplicate database record found: "
 
+version: 0.0.1
+environment: ${ENVIRONMENT_NAME:production}
+
 # Production profile (default)
 ---
 spring:
@@ -148,7 +151,7 @@ spring:
         format_sql: true
 
   springdoc:
-    packagesToScan: io.github.orionlibs.user.document.api
+    packagesToScan: io.github.orionlibs.document.api
     writer-with-order-by-keys: true
     api-docs:
       enabled: true

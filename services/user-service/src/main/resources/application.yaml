@@ -55,6 +55,9 @@ error:
     duplicate_record:
       message: "Duplicate database record found: "
 
+version: 0.0.1
+environment: ${ENVIRONMENT_NAME:production}
+
 # Production profile (default)
 ---
 spring:
@@ -157,3 +160,6 @@ spring:
 ---
 jwt:
   secret: nMgkahztuFdyw9BfUSOvI9I78r7CnOzRvB8Ezqt4Q/r+Fw5Vctr6wXedK7uv0byMNvRRUzxpNzBx2Btiv/A1BA==
+---
+version: 0.0.1
+environment: ${ENVIRONMENT_NAME:production}
