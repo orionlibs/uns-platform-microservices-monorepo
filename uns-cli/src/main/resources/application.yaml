@@ -1,0 +1,6 @@
+spring:
+  application:
+    name: uns-cli
+  shell:
+    interactive:
+      enabled: false
