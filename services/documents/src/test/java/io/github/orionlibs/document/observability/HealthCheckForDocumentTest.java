@@ -5,7 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.actuate.health.Health;
 
-public class HealthCheckTest
+public class HealthCheckForDocumentTest
 {
     @Test
     void health()
