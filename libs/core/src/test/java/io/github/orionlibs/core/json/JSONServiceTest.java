@@ -1,4 +1,4 @@
-package io.github.orionlibs.core.document.json;
+package io.github.orionlibs.core.json;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

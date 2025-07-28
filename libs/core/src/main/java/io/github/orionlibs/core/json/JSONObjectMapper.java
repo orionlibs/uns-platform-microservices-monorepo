@@ -1,4 +1,4 @@
-package io.github.orionlibs.core.document.json;
+package io.github.orionlibs.core.json;
 
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.databind.ObjectMapper;

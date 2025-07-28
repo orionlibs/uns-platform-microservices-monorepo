@@ -2,7 +2,7 @@ package io.github.orionlibs.core.tests;
 
 import static io.restassured.RestAssured.given;
 
-import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.json.JSONService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.restassured.RestAssured;

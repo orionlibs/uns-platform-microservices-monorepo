@@ -2,7 +2,7 @@ package io.github.orionlibs.document.api;
 
 import static org.springframework.http.ResponseEntity.created;
 
-import io.github.orionlibs.core.document.json.JSONService;
+import io.github.orionlibs.core.json.JSONService;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
