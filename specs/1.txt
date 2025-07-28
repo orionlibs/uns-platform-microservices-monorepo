@@ -1,3 +1,9 @@
+--configurability
+--publish/consume events
+--metrics for observability
+--KPIs for observability
+
+
 Use the abstract event publisher for all API endpoints
 
 

@@ -5,6 +5,7 @@ import io.github.orionlibs.core.data.ResourceNotFoundException;
 import java.time.OffsetDateTime;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,18 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 public class GlobalExceptionHandler
 {
+    @Value("${error.api.validation.message:Validation failed for one or more fields}")
+    private String validationErrorMessage;
+    @Value("${error.database.duplicate_record.message:Duplicate database record found: }")
+    private String duplicateDatabaseRecordErrorMessage;
+    @Value("${error.api.not_found.message:Resource not found: }")
+    private String resourceNotFoundErrorMessage;
+    @Value("${error.api.access_denied.message:Access denied}")
+    private String accessDeniedErrorMessage;
+    @Value("${error.api.generic_error.message:An unexpected error occurred}")
+    private String genericErrorErrorMessage;
+
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<APIError> onValidationError(MethodArgumentNotValidException ex)
     {
@@ -31,7 +44,7 @@ public class GlobalExceptionHandler
         APIError body = new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.BAD_REQUEST.value(),
-                        "Validation failed for one or more fields",
+                        validationErrorMessage,
                         fields
         );
         log.error("Invalid API input");
@@ -46,7 +59,7 @@ public class GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.CONFLICT.value(),
-                        "Duplicate database record found: " + ex.getMessage(),
+                        duplicateDatabaseRecordErrorMessage + ex.getMessage(),
                         null
         ));
     }
@@ -59,7 +72,7 @@ public class GlobalExceptionHandler
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.NOT_FOUND.value(),
-                        "Resource not found: " + ex.getMessage(),
+                        resourceNotFoundErrorMessage + ex.getMessage(),
                         null
         ));
     }
@@ -71,7 +84,7 @@ public class GlobalExceptionHandler
         APIError apiError = new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.FORBIDDEN.value(),
-                        "Access denied",
+                        accessDeniedErrorMessage,
                         null
         );
         log.error("Access denied: {}", ex.getMessage());
@@ -79,29 +92,13 @@ public class GlobalExceptionHandler
     }
 
 
-    /*@ExceptionHandler(RuntimeException.class)
-    public ResponseEntity<APIError> handleAllUncheckedExceptions(Exception ex)
-    {
-        APIError apiError = new APIError(
-                        OffsetDateTime.now(),
-                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                        "An unexpected error occurred",
-                        null
-        );
-        log.error("Uncaught unchecked exception: {}", ex.getMessage());
-        return ResponseEntity.status(apiError.status()).body(apiError);
-    }*/
-
-
     @ExceptionHandler(Exception.class)
     public ResponseEntity<APIError> handleAllCheckedExceptions(Exception ex)
     {
-        APIError apiError = new APIError(
-                        OffsetDateTime.now(),
+        APIError apiError = new APIError(OffsetDateTime.now(),
                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
-                        "An unexpected error occurred",
-                        null
-        );
+                        genericErrorErrorMessage,
+                        null);
         log.error("Uncaught checked exception: {}", ex.getMessage());
         return ResponseEntity.status(apiError.status()).body(apiError);
     }

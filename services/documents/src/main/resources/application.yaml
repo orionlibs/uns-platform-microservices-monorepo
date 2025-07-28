@@ -38,6 +38,20 @@ spring:
 jwt:
   secret: ${JWT_SECRET_BASE64_ENCODED}
 
+error:
+  api:
+    validation:
+      message: "Validation failed for one or more fields"
+    not_found:
+      message: "Resource not found: "
+    access_denied:
+      message: "Access denied"
+    generic_error:
+      message: "An unexpected error occurred"
+  database:
+    duplicate_record:
+      message: "Duplicate database record found: "
+
 # Production profile (default)
 ---
 spring:
