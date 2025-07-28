@@ -9,7 +9,7 @@ plugins {
     `base`
     `maven-publish`
     id("io.spring.dependency-management") version "1.1.7"
-    id("org.springframework.boot") version "3.5.3"
+    id("org.springframework.boot") version "3.5.4"
     id("com.github.ben-manes.versions") version "0.52.0"
     id("org.sonarqube") version "6.2.0.5505"
     id("com.vanniktech.dependency.graph.generator") version "0.7.0"

@@ -6,7 +6,7 @@ plugins {
     id("com.vanniktech.dependency.graph.generator") version "0.7.0"
 }
 
-val springBootVersion = "3.5.3"
+val springBootVersion = "3.5.4"
 
 dependencyManagement {
     imports {
