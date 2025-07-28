@@ -3,12 +3,10 @@
 --metrics for observability
 --timed metrics for observability
 --uns-cli shell app
+--update README.md
 
 
 Use the abstract event publisher for all API endpoints
-
-
-Mention all features in the readme.md
 
 
 Make things configurable. Create pojo classes that hold config and the config is loaded during startup using @Value("${prop}") and add environment props inside the application.YAML file and then use @ConditionalProperties inside the config pojo
