@@ -2,8 +2,7 @@ package io.github.orionlibs.document.api;
 
 import static org.springframework.http.ResponseEntity.created;
 
-import io.github.orionlibs.core.json.JSONService;
-import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
 import io.github.orionlibs.document.converter.DocumentEntityToDTOConverter;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerUtils.baseAPIPath)
 @Validated
 @Tag(name = "Documents", description = "Document manager")
-public class SaveDocumentAPIController
+public class SaveDocumentAPIController implements Publishable
 {
     @Autowired
     private DocumentService documentService;
@@ -39,10 +38,6 @@ public class SaveDocumentAPIController
     private DocumentEntityToDTOConverter documentEntityToDTOConverter;
     /*@Autowired
     private KafkaTemplate<String, String> kafkaTemplate;*/
-    @Autowired
-    private JSONService jsonService;
-    @Autowired
-    private EventPublisher publisher;
 
 
     @Operation(
@@ -67,10 +62,10 @@ public class SaveDocumentAPIController
     {
         DocumentModel newDocument = documentService.save(documentToSave);
         String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
-        publisher.publish(EventDocumentSaved.EVENT_NAME, jsonService.toJson(EventDocumentSaved.builder()
+        publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
                         .documentID(newDocument.getId())
                         .documentLocation(newDocumentURL)
-                        .build()));
+                        .build());
         /*kafkaTemplate.send(DocumentSavedEvent.EVENT_NAME, jsonService.toJson(DocumentSavedEvent.builder()
                         .documentID(newDocument.getId())
                         .documentLocation(newDocumentURL)

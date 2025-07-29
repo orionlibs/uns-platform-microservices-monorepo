@@ -3,11 +3,9 @@ package io.github.orionlibs.core.api;
 import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.core.data.ResourceNotFoundException;
-import io.github.orionlibs.core.event.EventPublisher;
-import io.github.orionlibs.core.json.JSONService;
+import io.github.orionlibs.core.event.Publishable;
 import java.time.OffsetDateTime;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,7 +16,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-public class GlobalExceptionHandler
+public class GlobalExceptionHandler implements Publishable
 {
     @Value("${error.api.validation.message:Validation failed for one or more fields}")
     private String validationErrorMessage;
@@ -30,10 +28,6 @@ public class GlobalExceptionHandler
     private String accessDeniedErrorMessage;
     @Value("${error.api.generic_error.message:An unexpected error occurred}")
     private String genericErrorErrorMessage;
-    @Autowired
-    private JSONService jsonService;
-    @Autowired
-    private EventPublisher publisher;
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -102,9 +96,9 @@ public class GlobalExceptionHandler
                         genericErrorErrorMessage,
                         null);
         Logger.error("Uncaught checked exception: {}", ex.getMessage());
-        publisher.publish(EventUnknownError.EVENT_NAME, jsonService.toJson(EventUnknownError.builder()
+        publish(EventUnknownError.EVENT_NAME, EventUnknownError.builder()
                         .error(ex.getMessage())
-                        .build()));
+                        .build());
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 }

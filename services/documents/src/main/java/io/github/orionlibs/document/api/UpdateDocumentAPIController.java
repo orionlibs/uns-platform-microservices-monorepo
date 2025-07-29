@@ -1,7 +1,6 @@
 package io.github.orionlibs.document.api;
 
-import io.github.orionlibs.core.json.JSONService;
-import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
 import io.github.orionlibs.document.converter.DocumentEntityToDTOConverter;
@@ -28,16 +27,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerUtils.baseAPIPath)
 @Validated
 @Tag(name = "Documents", description = "Document manager")
-public class UpdateDocumentAPIController
+public class UpdateDocumentAPIController implements Publishable
 {
     @Autowired
     private DocumentService documentService;
     @Autowired
     private DocumentEntityToDTOConverter documentEntityToDTOConverter;
-    @Autowired
-    private JSONService jsonService;
-    @Autowired
-    private EventPublisher publisher;
 
 
     @Operation(
@@ -64,9 +59,9 @@ public class UpdateDocumentAPIController
         boolean isDocumentFound = documentService.update(documentID, documentToUpdate);
         if(isDocumentFound)
         {
-            publisher.publish(EventDocumentUpdated.EVENT_NAME, jsonService.toJson(EventDocumentUpdated.builder()
+            publish(EventDocumentUpdated.EVENT_NAME, EventDocumentUpdated.builder()
                             .documentID(documentID)
-                            .build()));
+                            .build());
             return ResponseEntity.ok(Map.of());
         }
         else

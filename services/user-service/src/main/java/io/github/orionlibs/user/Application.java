@@ -5,6 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.orionlibs.core.api.GlobalExceptionHandler;
+import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
 import io.github.orionlibs.core.json.JSONService;
 import io.github.orionlibs.core.observability.BuildInfo;
 import java.util.TimeZone;
@@ -55,6 +57,13 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
     public JSONService jsonService(ObjectMapper objectMapper)
     {
         return new JSONService(objectMapper);
+    }
+
+
+    @Bean
+    public EventPublisher eventPublisherFake()
+    {
+        return new EventPublisherFake();
     }
 
 
