@@ -7,7 +7,7 @@ import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
 import io.github.orionlibs.document.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.document.event.DocumentSavedEvent;
+import io.github.orionlibs.document.event.EventDocumentSaved;
 import io.github.orionlibs.document.model.DocumentModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -67,7 +67,7 @@ public class SaveDocumentAPIController
     {
         DocumentModel newDocument = documentService.save(documentToSave);
         String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
-        publisher.publish(DocumentSavedEvent.EVENT_NAME, jsonService.toJson(DocumentSavedEvent.builder()
+        publisher.publish(EventDocumentSaved.EVENT_NAME, jsonService.toJson(EventDocumentSaved.builder()
                         .documentID(newDocument.getId())
                         .documentLocation(newDocumentURL)
                         .build()));

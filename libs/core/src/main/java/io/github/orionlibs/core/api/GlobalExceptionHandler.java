@@ -1,10 +1,13 @@
 package io.github.orionlibs.core.api;
 
+import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.core.data.ResourceNotFoundException;
+import io.github.orionlibs.core.event.EventPublisher;
+import io.github.orionlibs.core.json.JSONService;
 import java.time.OffsetDateTime;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -15,7 +18,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-@Slf4j
 public class GlobalExceptionHandler
 {
     @Value("${error.api.validation.message:Validation failed for one or more fields}")
@@ -28,6 +30,10 @@ public class GlobalExceptionHandler
     private String accessDeniedErrorMessage;
     @Value("${error.api.generic_error.message:An unexpected error occurred}")
     private String genericErrorErrorMessage;
+    @Autowired
+    private JSONService jsonService;
+    @Autowired
+    private EventPublisher publisher;
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -45,7 +51,7 @@ public class GlobalExceptionHandler
                         HttpStatus.BAD_REQUEST.value(),
                         validationErrorMessage,
                         fields);
-        log.error("Invalid API input");
+        Logger.error("Invalid API input");
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
@@ -53,7 +59,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(DuplicateRecordException.class)
     public ResponseEntity<APIError> onDuplicateRecordException(DuplicateRecordException ex)
     {
-        log.error("Duplicate database record found: {}", ex.getMessage());
+        Logger.error("Duplicate database record found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.CONFLICT.value(),
@@ -65,7 +71,7 @@ public class GlobalExceptionHandler
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<APIError> onResourceNotFoundException(ResourceNotFoundException ex)
     {
-        log.error("Resource not found: {}", ex.getMessage());
+        Logger.error("Resource not found: {}", ex.getMessage());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.NOT_FOUND.value(),
@@ -82,7 +88,7 @@ public class GlobalExceptionHandler
                         HttpStatus.FORBIDDEN.value(),
                         accessDeniedErrorMessage,
                         null);
-        log.error("Access denied: {}", ex.getMessage());
+        Logger.error("Access denied: {}", ex.getMessage());
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 
@@ -95,7 +101,10 @@ public class GlobalExceptionHandler
                         HttpStatus.INTERNAL_SERVER_ERROR.value(),
                         genericErrorErrorMessage,
                         null);
-        log.error("Uncaught checked exception: {}", ex.getMessage());
+        Logger.error("Uncaught checked exception: {}", ex.getMessage());
+        publisher.publish(EventUnknownError.EVENT_NAME, jsonService.toJson(EventUnknownError.builder()
+                        .error(ex.getMessage())
+                        .build()));
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 }

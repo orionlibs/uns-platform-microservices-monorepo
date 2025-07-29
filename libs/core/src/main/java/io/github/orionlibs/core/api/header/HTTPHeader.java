@@ -1,14 +1,21 @@
-package io.github.orionlibs.core.api;
+package io.github.orionlibs.core.api.header;
 
 import io.github.orionlibs.core.OrionEnumeration;
 
-public enum HTTPHeaderValue implements OrionEnumeration
+public enum HTTPHeader implements OrionEnumeration
 {
-    Bearer("Bearer ");
+    Referer("referer"),
+    UserAgent("User-Agent"),
+    WAPProfile("x-wap-profile"),
+    XAPIKey("x-api-key"),
+    Profile("Profile"),
+    Accept("Accept"),
+    Authorization("Authorization"),
+    NeedsReauthentication("needs-reauthentication");
     private String name;
 
 
-    private HTTPHeaderValue(String name)
+    private HTTPHeader(String name)
     {
         setName(name);
     }
@@ -36,21 +43,21 @@ public enum HTTPHeaderValue implements OrionEnumeration
     @Override
     public boolean is(OrionEnumeration other)
     {
-        return other instanceof HTTPHeaderValue && this == other;
+        return other instanceof HTTPHeader && this == other;
     }
 
 
     @Override
     public boolean isNot(OrionEnumeration other)
     {
-        return other instanceof HTTPHeaderValue && this != other;
+        return other instanceof HTTPHeader && this != other;
     }
 
 
     public static boolean valueExists(String other)
     {
-        HTTPHeaderValue[] values = values();
-        for(HTTPHeaderValue value : values)
+        HTTPHeader[] values = values();
+        for(HTTPHeader value : values)
         {
             if(value.get().equals(other))
             {
@@ -61,10 +68,10 @@ public enum HTTPHeaderValue implements OrionEnumeration
     }
 
 
-    public static HTTPHeaderValue getEnumForValue(String other)
+    public static HTTPHeader getEnumForValue(String other)
     {
-        HTTPHeaderValue[] values = values();
-        for(HTTPHeaderValue value : values)
+        HTTPHeader[] values = values();
+        for(HTTPHeader value : values)
         {
             if(value.get().equals(other))
             {

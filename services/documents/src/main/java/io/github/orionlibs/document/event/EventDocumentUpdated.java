@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @Event
-public class DocumentUpdatedEvent implements Serializable
+public class EventDocumentUpdated implements Serializable
 {
     public static final String EVENT_NAME = "document-updated";
     private Integer documentID;

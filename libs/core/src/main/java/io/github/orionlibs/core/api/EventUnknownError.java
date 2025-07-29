@@ -1,4 +1,4 @@
-package io.github.orionlibs.document.event;
+package io.github.orionlibs.core.api;
 
 import io.github.orionlibs.core.event.Event;
 import java.io.Serializable;
@@ -14,8 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Event
-public class DocumentDeletedEvent implements Serializable
+public class EventUnknownError implements Serializable
 {
-    public static final String EVENT_NAME = "document-deleted";
-    private Integer documentID;
+    public static final String EVENT_NAME = "unknown-error";
+    private String error;
 }

@@ -2,6 +2,7 @@ package io.github.orionlibs.core.tests;
 
 import static io.restassured.RestAssured.given;
 
+import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.core.json.JSONService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,14 +15,12 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import javax.crypto.spec.SecretKeySpec;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 @Component
-@Slf4j
 public class APITestUtils
 {
     @Autowired
@@ -51,7 +50,7 @@ public class APITestUtils
 
     public Response makeGetAPICall(HttpHeaders headers)
     {
-        log.info("[JUnit] making GET call");
+        Logger.info("[JUnit] making GET call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -68,7 +67,7 @@ public class APITestUtils
 
     public Response makeGetAPICall(HttpHeaders headers, String subject, String commaSeparatedAuthorities)
     {
-        log.info("[JUnit] making GET call");
+        Logger.info("[JUnit] making GET call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -86,7 +85,7 @@ public class APITestUtils
 
     public Response makePostAPICall(Object objectToSave, HttpHeaders headers)
     {
-        log.info("[JUnit] making POST call");
+        Logger.info("[JUnit] making POST call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -104,7 +103,7 @@ public class APITestUtils
 
     public Response makePostAPICall(Object objectToSave, HttpHeaders headers, String subject, String commaSeparatedAuthorities)
     {
-        log.info("[JUnit] making POST call");
+        Logger.info("[JUnit] making POST call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -123,7 +122,7 @@ public class APITestUtils
 
     public Response makePutAPICall(Object objectToSave, HttpHeaders headers)
     {
-        log.info("[JUnit] making PUT call");
+        Logger.info("[JUnit] making PUT call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -141,7 +140,7 @@ public class APITestUtils
 
     public Response makePutAPICall(Object objectToSave, HttpHeaders headers, String subject, String commaSeparatedAuthorities)
     {
-        log.info("[JUnit] making PUT call");
+        Logger.info("[JUnit] making PUT call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -160,7 +159,7 @@ public class APITestUtils
 
     public Response makeDeleteAPICall(HttpHeaders headers)
     {
-        log.info("[JUnit] making DELETE call");
+        Logger.info("[JUnit] making DELETE call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()
@@ -177,7 +176,7 @@ public class APITestUtils
 
     public Response makeDeleteAPICall(HttpHeaders headers, String subject, String commaSeparatedAuthorities)
     {
-        log.info("[JUnit] making DELETE call");
+        Logger.info("[JUnit] making DELETE call");
         RestAssured.defaultParser = Parser.JSON;
         headers = getHttpHeaders(headers);
         return given()

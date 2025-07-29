@@ -1,10 +1,10 @@
 package io.github.orionlibs.user;
 
+import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,6 @@ import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Slf4j
 public class UserRegistrationService
 {
     @Autowired
@@ -26,7 +25,7 @@ public class UserRegistrationService
         try
         {
             userDAO.saveAndFlush(newUser);
-            log.info("User saved");
+            Logger.info("User saved");
         }
         catch(DataIntegrityViolationException | UnexpectedRollbackException e)
         {

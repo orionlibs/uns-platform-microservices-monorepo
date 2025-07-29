@@ -14,9 +14,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @Event
-public class DocumentSavedEvent implements Serializable
+public class EventDocumentDeleted implements Serializable
 {
-    public static final String EVENT_NAME = "document-saved";
+    public static final String EVENT_NAME = "document-deleted";
     private Integer documentID;
-    private String documentLocation;
 }

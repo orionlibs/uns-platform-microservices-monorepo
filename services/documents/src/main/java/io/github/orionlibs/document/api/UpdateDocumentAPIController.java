@@ -5,7 +5,7 @@ import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
 import io.github.orionlibs.document.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.document.event.DocumentUpdatedEvent;
+import io.github.orionlibs.document.event.EventDocumentUpdated;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -64,7 +64,7 @@ public class UpdateDocumentAPIController
         boolean isDocumentFound = documentService.update(documentID, documentToUpdate);
         if(isDocumentFound)
         {
-            publisher.publish(DocumentUpdatedEvent.EVENT_NAME, jsonService.toJson(DocumentUpdatedEvent.builder()
+            publisher.publish(EventDocumentUpdated.EVENT_NAME, jsonService.toJson(EventDocumentUpdated.builder()
                             .documentID(documentID)
                             .build()));
             return ResponseEntity.ok(Map.of());

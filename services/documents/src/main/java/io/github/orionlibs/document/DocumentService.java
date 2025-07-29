@@ -1,5 +1,6 @@
 package io.github.orionlibs.document;
 
+import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.document.api.SaveDocumentRequest;
 import io.github.orionlibs.document.api.UpdateDocumentRequest;
 import io.github.orionlibs.document.converter.NewDocumentDTOToEntityConverter;
@@ -9,13 +10,11 @@ import io.github.orionlibs.document.model.DocumentType;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Slf4j
 public class DocumentService
 {
     @Autowired
@@ -49,7 +48,7 @@ public class DocumentService
     public DocumentModel save(DocumentModel toSave)
     {
         toSave = documentRepository.save(toSave);
-        log.info("Saved document");
+        Logger.info("Saved document");
         return toSave;
     }
 
@@ -67,7 +66,7 @@ public class DocumentService
             doc.setDescription(document.getDescription());
             doc.setUpdatedAt(LocalDateTime.now());
             save(doc);
-            log.info("Updated document");
+            Logger.info("Updated document");
             return true;
         }
         else
@@ -80,13 +79,13 @@ public class DocumentService
     public void delete(Integer documentID)
     {
         documentRepository.deleteById(documentID);
-        log.info("Deleted document");
+        Logger.info("Deleted document");
     }
 
 
     public void deleteAll()
     {
         documentRepository.deleteAll();
-        log.info("Deleted all documents");
+        Logger.info("Deleted all documents");
     }
 }

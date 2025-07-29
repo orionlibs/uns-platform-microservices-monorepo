@@ -4,7 +4,7 @@ import io.github.orionlibs.core.json.JSONService;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
-import io.github.orionlibs.document.event.DocumentDeletedEvent;
+import io.github.orionlibs.document.event.EventDocumentDeleted;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -50,7 +50,7 @@ public class DeleteDocumentAPIController
     public ResponseEntity<?> deleteDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         documentService.delete(documentID);
-        publisher.publish(DocumentDeletedEvent.EVENT_NAME, jsonService.toJson(DocumentDeletedEvent.builder()
+        publisher.publish(EventDocumentDeleted.EVENT_NAME, jsonService.toJson(EventDocumentDeleted.builder()
                         .documentID(documentID)
                         .build()));
         return ResponseEntity.ok(Map.of());
