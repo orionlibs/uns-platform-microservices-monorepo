@@ -20,5 +20,8 @@ public abstract class Metric
     }
 
 
-    public abstract void update();
+    public void update()
+    {
+        counter.increment();
+    }
 }

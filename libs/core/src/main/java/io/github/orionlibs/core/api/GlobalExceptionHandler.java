@@ -6,6 +6,7 @@ import io.github.orionlibs.core.data.ResourceNotFoundException;
 import io.github.orionlibs.core.event.Publishable;
 import java.time.OffsetDateTime;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,16 @@ public class GlobalExceptionHandler implements Publishable
     private String accessDeniedErrorMessage;
     @Value("${error.api.generic_error.message:An unexpected error occurred}")
     private String genericErrorErrorMessage;
+    @Autowired
+    private MetricNumberOfAPIInputValidationErrors metricNumberOfAPIInputValidationErrors;
+    @Autowired
+    private MetricNumberOfDuplicateRecordErrors metricNumberOfDuplicateRecordErrors;
+    @Autowired
+    private MetricNumberOfResourceNotFoundErrors metricNumberOfResourceNotFoundErrors;
+    @Autowired
+    private MetricNumberOfAccessDeniedErrors metricNumberOfAccessDeniedErrors;
+    @Autowired
+    private MetricNumberOfUnknownErrors metricNumberOfUnknownErrors;
 
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -46,6 +57,7 @@ public class GlobalExceptionHandler implements Publishable
                         validationErrorMessage,
                         fields);
         Logger.error("Invalid API input");
+        metricNumberOfAPIInputValidationErrors.update();
         return new ResponseEntity<>(body, new HttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
@@ -54,6 +66,7 @@ public class GlobalExceptionHandler implements Publishable
     public ResponseEntity<APIError> onDuplicateRecordException(DuplicateRecordException ex)
     {
         Logger.error("Duplicate database record found: {}", ex.getMessage());
+        metricNumberOfDuplicateRecordErrors.update();
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.CONFLICT.value(),
@@ -66,6 +79,7 @@ public class GlobalExceptionHandler implements Publishable
     public ResponseEntity<APIError> onResourceNotFoundException(ResourceNotFoundException ex)
     {
         Logger.error("Resource not found: {}", ex.getMessage());
+        metricNumberOfResourceNotFoundErrors.update();
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new APIError(
                         OffsetDateTime.now(),
                         HttpStatus.NOT_FOUND.value(),
@@ -83,6 +97,7 @@ public class GlobalExceptionHandler implements Publishable
                         accessDeniedErrorMessage,
                         null);
         Logger.error("Access denied: {}", ex.getMessage());
+        metricNumberOfAccessDeniedErrors.update();
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 
@@ -99,6 +114,7 @@ public class GlobalExceptionHandler implements Publishable
         publish(EventUnknownError.EVENT_NAME, EventUnknownError.builder()
                         .error(ex.getMessage())
                         .build());
+        metricNumberOfUnknownErrors.update();
         return ResponseEntity.status(apiError.status()).body(apiError);
     }
 }
