@@ -3,21 +3,25 @@ package io.github.orionlibs.core.cryptology;
 import java.nio.charset.StandardCharsets;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public final class AESEncryptionKeyProvider
+@Component
+public class AESEncryptionKeyProvider
 {
-    private static final byte[] DUMMY_KEY_BYTES_FOR_AES_256 = "0123456789ABCDEF0123456789ABCDEF".getBytes(StandardCharsets.UTF_8);
+    @Value("${crypto.aes256.key}")
+    private String aes256Key;
+    private byte[] KEY_BYTES_FOR_AES_256;
 
 
     // 32 bytes → AES‑256
-    public static SecretKey loadDataEncryptionKey()
+    public SecretKey loadDataEncryptionKey()
     {
+        if(KEY_BYTES_FOR_AES_256 == null)
+        {
+            KEY_BYTES_FOR_AES_256 = aes256Key.getBytes(StandardCharsets.UTF_8);
+        }
         // TODO: fetch the wrapped key from Vault/KMS, unwrap it, and return a SecretKey
-        return new SecretKeySpec(DUMMY_KEY_BYTES_FOR_AES_256, "AES");
-    }
-
-
-    private AESEncryptionKeyProvider()
-    {
+        return new SecretKeySpec(KEY_BYTES_FOR_AES_256, "AES");
     }
 }

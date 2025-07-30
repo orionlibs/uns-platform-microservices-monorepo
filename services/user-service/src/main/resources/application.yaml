@@ -40,6 +40,13 @@ password:
 
 jwt:
   secret: ${JWT_SECRET_BASE64_ENCODED}
+crypto:
+  sha:
+    key: ${SHA_ENCODING_KEY:}
+  aes256:
+    key: ${AES256_KEY:}
+  hmac-for-jwt:
+    key: ${HMAC_FOR_JWT_KEY:}
 
 error:
   api:

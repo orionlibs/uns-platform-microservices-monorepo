@@ -4,22 +4,21 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public final class HMACSHAEncryptionKeyProvider
+@Component
+public class HMACSHAEncryptionKeyProvider
 {
-    public static final String JWT_SIGNING_KEY = "hmac-for-jwt-key-0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF";
-    private static final String HMAC_ALGO = "HmacSHA512";
-
-
-    private HMACSHAEncryptionKeyProvider()
-    {
-    }
+    @Value("${crypto.hmac-for-jwt.key}")
+    private String jwtSigningKey;
+    private String HMAC_ALGO = "HmacSHA512";
 
 
     /**
      * Computes a Base64‑encoded HMAC‑SHA512 of the given data using the provided key bytes.
      */
-    public static String getNewHMACBase64(String data, byte[] key)
+    public String getNewHMACBase64(String data, byte[] key)
     {
         try
         {
@@ -32,5 +31,11 @@ public final class HMACSHAEncryptionKeyProvider
         {
             throw new IllegalStateException("Failed to calculate HMAC‑SHA256", e);
         }
+    }
+
+
+    public String getJwtSigningKey()
+    {
+        return jwtSigningKey;
     }
 }

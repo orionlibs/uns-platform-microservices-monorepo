@@ -60,6 +60,7 @@ dependencies {
     testImplementation("org.junit.platform:junit-platform-launcher")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
     testImplementation("org.assertj:assertj-core")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
 tasks.named<Test>("test") {

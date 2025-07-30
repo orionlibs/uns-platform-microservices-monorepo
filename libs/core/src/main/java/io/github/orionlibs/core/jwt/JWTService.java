@@ -11,6 +11,7 @@ import java.util.Collection;
 import java.util.Date;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import org.springframework.stereotype.Service;
 public class JWTService
 {
     private static final long EXPIRATION_IN_MILLISECONDS = 3600000;
+    @Autowired
+    private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
 
     public Key convertSigningKeyToSecretKeyObject(String signingKey)
@@ -38,7 +41,7 @@ public class JWTService
                                         .toList())
                         .issuedAt(new Date())
                         .expiration(new Date(System.currentTimeMillis() + EXPIRATION_IN_MILLISECONDS))
-                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .signWith(convertSigningKeyToSecretKeyObject(hmacSHAEncryptionKeyProvider.getJwtSigningKey()), SignatureAlgorithm.HS512)
                         .compact();
     }
 
@@ -53,7 +56,7 @@ public class JWTService
                                         .toList())
                         .issuedAt(new Date())
                         .expiration(new Date(System.currentTimeMillis() + EXPIRATION_IN_MILLISECONDS))
-                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .signWith(convertSigningKeyToSecretKeyObject(hmacSHAEncryptionKeyProvider.getJwtSigningKey()), SignatureAlgorithm.HS512)
                         .compact();
     }
 
@@ -68,7 +71,7 @@ public class JWTService
                                         .toList())
                         .issuedAt(issuedAt)
                         .expiration(expiresAt)
-                        .signWith(convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY), SignatureAlgorithm.HS512)
+                        .signWith(convertSigningKeyToSecretKeyObject(hmacSHAEncryptionKeyProvider.getJwtSigningKey()), SignatureAlgorithm.HS512)
                         .compact();
     }
 
@@ -114,7 +117,7 @@ public class JWTService
 
     private Claims parseClaims(String token)
     {
-        SecretKey key = (SecretKey)convertSigningKeyToSecretKeyObject(HMACSHAEncryptionKeyProvider.JWT_SIGNING_KEY);
+        SecretKey key = (SecretKey)convertSigningKeyToSecretKeyObject(hmacSHAEncryptionKeyProvider.getJwtSigningKey());
         return Jwts.parser()
                         .setSigningKey(key)
                         .build()

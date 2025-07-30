@@ -1,20 +1,24 @@
 package io.github.orionlibs.core.cryptology;
 
 import java.nio.charset.StandardCharsets;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
-public final class SHAEncodingKeyProvider
+@Component
+public class SHAEncodingKeyProvider
 {
-    private static final byte[] DUMMY_KEY_BYTES_FOR_SHA_256 = "0123456789ABCDEF0123456789ABCDEF".getBytes(StandardCharsets.UTF_8);
+    @Value("${crypto.sha.key}")
+    private String shaEncodingKey;
+    private byte[] KEY_BYTES_FOR_SHA_256;
 
 
-    public static byte[] loadKey()
+    public byte[] loadKey()
     {
         // TODO: fetch the wrapped key from Vault/KMS, unwrap it, and return a byte[]
-        return DUMMY_KEY_BYTES_FOR_SHA_256;
-    }
-
-
-    private SHAEncodingKeyProvider()
-    {
+        if(KEY_BYTES_FOR_SHA_256 == null)
+        {
+            KEY_BYTES_FOR_SHA_256 = shaEncodingKey.getBytes(StandardCharsets.UTF_8);
+        }
+        return KEY_BYTES_FOR_SHA_256;
     }
 }
