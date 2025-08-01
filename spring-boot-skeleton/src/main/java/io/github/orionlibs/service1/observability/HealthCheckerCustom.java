@@ -1,0 +1,43 @@
+package io.github.orionlibs.service1.observability;
+
+import io.github.orionlibs.core.observability.HealthChecker;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.actuate.health.Health;
+import org.springframework.stereotype.Component;
+
+@Component
+//GET /actuator/health
+public class HealthCheckerCustom implements HealthChecker
+{
+    @Autowired
+    private SomeDAO someDAO;
+
+
+    @Override
+    public Health health()
+    {
+        boolean serverHealthy = checkSomeCustomLogic();
+        if(serverHealthy)
+        {
+            return Health.up().withDetail("custom-check", "Everything OK").build();
+        }
+        else
+        {
+            return Health.down().withDetail("custom-check", "Something went wrong").build();
+        }
+    }
+
+
+    private boolean checkSomeCustomLogic()
+    {
+        try
+        {
+            Integer result = someDAO.testConnection();
+            return result != null && result == 1;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+}

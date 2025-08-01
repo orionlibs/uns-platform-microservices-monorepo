@@ -1,0 +1,22 @@
+spring:
+  config:
+    activate:
+      on-profile: test
+
+server:
+  port: 8080
+  shutdown: graceful
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: never
+
+jwt:
+  secret: nMgkahztuFdyw9BfUSOvI9I78r7CnOzRvB8Ezqt4Q/r+Fw5Vctr6wXedK7uv0byMNvRRUzxpNzBx2Btiv/A1BA==
+crypto:
+  sha:
+    key: ${SHA_ENCODING_KEY:0123456789ABCDEF0123456789ABCDEF}
+  aes256:
+    key: ${AES256_KEY:0123456789ABCDEF0123456789ABCDEF}
+  hmac-for-jwt:
+    key: ${HMAC_FOR_JWT_KEY:hmac-for-jwt-key-0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF}
