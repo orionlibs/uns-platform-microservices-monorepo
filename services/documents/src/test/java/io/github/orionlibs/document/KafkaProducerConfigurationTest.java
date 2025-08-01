@@ -9,10 +9,8 @@ import org.springframework.test.context.ActiveProfiles;
 @Import(KafkaProducerConfiguration.class)
 public class KafkaProducerConfigurationTest
 {
-    /*@Autowired
-    private KafkaTemplate<String, String> kafkaTemplate;
-    @Autowired
-    private NewTopics kafkaTopics;
+    /*@Autowired KafkaTemplate<String, String> kafkaTemplate;
+    @Autowired NewTopics kafkaTopics;
 
 
     @Test

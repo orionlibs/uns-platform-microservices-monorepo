@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Test;
 
 public class JSONServiceTest
 {
-    private JSONService jsonService;
-    private ObjectMapper mapper;
+    JSONService jsonService;
+    ObjectMapper mapper;
 
 
     @BeforeEach

@@ -22,13 +22,10 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class SaveUserAPIControllerTest
 {
-    @LocalServerPort
-    private int port;
-    @Autowired
-    private APITestUtils apiUtils;
-    private String basePath;
-    @Autowired
-    private UserDAO userDAO;
+    @LocalServerPort int port;
+    @Autowired APITestUtils apiUtils;
+    String basePath;
+    @Autowired UserDAO userDAO;
 
 
     @BeforeEach

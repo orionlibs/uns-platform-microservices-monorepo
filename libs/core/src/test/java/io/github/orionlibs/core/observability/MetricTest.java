@@ -10,8 +10,8 @@ import org.junit.jupiter.api.Test;
 
 public class MetricTest
 {
-    private Metric customMetric;
-    private SimpleMeterRegistry registry;
+    Metric customMetric;
+    SimpleMeterRegistry registry;
 
 
     @BeforeEach

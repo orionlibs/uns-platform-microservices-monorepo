@@ -11,8 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class AESEncryptionKeyProviderTest
 {
-    @Autowired
-    private AESEncryptionKeyProvider aesEncryptionKeyProvider;
+    @Autowired AESEncryptionKeyProvider aesEncryptionKeyProvider;
 
 
     @Test

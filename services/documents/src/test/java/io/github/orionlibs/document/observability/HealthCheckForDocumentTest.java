@@ -12,8 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class HealthCheckForDocumentTest
 {
-    @Autowired
-    private HealthCheckerForDocument healthChecker;
+    @Autowired HealthCheckerForDocument healthChecker;
 
 
     @Test

@@ -14,11 +14,9 @@ import org.springframework.stereotype.Component;
 @Component
 class TestUtils
 {
-    @Autowired
-    private APITestUtils apiUtils;
-    @Autowired
-    private DocumentService documentService;
-    private String basePath;
+    @Autowired APITestUtils apiUtils;
+    @Autowired DocumentService documentService;
+    String basePath;
 
     static
     {

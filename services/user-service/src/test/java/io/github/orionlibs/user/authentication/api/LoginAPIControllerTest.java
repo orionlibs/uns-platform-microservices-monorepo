@@ -23,15 +23,11 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class LoginAPIControllerTest
 {
-    @LocalServerPort
-    private int port;
-    @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private APITestUtils apiUtils;
-    private String basePath;
-    @Autowired
-    private UserRegistrationService userRegistrationService;
+    @LocalServerPort int port;
+    @Autowired UserDAO userDAO;
+    @Autowired APITestUtils apiUtils;
+    String basePath;
+    @Autowired UserRegistrationService userRegistrationService;
 
 
     @BeforeEach

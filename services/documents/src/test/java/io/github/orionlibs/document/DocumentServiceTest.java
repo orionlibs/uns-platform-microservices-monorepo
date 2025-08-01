@@ -15,8 +15,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class DocumentServiceTest
 {
-    @Autowired
-    private DocumentService documentService;
+    @Autowired DocumentService documentService;
 
 
     @BeforeEach

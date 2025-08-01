@@ -21,16 +21,12 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class DeleteDocumentAPIControllerTest
 {
-    @LocalServerPort
-    private int port;
-    @Autowired
-    private DocumentService documentService;
-    @Autowired
-    private TestUtils utils;
-    @Autowired
-    private APITestUtils apiUtils;
-    private String jwtToken;
-    private HttpHeaders headers;
+    @LocalServerPort int port;
+    @Autowired DocumentService documentService;
+    @Autowired TestUtils utils;
+    @Autowired APITestUtils apiUtils;
+    String jwtToken;
+    HttpHeaders headers;
 
 
     @BeforeEach

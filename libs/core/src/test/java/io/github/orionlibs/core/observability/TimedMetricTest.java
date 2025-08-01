@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Test;
 
 public class TimedMetricTest
 {
-    private TimedMetric customKPI;
-    private SimpleMeterRegistry registry;
+    TimedMetric customKPI;
+    SimpleMeterRegistry registry;
 
 
     @BeforeEach

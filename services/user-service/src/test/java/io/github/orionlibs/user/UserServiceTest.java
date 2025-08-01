@@ -17,12 +17,9 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserServiceTest
 {
-    @Autowired
-    private UserDAO userDAO;
-    @Autowired
-    private UserRegistrationService userRegistrationService;
-    @Autowired
-    private UserService userService;
+    @Autowired UserDAO userDAO;
+    @Autowired UserRegistrationService userRegistrationService;
+    @Autowired UserService userService;
 
 
     @BeforeEach

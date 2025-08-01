@@ -11,8 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class SHAEncodingKeyProviderTest
 {
-    @Autowired
-    private SHAEncodingKeyProvider shaEncodingKeyProvider;
+    @Autowired SHAEncodingKeyProvider shaEncodingKeyProvider;
 
 
     @Test

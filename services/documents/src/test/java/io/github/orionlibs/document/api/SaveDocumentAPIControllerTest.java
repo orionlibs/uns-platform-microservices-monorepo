@@ -24,21 +24,15 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class SaveDocumentAPIControllerTest
 {
-    @LocalServerPort
-    private int port;
-    /*@MockitoBean
-    private ProducerFactory<String, String> producerFactory;
-    @MockitoBean
-    private Producer<String, String> producer;*/
-    @Autowired
-    private DocumentService documentService;
-    @Autowired
-    private TestUtils utils;
-    @Autowired
-    private APITestUtils apiUtils;
-    private String basePath;
-    private String jwtToken;
-    private HttpHeaders headers;
+    @LocalServerPort int port;
+    /*@MockitoBean  ProducerFactory<String, String> producerFactory;
+    @MockitoBean Producer<String, String> producer;*/
+    @Autowired DocumentService documentService;
+    @Autowired TestUtils utils;
+    @Autowired APITestUtils apiUtils;
+    String basePath;
+    String jwtToken;
+    HttpHeaders headers;
 
 
     @BeforeEach

@@ -13,8 +13,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class DocumentRepositoryTest
 {
-    @Autowired
-    private DocumentDAO documentRepository;
+    @Autowired DocumentDAO documentRepository;
 
 
     @BeforeEach

@@ -12,8 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class HealthCheckForUserTest
 {
-    @Autowired
-    private HealthCheckerForUser healthChecker;
+    @Autowired HealthCheckerForUser healthChecker;
 
 
     @Test

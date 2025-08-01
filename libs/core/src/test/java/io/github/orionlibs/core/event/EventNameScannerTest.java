@@ -12,8 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class EventNameScannerTest
 {
-    @Autowired
-    private EventNameScanner eventNameScanner;
+    @Autowired EventNameScanner eventNameScanner;
 
 
     @Test
