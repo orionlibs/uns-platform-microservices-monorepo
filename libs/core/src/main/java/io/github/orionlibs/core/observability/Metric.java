@@ -24,4 +24,10 @@ public abstract class Metric
     {
         counter.increment();
     }
+
+
+    public void update(int count)
+    {
+        counter.increment((double)count);
+    }
 }

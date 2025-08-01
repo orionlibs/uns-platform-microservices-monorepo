@@ -4,14 +4,21 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.type.filter.AnnotationTypeFilter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class EventNameScanner
 {
-    public static List<String> scanEventNames(String basePackage)
+    @Autowired
+    private MetricNumberOfRegisteredEvents metricNumberOfRegisteredEvents;
+
+
+    public List<String> scanEventNames(String basePackage)
     {
         var scanner = new ClassPathScanningCandidateComponentProvider(false);
         scanner.addIncludeFilter(new AnnotationTypeFilter(Event.class));
@@ -47,6 +54,7 @@ public class EventNameScanner
                 throw new IllegalStateException("Cannot access EVENT_NAME on " + className, e);
             }
         }
+        metricNumberOfRegisteredEvents.update(eventNames.size());
         return eventNames;
     }
 }

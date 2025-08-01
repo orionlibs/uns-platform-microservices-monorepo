@@ -4,13 +4,22 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class EventNameScannerTest
 {
+    @Autowired
+    private EventNameScanner eventNameScanner;
+
+
     @Test
     void scanEventNames()
     {
-        List<String> allEventNames = EventNameScanner.scanEventNames("io.github.orionlibs.core.event");
+        List<String> allEventNames = eventNameScanner.scanEventNames("io.github.orionlibs.core.event");
         assertThat(List.of("event-1", "event-2", "event-3")).isEqualTo(allEventNames);
     }
 

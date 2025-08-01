@@ -1,7 +1,9 @@
 package io.github.orionlibs.document;
 
 import io.github.orionlibs.core.event.EventNameScanner;
+import io.github.orionlibs.core.event.MetricNumberOfRegisteredEvents;
 import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
@@ -10,12 +12,14 @@ import org.springframework.context.annotation.Configuration;
 public class KafkaProducerConfiguration
 {
     private final KafkaEventTopics eventTopics;
+    @Autowired
+    private EventNameScanner eventNameScanner;
 
 
     public KafkaProducerConfiguration()
     {
         this.eventTopics = new KafkaEventTopics();
-        List<String> allEventNames = EventNameScanner.scanEventNames("io.github.orionlibs.document.event");
+        List<String> allEventNames = eventNameScanner.scanEventNames("io.github.orionlibs.document.event");
         eventTopics.setTopics(allEventNames);
     }
 
