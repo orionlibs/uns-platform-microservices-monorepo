@@ -11,11 +11,6 @@ import org.springframework.core.type.filter.AnnotationTypeFilter;
 
 public class EventNameScanner
 {
-    private EventNameScanner()
-    {
-    }
-
-
     public static List<String> scanEventNames(String basePackage)
     {
         var scanner = new ClassPathScanningCandidateComponentProvider(false);
