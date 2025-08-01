@@ -53,3 +53,11 @@ $ cd workspaces/my-project/services/service1-sdk
 $ ./gradlew openApiGenerate
 ```
 This generates the source code of the maven-based Java-based client SDK for the API of the project service1 in the folder services/service1-sdk/generated
+
+
+To build the shell app run
+```shell
+$ cd workspaces/my-project/uns-cli
+$ ./gradlew clean build
+$ java -jar build/libs/uns-cli-0.0.1.jar say-hello Jimmy
+```

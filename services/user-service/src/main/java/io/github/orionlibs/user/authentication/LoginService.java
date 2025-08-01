@@ -1,9 +1,11 @@
 package io.github.orionlibs.user.authentication;
 
 import io.github.orionlibs.core.data.ResourceNotFoundException;
+import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.core.jwt.JWTService;
 import io.github.orionlibs.user.UserService;
 import io.github.orionlibs.user.authentication.api.LoginRequest;
+import io.github.orionlibs.user.event.EventUserLoggedIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,7 +15,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class LoginService
+public class LoginService implements Publishable
 {
     @Autowired
     private AuthenticationManager authenticationManager;
@@ -30,7 +32,11 @@ public class LoginService
         {
             UserDetails user = userService.loadUserByUsername(requestBean.getUsername());
             authenticationManager.authenticate(auth);
-            return jwtService.generateToken((String)auth.getPrincipal(), user.getAuthorities());
+            String token = jwtService.generateToken((String)auth.getPrincipal(), user.getAuthorities());
+            publish(EventUserLoggedIn.EVENT_NAME, EventUserLoggedIn.builder()
+                            .username(requestBean.getUsername())
+                            .build());
+            return token;
         }
         catch(UsernameNotFoundException e)
         {

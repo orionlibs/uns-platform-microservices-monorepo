@@ -3,6 +3,8 @@ package io.github.orionlibs.user;
 import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.data.DuplicateRecordException;
+import io.github.orionlibs.core.event.Publishable;
+import io.github.orionlibs.user.event.EventUserRegistered;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
@@ -13,7 +15,7 @@ import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class UserRegistrationService
+public class UserRegistrationService implements Publishable
 {
     @Autowired
     private UserDAO userDAO;
@@ -28,6 +30,9 @@ public class UserRegistrationService
         try
         {
             userDAO.saveAndFlush(newUser);
+            publish(EventUserRegistered.EVENT_NAME, EventUserRegistered.builder()
+                            .username(request.getUsername())
+                            .build());
             Logger.info("User saved");
         }
         catch(DataIntegrityViolationException | UnexpectedRollbackException e)
