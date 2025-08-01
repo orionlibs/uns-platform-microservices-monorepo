@@ -2,6 +2,7 @@ package io.github.orionlibs.user.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.user.UserAuthority;
 import java.util.Optional;
 import java.util.Set;
@@ -19,6 +20,8 @@ public class UserDAOTest
     @Autowired
     private UserDAO userDAO;
     private UserModel user;
+    @Autowired
+    private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
 
     @BeforeEach
@@ -72,7 +75,7 @@ public class UserDAOTest
 
     private UserModel saveUser(String username, String password, String authority)
     {
-        UserModel userModel = new UserModel(username, password, authority);
+        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider, username, password, authority);
         return userDAO.save(userModel);
     }
 }

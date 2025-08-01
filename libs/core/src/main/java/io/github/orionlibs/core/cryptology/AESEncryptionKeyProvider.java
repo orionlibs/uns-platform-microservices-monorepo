@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AESEncryptionKeyProvider implements InitializingBean
 {
+    public static SecretKey dataEncryptionKey;
     @Value("${crypto.aes256.key}")
     private String aes256Key;
     private byte[] KEY_BYTES_FOR_AES_256;
@@ -19,6 +20,7 @@ public class AESEncryptionKeyProvider implements InitializingBean
     public void afterPropertiesSet() throws Exception
     {
         KEY_BYTES_FOR_AES_256 = aes256Key.getBytes(StandardCharsets.UTF_8);
+        dataEncryptionKey = loadDataEncryptionKey();
     }
 
 

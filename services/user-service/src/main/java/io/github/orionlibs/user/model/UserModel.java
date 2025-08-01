@@ -10,6 +10,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -29,6 +30,8 @@ import org.springframework.security.core.userdetails.UserDetails;
                 uniqueConstraints = @UniqueConstraint(name = "uq_users_username", columnNames = "username_hash"))
 public class UserModel implements UserDetails
 {
+    @Transient
+    private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(updatable = false, nullable = false)
@@ -59,11 +62,12 @@ public class UserModel implements UserDetails
     }
 
 
-    public UserModel(String username, String password, String authority)
+    public UserModel(HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider, String username, String password, String authority)
     {
         this();
         this.username = username;
-        this.usernameHash = HMACSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
+        this.hmacSHAEncryptionKeyProvider = hmacSHAEncryptionKeyProvider;
+        this.usernameHash = hmacSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.shaKey);
         this.password = password;
         this.authority = authority;
     }
@@ -78,7 +82,7 @@ public class UserModel implements UserDetails
     public void setUsername(String username)
     {
         this.username = username;
-        this.usernameHash = HMACSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.loadKey());
+        this.usernameHash = hmacSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.shaKey);
     }
 
 

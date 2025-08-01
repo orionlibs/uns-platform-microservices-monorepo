@@ -1,6 +1,6 @@
 package io.github.orionlibs.user;
 
-import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAOCustom;
 import io.github.orionlibs.user.model.UserModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService
 {
     @Autowired
-    private UserDAO userDAO;
+    private UserDAOCustom userDAO;
 
 
     @Override

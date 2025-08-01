@@ -20,13 +20,13 @@ public class AesGcmColumnConverter implements AttributeConverter<String, String>
     private static final String ENCRYPT_ALGO = "AES/GCM/NoPadding";
     private static final int IV_LENGTH = 12;           // 96 bits
     private static final int TAG_LENGTH_BIT = 128;     // 128‑bit auth tag
-    private final SecretKey secretKey;
+    private SecretKey secretKey;
     private final SecureRandom secureRandom = new SecureRandom();
 
 
     public AesGcmColumnConverter()
     {
-        this.secretKey = AESEncryptionKeyProvider.loadDataEncryptionKey();
+        this.secretKey = AESEncryptionKeyProvider.dataEncryptionKey;
     }
 
 
@@ -42,6 +42,10 @@ public class AesGcmColumnConverter implements AttributeConverter<String, String>
             byte[] iv = new byte[IV_LENGTH];
             secureRandom.nextBytes(iv);
             Cipher cipher = Cipher.getInstance(ENCRYPT_ALGO);
+            if(secretKey == null)
+            {
+                secretKey = AESEncryptionKeyProvider.dataEncryptionKey;
+            }
             cipher.init(Cipher.ENCRYPT_MODE, secretKey, new GCMParameterSpec(TAG_LENGTH_BIT, iv));
             byte[] cipherText = cipher.doFinal(attribute.getBytes(StandardCharsets.UTF_8));
             // Prepend IV to cipherText

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class SHAEncodingKeyProvider implements InitializingBean
 {
+    public static byte[] shaKey;
     @Value("${crypto.sha.key}")
     private String shaEncodingKey;
     private byte[] KEY_BYTES_FOR_SHA_256;
@@ -17,6 +18,7 @@ public class SHAEncodingKeyProvider implements InitializingBean
     public void afterPropertiesSet() throws Exception
     {
         KEY_BYTES_FOR_SHA_256 = shaEncodingKey.getBytes(StandardCharsets.UTF_8);
+        shaKey = loadKey();
     }
 
 

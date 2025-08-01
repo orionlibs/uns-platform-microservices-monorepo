@@ -8,6 +8,7 @@ import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.user.ControllerUtils;
 import io.github.orionlibs.user.UserRegistrationService;
 import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAOCustom;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;

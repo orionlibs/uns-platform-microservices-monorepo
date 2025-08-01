@@ -1,6 +1,7 @@
 package io.github.orionlibs.user;
 
 import io.github.orionlibs.core.Logger;
+import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
@@ -16,12 +17,14 @@ public class UserRegistrationService
 {
     @Autowired
     private UserDAO userDAO;
+    @Autowired
+    private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
 
     @Transactional
     public void registerUser(UserRegistrationRequest request) throws DuplicateRecordException
     {
-        UserModel newUser = new UserModel(request.getUsername(), request.getPassword(), request.getAuthority());
+        UserModel newUser = new UserModel(hmacSHAEncryptionKeyProvider, request.getUsername(), request.getPassword(), request.getAuthority());
         try
         {
             userDAO.saveAndFlush(newUser);
