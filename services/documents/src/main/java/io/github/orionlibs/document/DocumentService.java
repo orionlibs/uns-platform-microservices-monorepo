@@ -23,20 +23,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentService implements Publishable
 {
     @Autowired
-    private DocumentDAO documentRepository;
+    private DocumentDAO dao;
     @Autowired
     private NewDocumentDTOToEntityConverter newDocumentDTOToEntityConverter;
 
 
     public List<DocumentModel> getByType(DocumentType.Type documentType)
     {
-        return documentRepository.findAllByType(documentType);
+        return dao.findAllByType(documentType);
     }
 
 
     public Optional<DocumentModel> getByID(Integer documentID)
     {
-        return documentRepository.findById(documentID);
+        return dao.findById(documentID);
     }
 
 
@@ -53,7 +53,7 @@ public class DocumentService implements Publishable
     @Transactional
     public DocumentModel save(DocumentModel toSave)
     {
-        DocumentModel saved = documentRepository.save(toSave);
+        DocumentModel saved = dao.save(toSave);
         publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
                         .documentID(saved.getId())
                         .documentLocation(saved.getDocumentURL())
@@ -91,7 +91,7 @@ public class DocumentService implements Publishable
 
     public void delete(Integer documentID)
     {
-        documentRepository.deleteById(documentID);
+        dao.deleteById(documentID);
         publish(EventDocumentDeleted.EVENT_NAME, EventDocumentDeleted.builder()
                         .documentID(documentID)
                         .build());
@@ -101,7 +101,7 @@ public class DocumentService implements Publishable
 
     public void deleteAll()
     {
-        documentRepository.deleteAll();
+        dao.deleteAll();
         publish(EventDocumentDeletedAll.EVENT_NAME, EventDocumentDeletedAll.builder().build());
         Logger.info("Deleted all documents");
     }

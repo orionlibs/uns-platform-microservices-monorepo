@@ -14,14 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserService implements UserDetailsService
 {
     @Autowired
-    private UserDAOCustom userDAO;
+    private UserDAOCustom dao;
 
 
     @Override
     @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        UserModel user = userDAO.findByUsername(username)
+        UserModel user = dao.findByUsername(username)
                         .orElseThrow(() -> new UsernameNotFoundException("User not found"));
         return User.builder()
                         .username(user.getUsername())

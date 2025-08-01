@@ -2,6 +2,8 @@ package io.github.orionlibs.user.model;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.cryptology.SHAEncodingKeyProvider;
+import io.github.orionlibs.user.setting.model.UserSettingsModel;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
@@ -9,12 +11,15 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Index;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import jakarta.persistence.UniqueConstraint;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import org.hibernate.annotations.CreationTimestamp;
@@ -54,6 +59,12 @@ public class UserModel implements UserDetails
     @UpdateTimestamp
     @Column(name = "updated_at", nullable = false)
     private LocalDateTime updatedAt;
+    @OneToMany(
+                    mappedBy = "user",
+                    cascade = CascadeType.ALL,
+                    orphanRemoval = true
+    )
+    private List<UserSettingsModel> settings = new ArrayList<>();
 
 
     public UserModel()
@@ -170,5 +181,11 @@ public class UserModel implements UserDetails
     public void setEnabled(boolean enabled)
     {
         isEnabled = enabled;
+    }
+
+
+    public List<UserSettingsModel> getSettings()
+    {
+        return settings;
     }
 }
