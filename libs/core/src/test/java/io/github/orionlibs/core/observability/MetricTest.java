@@ -7,10 +7,15 @@ import io.micrometer.core.instrument.simple.SimpleMeterRegistry;
 import org.assertj.core.data.Offset;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
+@SpringBootTest
+@ActiveProfiles("test")
 public class MetricTest
 {
-    Metric customMetric;
+    @Autowired MetricTemp customMetric;
     SimpleMeterRegistry registry;
 
 
@@ -18,7 +23,7 @@ public class MetricTest
     void setUp()
     {
         registry = new SimpleMeterRegistry();
-        customMetric = new MetricTemp(registry);
+        //customMetric = new MetricTemp(registry);
     }
 
 
