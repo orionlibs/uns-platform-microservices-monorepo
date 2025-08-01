@@ -5,7 +5,10 @@ import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.api.SaveDocumentRequest;
 import io.github.orionlibs.document.api.UpdateDocumentRequest;
 import io.github.orionlibs.document.converter.NewDocumentDTOToEntityConverter;
+import io.github.orionlibs.document.event.EventDocumentDeleted;
+import io.github.orionlibs.document.event.EventDocumentDeletedAll;
 import io.github.orionlibs.document.event.EventDocumentSaved;
+import io.github.orionlibs.document.event.EventDocumentUpdated;
 import io.github.orionlibs.document.model.DocumentDAO;
 import io.github.orionlibs.document.model.DocumentModel;
 import io.github.orionlibs.document.model.DocumentType;
@@ -43,10 +46,6 @@ public class DocumentService implements Publishable
         newDocument.setUpdatedAt(LocalDateTime.now());
         DocumentModel toSave = newDocumentDTOToEntityConverter.convert(newDocument);
         DocumentModel saved = save(toSave);
-        publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
-                        .documentID(saved.getId())
-                        .documentLocation(saved.getDocumentURL())
-                        .build());
         return saved;
     }
 
@@ -54,9 +53,13 @@ public class DocumentService implements Publishable
     @Transactional
     public DocumentModel save(DocumentModel toSave)
     {
-        toSave = documentRepository.save(toSave);
+        DocumentModel saved = documentRepository.save(toSave);
+        publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
+                        .documentID(saved.getId())
+                        .documentLocation(saved.getDocumentURL())
+                        .build());
         Logger.info("Saved document");
-        return toSave;
+        return saved;
     }
 
 
@@ -72,7 +75,10 @@ public class DocumentService implements Publishable
             doc.setTitle(document.getTitle());
             doc.setDescription(document.getDescription());
             doc.setUpdatedAt(LocalDateTime.now());
-            save(doc);
+            DocumentModel updated = save(doc);
+            publish(EventDocumentUpdated.EVENT_NAME, EventDocumentUpdated.builder()
+                            .documentID(updated.getId())
+                            .build());
             Logger.info("Updated document");
             return true;
         }
@@ -86,6 +92,9 @@ public class DocumentService implements Publishable
     public void delete(Integer documentID)
     {
         documentRepository.deleteById(documentID);
+        publish(EventDocumentDeleted.EVENT_NAME, EventDocumentDeleted.builder()
+                        .documentID(documentID)
+                        .build());
         Logger.info("Deleted document");
     }
 
@@ -93,6 +102,7 @@ public class DocumentService implements Publishable
     public void deleteAll()
     {
         documentRepository.deleteAll();
+        publish(EventDocumentDeletedAll.EVENT_NAME, EventDocumentDeletedAll.builder().build());
         Logger.info("Deleted all documents");
     }
 }

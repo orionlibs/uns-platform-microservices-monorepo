@@ -1,6 +1,8 @@
 package io.github.orionlibs.user.observability;
 
 import io.github.orionlibs.core.observability.HealthChecker;
+import io.github.orionlibs.user.model.UserDAO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
 
@@ -8,6 +10,10 @@ import org.springframework.stereotype.Component;
 //GET /actuator/health
 public class HealthCheckerForUser implements HealthChecker
 {
+    @Autowired
+    private UserDAO userDAO;
+
+
     @Override
     public Health health()
     {
@@ -25,7 +31,14 @@ public class HealthCheckerForUser implements HealthChecker
 
     private boolean checkSomeCustomLogic()
     {
-        // e.g., check a database or external service
-        return true;
+        try
+        {
+            Integer result = userDAO.testConnection();
+            return result != null && result == 1;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
     }
 }

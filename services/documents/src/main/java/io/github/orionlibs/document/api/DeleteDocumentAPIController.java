@@ -1,9 +1,7 @@
 package io.github.orionlibs.document.api;
 
-import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
-import io.github.orionlibs.document.event.EventDocumentDeleted;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping(ControllerUtils.baseAPIPath)
 @Tag(name = "Documents", description = "Document manager")
-public class DeleteDocumentAPIController implements Publishable
+public class DeleteDocumentAPIController
 {
     @Autowired
     private DocumentService documentService;
@@ -45,9 +43,6 @@ public class DeleteDocumentAPIController implements Publishable
     public ResponseEntity<?> deleteDocumentByID(@PathVariable(name = "documentID") Integer documentID)
     {
         documentService.delete(documentID);
-        publish(EventDocumentDeleted.EVENT_NAME, EventDocumentDeleted.builder()
-                        .documentID(documentID)
-                        .build());
         return ResponseEntity.ok(Map.of());
     }
 }
