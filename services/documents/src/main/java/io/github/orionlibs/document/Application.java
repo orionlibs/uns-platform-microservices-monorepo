@@ -1,12 +1,14 @@
 package io.github.orionlibs.document;
 
+import io.github.orionlibs.core.api.ApiMetricsInterceptor;
 import io.github.orionlibs.core.api.GlobalExceptionHandler;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
-import io.github.orionlibs.core.json.JsonObjectMapper;
 import io.github.orionlibs.core.json.JSONService;
+import io.github.orionlibs.core.json.JsonObjectMapper;
 import io.github.orionlibs.core.observability.BuildInfo;
 import java.util.TimeZone;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication(scanBasePackages = "io.github.orionlibs")
@@ -26,6 +29,8 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
     private String version;
     @Value("${environment}")
     private String environment;
+    @Autowired
+    private ApiMetricsInterceptor apiMetricsInterceptor;
 
 
     public static void main(String[] args)
@@ -53,6 +58,13 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
     public BuildInfo buildInfo()
     {
         return new BuildInfo("build", version, environment);
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry)
+    {
+        registry.addInterceptor(apiMetricsInterceptor).addPathPatterns("/**");
     }
 
 
