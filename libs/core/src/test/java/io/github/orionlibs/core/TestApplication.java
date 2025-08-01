@@ -2,7 +2,7 @@ package io.github.orionlibs.core;
 
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
-import io.github.orionlibs.core.json.JSONObjectMapper;
+import io.github.orionlibs.core.json.JsonObjectMapper;
 import io.github.orionlibs.core.json.JSONService;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
@@ -24,7 +24,7 @@ public class TestApplication extends SpringBootServletInitializer implements Web
 
 
     @Bean
-    public JSONService jsonService(JSONObjectMapper objectMapper)
+    public JSONService jsonService(JsonObjectMapper objectMapper)
     {
         return new JSONService(objectMapper.getMapper());
     }

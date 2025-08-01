@@ -3,7 +3,7 @@ package io.github.orionlibs.document;
 import io.github.orionlibs.core.api.GlobalExceptionHandler;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
-import io.github.orionlibs.core.json.JSONObjectMapper;
+import io.github.orionlibs.core.json.JsonObjectMapper;
 import io.github.orionlibs.core.json.JSONService;
 import io.github.orionlibs.core.observability.BuildInfo;
 import java.util.TimeZone;
@@ -36,7 +36,7 @@ public class Application extends SpringBootServletInitializer implements WebMvcC
 
 
     @Bean
-    public JSONService jsonService(JSONObjectMapper objectMapper)
+    public JSONService jsonService(JsonObjectMapper objectMapper)
     {
         return new JSONService(objectMapper.getMapper());
     }

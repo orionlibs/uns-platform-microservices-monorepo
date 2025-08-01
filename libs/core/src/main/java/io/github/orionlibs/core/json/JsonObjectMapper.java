@@ -8,12 +8,12 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JSONObjectMapper
+public class JsonObjectMapper
 {
     private ObjectMapper mapper;
 
 
-    public JSONObjectMapper()
+    public JsonObjectMapper()
     {
         this.mapper = new Jackson2ObjectMapperBuilder().serializationInclusion(Include.NON_NULL)
                         .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,

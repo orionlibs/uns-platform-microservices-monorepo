@@ -19,7 +19,7 @@ public class JSONServiceTest
     @BeforeEach
     public void setup()
     {
-        mapper = new JSONObjectMapper().getMapper();
+        mapper = new JsonObjectMapper().getMapper();
         jsonService = new JSONService(mapper);
     }
 

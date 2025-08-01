@@ -121,7 +121,8 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
     runtimeOnly("com.h2database:h2")
     
-    implementation("io.github.orionlibs:core:0.0.1")
+    //implementation("io.github.orionlibs:core:0.0.1")
+    implementation(project(":libs:core"))
 
     testImplementation(platform("org.junit:junit-bom:5.13.3"))
     testImplementation("org.junit.jupiter:junit-jupiter-api")
