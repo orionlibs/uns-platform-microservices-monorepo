@@ -1,6 +1,6 @@
 package io.github.orionlibs.document.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.document.ControllerUtils;
@@ -48,7 +48,7 @@ class DeleteDocumentAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         Response response = apiUtils.makeDeleteAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
     }
 
 
@@ -57,7 +57,7 @@ class DeleteDocumentAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         Response response = apiUtils.makeDeleteAPICall(headers);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 
@@ -67,9 +67,9 @@ class DeleteDocumentAPIControllerTest
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
         Response response = apiUtils.makeDeleteAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         response = apiUtils.makeGetAPICall(headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(404, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(404);
     }
 
 
@@ -79,6 +79,6 @@ class DeleteDocumentAPIControllerTest
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
         Response response = apiUtils.makeDeleteAPICall(headers);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 }

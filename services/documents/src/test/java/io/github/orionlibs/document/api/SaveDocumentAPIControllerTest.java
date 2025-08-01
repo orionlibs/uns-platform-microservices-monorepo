@@ -1,7 +1,6 @@
 package io.github.orionlibs.document.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
@@ -79,8 +78,8 @@ class SaveDocumentAPIControllerTest
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
         Response response = apiUtils.makePostAPICall(docToSave, headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(201, response.statusCode());
-        assertTrue(response.header("Location").startsWith(ControllerUtils.baseAPIPath + "/documents"));
+        assertThat(response.statusCode()).isEqualTo(201);
+        assertThat(response.header("Location")).isEqualTo("https://company.com/1.pdf");
     }
 
 
@@ -90,7 +89,7 @@ class SaveDocumentAPIControllerTest
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequest("https://company.com/1.pdf");
         Response response = apiUtils.makePostAPICall(docToSave, headers);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 
@@ -100,9 +99,9 @@ class SaveDocumentAPIControllerTest
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
         Response response = apiUtils.makePostAPICall(docToSave, headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("type must not be blank", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("type must not be blank");
     }
 
 
@@ -112,9 +111,9 @@ class SaveDocumentAPIControllerTest
         RestAssured.baseURI = basePath;
         SaveDocumentRequest docToSave = saveDocumentRequestWithoutType("https://company.com/1.pdf");
         Response response = apiUtils.makePostAPICall(docToSave, headers);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("type must not be blank", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("type must not be blank");
     }
 
 

@@ -1,6 +1,6 @@
 package io.github.orionlibs.document.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.document.ControllerUtils;
@@ -50,7 +50,7 @@ class UpdateDocumentAPIControllerTest
         RestAssured.baseURI += "/100";
         SaveDocumentRequest doc = updateDocumentRequest("https://company.com/1.pdf");
         Response response = apiUtils.makePutAPICall(doc, headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(404, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(404);
     }
 
 
@@ -60,7 +60,7 @@ class UpdateDocumentAPIControllerTest
         RestAssured.baseURI += "/100";
         SaveDocumentRequest doc = updateDocumentRequest("https://company.com/1.pdf");
         Response response = apiUtils.makePutAPICall(doc, headers);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 
@@ -75,14 +75,14 @@ class UpdateDocumentAPIControllerTest
         docToUpdate.setTitle("new title");
         docToUpdate.setDescription("new description");
         Response response = apiUtils.makePutAPICall(docToUpdate, headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         DocumentDTO body = response.as(DocumentDTO.class);
-        assertEquals("https://company.com/2.pdf", body.documentURL());
-        assertEquals(DocumentType.Type.OTHER, body.type());
-        assertEquals("new title", body.title());
-        assertEquals("new description", body.description());
+        assertThat(body.documentURL()).isEqualTo("https://company.com/2.pdf");
+        assertThat(body.type()).isEqualTo(DocumentType.Type.OTHER);
+        assertThat(body.title()).isEqualTo("new title");
+        assertThat(body.description()).isEqualTo("new description");
     }
 
 
@@ -97,9 +97,9 @@ class UpdateDocumentAPIControllerTest
         docToUpdate.setTitle("new title");
         docToUpdate.setDescription("new description");
         Response response = apiUtils.makePutAPICall(docToUpdate, headers, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         response = apiUtils.makeGetAPICall(null);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 

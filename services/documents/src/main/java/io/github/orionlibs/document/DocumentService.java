@@ -1,9 +1,11 @@
 package io.github.orionlibs.document;
 
 import io.github.orionlibs.core.Logger;
+import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.api.SaveDocumentRequest;
 import io.github.orionlibs.document.api.UpdateDocumentRequest;
 import io.github.orionlibs.document.converter.NewDocumentDTOToEntityConverter;
+import io.github.orionlibs.document.event.EventDocumentSaved;
 import io.github.orionlibs.document.model.DocumentDAO;
 import io.github.orionlibs.document.model.DocumentModel;
 import io.github.orionlibs.document.model.DocumentType;
@@ -15,7 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-public class DocumentService
+public class DocumentService implements Publishable
 {
     @Autowired
     private DocumentDAO documentRepository;
@@ -40,7 +42,12 @@ public class DocumentService
         newDocument.setCreatedAt(LocalDateTime.now());
         newDocument.setUpdatedAt(LocalDateTime.now());
         DocumentModel toSave = newDocumentDTOToEntityConverter.convert(newDocument);
-        return save(toSave);
+        DocumentModel saved = save(toSave);
+        publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
+                        .documentID(saved.getId())
+                        .documentLocation(saved.getDocumentURL())
+                        .build());
+        return saved;
     }
 
 

@@ -1,7 +1,6 @@
 package io.github.orionlibs.user.authentication.api;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
@@ -88,7 +87,7 @@ class LoginAPIControllerTest
         assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
         assertThat(body.message()).isEqualTo("Validation failed for one or more fields");
-        assertEquals("Password does not meet security requirements", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("Password does not meet security requirements");
     }
 
 
@@ -105,7 +104,7 @@ class LoginAPIControllerTest
         APIError body = response.as(APIError.class);
         Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());
         assertThat(body.message()).isEqualTo("Validation failed for one or more fields");
-        assertEquals(Set.of("Password does not meet security requirements",
-                        "Invalid email address format"), errorMessages);
+        assertThat(errorMessages).isEqualTo(Set.of("Password does not meet security requirements",
+                        "Invalid email address format"));
     }
 }

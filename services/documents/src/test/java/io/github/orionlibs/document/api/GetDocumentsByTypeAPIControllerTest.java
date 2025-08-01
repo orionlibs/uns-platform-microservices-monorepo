@@ -1,8 +1,6 @@
 package io.github.orionlibs.document.api;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.document.ControllerUtils;
@@ -11,6 +9,7 @@ import io.github.orionlibs.document.model.DocumentModel;
 import io.github.orionlibs.document.model.DocumentType;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,9 +48,9 @@ class GetDocumentsByTypeAPIControllerTest
     {
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         DocumentsDTO body = response.as(DocumentsDTO.class);
-        assertTrue(body.documents().isEmpty());
+        assertThat(body.documents().isEmpty()).isTrue();
     }
 
 
@@ -60,7 +59,7 @@ class GetDocumentsByTypeAPIControllerTest
     {
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = apiUtils.makeGetAPICall(null);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 
@@ -71,7 +70,7 @@ class GetDocumentsByTypeAPIControllerTest
         DocumentModel doc2 = utils.saveDocument("https://company.com/2.pdf");
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         DocumentsDTO body = response.as(DocumentsDTO.class);
         assertThat(body.documents().size()).isEqualTo(2);
         assertThat(body.documents().get(0).documentURL()).isEqualTo("https://company.com/1.pdf");
@@ -86,6 +85,6 @@ class GetDocumentsByTypeAPIControllerTest
         DocumentModel doc2 = utils.saveDocument("https://company.com/2.pdf");
         RestAssured.baseURI += "/" + DocumentType.Type.DOCUMENTATION.name();
         Response response = apiUtils.makeGetAPICall(null);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 }

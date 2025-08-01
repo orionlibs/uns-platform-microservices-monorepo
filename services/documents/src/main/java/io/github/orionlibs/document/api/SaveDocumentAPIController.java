@@ -2,11 +2,9 @@ package io.github.orionlibs.document.api;
 
 import static org.springframework.http.ResponseEntity.created;
 
-import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.document.ControllerUtils;
 import io.github.orionlibs.document.DocumentService;
 import io.github.orionlibs.document.converter.DocumentEntityToDTOConverter;
-import io.github.orionlibs.document.event.EventDocumentSaved;
 import io.github.orionlibs.document.model.DocumentModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -30,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping(ControllerUtils.baseAPIPath)
 @Validated
 @Tag(name = "Documents", description = "Document manager")
-public class SaveDocumentAPIController implements Publishable
+public class SaveDocumentAPIController
 {
     @Autowired
     private DocumentService documentService;
@@ -61,15 +59,10 @@ public class SaveDocumentAPIController implements Publishable
     public ResponseEntity<?> saveDocument(@Valid @RequestBody SaveDocumentRequest documentToSave)
     {
         DocumentModel newDocument = documentService.save(documentToSave);
-        String newDocumentURL = ControllerUtils.baseAPIPath + "/documents/" + newDocument.getId();
-        publish(EventDocumentSaved.EVENT_NAME, EventDocumentSaved.builder()
-                        .documentID(newDocument.getId())
-                        .documentLocation(newDocumentURL)
-                        .build());
         /*kafkaTemplate.send(DocumentSavedEvent.EVENT_NAME, jsonService.toJson(DocumentSavedEvent.builder()
                         .documentID(newDocument.getId())
                         .documentLocation(newDocumentURL)
                         .build()));*/
-        return created(URI.create(newDocumentURL)).body(Map.of());
+        return created(URI.create(newDocument.getDocumentURL())).body(Map.of());
     }
 }

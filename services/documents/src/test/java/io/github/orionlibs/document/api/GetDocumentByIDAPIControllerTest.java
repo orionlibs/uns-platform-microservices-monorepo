@@ -1,6 +1,6 @@
 package io.github.orionlibs.document.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.document.ControllerUtils;
@@ -46,7 +46,7 @@ class GetDocumentByIDAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(404, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(404);
     }
 
 
@@ -55,7 +55,7 @@ class GetDocumentByIDAPIControllerTest
     {
         RestAssured.baseURI += "/100";
         Response response = apiUtils.makeGetAPICall(null);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 
 
@@ -65,9 +65,9 @@ class GetDocumentByIDAPIControllerTest
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
         Response response = apiUtils.makeGetAPICall(null, "Jimmy", "DOCUMENT_MANAGER");
-        assertEquals(200, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(200);
         DocumentDTO body = response.as(DocumentDTO.class);
-        assertEquals("https://company.com/1.pdf", body.documentURL());
+        assertThat(body.documentURL()).isEqualTo("https://company.com/1.pdf");
     }
 
 
@@ -77,6 +77,6 @@ class GetDocumentByIDAPIControllerTest
         DocumentModel doc1 = utils.saveDocument("https://company.com/1.pdf");
         RestAssured.baseURI += "/" + doc1.getId();
         Response response = apiUtils.makeGetAPICall(null);
-        assertEquals(403, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(403);
     }
 }

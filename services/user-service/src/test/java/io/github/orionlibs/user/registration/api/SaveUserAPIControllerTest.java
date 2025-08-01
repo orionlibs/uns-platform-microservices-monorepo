@@ -1,6 +1,6 @@
 package io.github.orionlibs.user.registration.api;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
@@ -50,7 +50,7 @@ class SaveUserAPIControllerTest
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(201, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(201);
     }
 
 
@@ -64,9 +64,9 @@ class SaveUserAPIControllerTest
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("Invalid email address format", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("Invalid email address format");
     }
 
 
@@ -81,9 +81,9 @@ class SaveUserAPIControllerTest
                         .build();
         apiUtils.makePostAPICall(request, null);
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(409, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(409);
         APIError body = response.as(APIError.class);
-        assertEquals("Duplicate database record found: This user already exists", body.message());
+        assertThat(body.message()).isEqualTo("Duplicate database record found: This user already exists");
     }
 
 
@@ -97,9 +97,9 @@ class SaveUserAPIControllerTest
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("Password does not meet security requirements", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("Password does not meet security requirements");
     }
 
 
@@ -113,9 +113,9 @@ class SaveUserAPIControllerTest
                         .authority("")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("Authority must not be blank", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("Authority must not be blank");
     }
 
 
@@ -129,11 +129,11 @@ class SaveUserAPIControllerTest
                         .authority("")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
         Set<String> errorMessages = body.fieldErrors().stream().map(e -> e.message()).collect(Collectors.toSet());
-        assertEquals(Set.of("Authority must not be blank",
+        assertThat(errorMessages).isEqualTo(Set.of("Authority must not be blank",
                         "Password does not meet security requirements",
-                        "Invalid email address format"), errorMessages);
+                        "Invalid email address format"));
     }
 }

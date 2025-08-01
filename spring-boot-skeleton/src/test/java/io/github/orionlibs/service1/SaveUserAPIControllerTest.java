@@ -1,6 +1,6 @@
 package io.github.orionlibs.service1;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
@@ -50,7 +50,7 @@ class SaveUserAPIControllerTest
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(201, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(201);
     }
 
 
@@ -64,8 +64,8 @@ class SaveUserAPIControllerTest
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
-        assertEquals(400, response.statusCode());
+        assertThat(response.statusCode()).isEqualTo(400);
         APIError body = response.as(APIError.class);
-        assertEquals("Invalid email address format", body.fieldErrors().get(0).message());
+        assertThat(body.fieldErrors().get(0).message()).isEqualTo("Invalid email address format");
     }
 }
