@@ -1,11 +1,8 @@
 package io.github.orionlibs.core;
 
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.PropertyNamingStrategies;
-import com.fasterxml.jackson.databind.SerializationFeature;
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
+import io.github.orionlibs.core.json.JSONObjectMapper;
 import io.github.orionlibs.core.json.JSONService;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
@@ -13,8 +10,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
-import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @SpringBootApplication(scanBasePackages = "io.github.orionlibs")
@@ -28,23 +23,10 @@ public class TestApplication extends SpringBootServletInitializer implements Web
     }
 
 
-    @Bean(name = "apiObjectMapper")
-    public ObjectMapper apiObjectMapper()
-    {
-        ObjectMapper mapper = new Jackson2ObjectMapperBuilder().serializationInclusion(Include.NON_NULL)
-                        .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-                                        SerializationFeature.FAIL_ON_EMPTY_BEANS,
-                                        SerializationFeature.FAIL_ON_SELF_REFERENCES)
-                        .build();
-        return mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-    }
-
-
     @Bean
-    @DependsOn("apiObjectMapper")
-    public JSONService jsonService(ObjectMapper objectMapper)
+    public JSONService jsonService(JSONObjectMapper objectMapper)
     {
-        return new JSONService(objectMapper);
+        return new JSONService(objectMapper.getMapper());
     }
 
 
