@@ -48,7 +48,7 @@ import io.github.orionlibs.sdk.user.invoker.JSON;
 /**
  * UserRegistrationRequest
  */
-@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-07-26T22:05:24.159489500+01:00[Europe/London]", comments = "Generator version: 7.13.0")
+@javax.annotation.Generated(value = "org.openapitools.codegen.languages.JavaClientCodegen", date = "2025-08-01T14:55:51.972954200+01:00[Europe/London]", comments = "Generator version: 7.13.0")
 public class UserRegistrationRequest {
   public static final String SERIALIZED_NAME_AUTHORITY = "authority";
   @SerializedName(SERIALIZED_NAME_AUTHORITY)

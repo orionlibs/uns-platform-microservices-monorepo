@@ -14,9 +14,6 @@ paths:
   /v1/users:
     post:
       description: Save user
-      x-content-type: application/json
-      x-accepts:
-      - application/json
       operationId: saveUser
       requestBody:
         content:
@@ -46,12 +43,12 @@ paths:
       summary: Save user
       tags:
       - Users
-  /v1/users/login:
-    post:
-      description: Login user
       x-content-type: application/json
       x-accepts:
       - application/json
+  /v1/users/login:
+    post:
+      description: Login user
       operationId: login
       requestBody:
         content:
@@ -75,6 +72,9 @@ paths:
       summary: Login user
       tags:
       - User login
+      x-content-type: application/json
+      x-accepts:
+      - application/json
 components:
   schemas:
     LoginRequest:

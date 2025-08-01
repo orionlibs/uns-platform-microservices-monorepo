@@ -38,16 +38,6 @@ spring:
 password:
   pattern: "^(?=.{8,})(?=.*[A-Z])(?=.*\\d).*$"
 
-jwt:
-  secret: ${JWT_SECRET_BASE64_ENCODED}
-crypto:
-  sha:
-    key: ${SHA_ENCODING_KEY:}
-  aes256:
-    key: ${AES256_KEY:}
-  hmac-for-jwt:
-    key: ${HMAC_FOR_JWT_KEY:}
-
 error:
   api:
     validation:
@@ -71,6 +61,16 @@ spring:
   config:
     activate:
       on-profile: "!test"
+
+jwt:
+  secret: ${JWT_SECRET_BASE64_ENCODED}
+crypto:
+  sha:
+    key: ${SHA_ENCODING_KEY:}
+  aes256:
+    key: ${AES256_KEY:}
+  hmac-for-jwt:
+    key: ${HMAC_FOR_JWT_KEY:}
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -167,6 +167,13 @@ spring:
 ---
 jwt:
   secret: nMgkahztuFdyw9BfUSOvI9I78r7CnOzRvB8Ezqt4Q/r+Fw5Vctr6wXedK7uv0byMNvRRUzxpNzBx2Btiv/A1BA==
+crypto:
+  sha:
+    key: ${SHA_ENCODING_KEY:0123456789ABCDEF0123456789ABCDEF}
+  aes256:
+    key: ${AES256_KEY:0123456789ABCDEF0123456789ABCDEF}
+  hmac-for-jwt:
+    key: ${HMAC_FOR_JWT_KEY:hmac-for-jwt-key-0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF0123456789ABCDEF}
 ---
 version: 0.0.1
 environment: ${ENVIRONMENT_NAME:production}
