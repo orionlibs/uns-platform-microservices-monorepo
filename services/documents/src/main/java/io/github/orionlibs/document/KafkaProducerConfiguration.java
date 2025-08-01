@@ -2,7 +2,6 @@ package io.github.orionlibs.document;
 
 import io.github.orionlibs.core.event.EventNameScanner;
 import java.util.List;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
