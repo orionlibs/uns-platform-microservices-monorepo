@@ -6,7 +6,7 @@ import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.user.ControllerUtils;
 import io.github.orionlibs.user.UserAuthority;
-import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAORepository;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.Set;
@@ -25,7 +25,7 @@ class SaveUserAPIControllerTest
     @LocalServerPort int port;
     @Autowired APITestUtils apiUtils;
     String basePath;
-    @Autowired UserDAO dao;
+    @Autowired UserDAORepository dao;
 
 
     @BeforeEach

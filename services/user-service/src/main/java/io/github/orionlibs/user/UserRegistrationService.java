@@ -5,7 +5,7 @@ import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.user.event.EventUserRegistered;
-import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAORepository;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRegistrationService implements Publishable
 {
     @Autowired
-    private UserDAO dao;
+    private UserDAORepository dao;
     @Autowired
     private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 

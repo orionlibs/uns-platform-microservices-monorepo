@@ -3,7 +3,7 @@ package io.github.orionlibs.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
-import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAORepository;
 import io.github.orionlibs.user.model.UserModel;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserServiceTest
 {
-    @Autowired UserDAO dao;
+    @Autowired UserDAORepository dao;
     @Autowired UserRegistrationService userRegistrationService;
     @Autowired UserService userService;
     @Autowired HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;

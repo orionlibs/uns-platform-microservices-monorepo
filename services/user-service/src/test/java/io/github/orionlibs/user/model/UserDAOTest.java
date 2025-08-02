@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserDAOTest
 {
-    @Autowired UserDAO dao;
+    @Autowired UserDAORepository dao;
     UserModel user;
     @Autowired HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 

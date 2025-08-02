@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.github.orionlibs.core.data.DuplicateRecordException;
-import io.github.orionlibs.user.model.UserDAO;
+import io.github.orionlibs.user.model.UserDAORepository;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import java.util.Set;
@@ -19,7 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserRegistrationServiceTest
 {
-    @Autowired UserDAO userDAO;
+    @Autowired UserDAORepository userDAO;
     @Autowired UserRegistrationService userRegistrationService;
 
 
