@@ -6,27 +6,6 @@
 --update README.md
 
 
-Use the abstract event publisher for all API endpoints
-
-
-Make things configurable. Create pojo classes that hold config and the config is loaded during startup using @Value("${prop}") and add environment props inside the application.YAML file and then use @ConditionalProperties inside the config pojo
-
-
-Use virtual threads where possible
-
-
-Device control service allows us to send commands to devices via some protocol
-
-
-The user registration service will orchestrate the registration process by calling the authority service, the user service, the details service and the settings service by passing the necessary JSON input to them
-
-
-services can use kafka to publish events. Implement MQTT publishing, as well using HiveMQ
-
-
-Create user management projects in the folder "services/user-management"
-1--Create project "user-registration-service". The default config is to use the localhost database. Other config comes from env variables. If they exist then that is the user database to use. See how to inject env variables to application.yml. Create API:
-"POST /users". Check if username already exists. If not then register authority, user, details and settings (call settings service)
 2--create project "user-update-service" with API:
 "PATCH /users/passwords",
 "POST /users/passwords/forgot-requests"
@@ -154,6 +133,21 @@ Create tag historian service project
 --create UDT (user-defined tags)
 --create new tag, set the data source from which we retrieve its values or the MQTT topic, set the tag group it belongs to, set data type, set the deadband (if the new value minus the last value is >= deadband then store the new value in the historian and the realtime tag database
 --enable or disable maintaining historian values
+
+
+Use the abstract event publisher for all API endpoints
+
+
+Make things configurable. Create pojo classes that hold config and the config is loaded during startup using @Value("${prop}") and add environment props inside the application.YAML file and then use @ConditionalProperties inside the config pojo
+
+
+Use virtual threads where possible
+
+
+Device control service allows us to send commands to devices via some protocol
+
+
+services can use kafka to publish events. Implement MQTT publishing, as well using HiveMQ
 
 
 Create sequential function chart service project

@@ -8,6 +8,7 @@ public enum HTTPHeader implements OrionEnumeration
     UserAgent("User-Agent"),
     WAPProfile("x-wap-profile"),
     XAPIKey("x-api-key"),
+    XAPISecret("x-api-secret"),
     Profile("Profile"),
     Accept("Accept"),
     Authorization("Authorization"),
