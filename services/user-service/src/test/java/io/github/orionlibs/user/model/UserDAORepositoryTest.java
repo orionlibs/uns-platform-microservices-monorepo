@@ -73,7 +73,13 @@ public class UserDAORepositoryTest
 
     private UserModel saveUser(String username, String password, String authority)
     {
-        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider, username, password, authority);
+        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider);
+        userModel.setUsername(username);
+        userModel.setPassword(password);
+        userModel.setAuthority(authority);
+        userModel.setFirstName("Dimi");
+        userModel.setLastName("Emilson");
+        userModel.setPhoneNumber("07896620211");
         return dao.save(userModel);
     }
 }

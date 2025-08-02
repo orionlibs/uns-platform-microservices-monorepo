@@ -39,6 +39,9 @@ class LoginAPIControllerTest
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority("USER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build());
     }
 

@@ -37,7 +37,14 @@ public class UserSettingsServiceTest
     @Test
     void saveUserSetting()
     {
-        UserModel newUser = userDAO.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider);
+        userModel.setUsername("me@email.com");
+        userModel.setPassword("4528");
+        userModel.setAuthority("USER");
+        userModel.setFirstName("Dimi");
+        userModel.setLastName("Emilson");
+        userModel.setPhoneNumber("07896620211");
+        UserModel newUser = userDAO.save(userModel);
         UserSettingsModel setting = new UserSettingsModel(newUser, "setting1", "yes");
         setting = userSettingsService.save(setting);
         assertThat(setting).isNotNull();
@@ -55,8 +62,14 @@ public class UserSettingsServiceTest
     @Test
     void saveUserSetting_noUserInDatabase()
     {
-        UserModel newUser = new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER");
-        UserSettingsModel setting = new UserSettingsModel(newUser, "setting1", "yes");
+        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider);
+        userModel.setUsername("me@email.com");
+        userModel.setPassword("4528");
+        userModel.setAuthority("USER");
+        userModel.setFirstName("Dimi");
+        userModel.setLastName("Emilson");
+        userModel.setPhoneNumber("07896620211");
+        UserSettingsModel setting = new UserSettingsModel(userModel, "setting1", "yes");
         assertThatThrownBy(() -> userSettingsService.save(setting)).isInstanceOf(InvalidDataAccessApiUsageException.class)
                         .hasMessageContaining("TransientPropertyValueException: Not-null property references a transient value");
     }
@@ -65,7 +78,14 @@ public class UserSettingsServiceTest
     @Test
     void saveDefaultUserSettings()
     {
-        UserModel newUser = userDAO.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider);
+        userModel.setUsername("me@email.com");
+        userModel.setPassword("4528");
+        userModel.setAuthority("USER");
+        userModel.setFirstName("Dimi");
+        userModel.setLastName("Emilson");
+        userModel.setPhoneNumber("07896620211");
+        UserModel newUser = userDAO.save(userModel);
         userSettingsService.saveDefaultSettingsForUser(newUser);
         List<UserSettingsModel> settings = userSettingsService.getByUserID(newUser.getId());
         assertThat(settings).isNotNull();

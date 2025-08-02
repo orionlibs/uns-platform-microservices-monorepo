@@ -28,7 +28,13 @@ public class UserRegistrationService implements Publishable
     @Transactional
     public void registerUser(UserRegistrationRequest request) throws DuplicateRecordException
     {
-        UserModel newUser = new UserModel(hmacSHAEncryptionKeyProvider, request.getUsername(), request.getPassword(), request.getAuthority());
+        UserModel newUser = new UserModel(hmacSHAEncryptionKeyProvider);
+        newUser.setUsername(request.getUsername());
+        newUser.setPassword(request.getPassword());
+        newUser.setAuthority(request.getAuthority());
+        newUser.setFirstName(request.getFirstName());
+        newUser.setLastName(request.getLastName());
+        newUser.setPhoneNumber(request.getPhoneNumber());
         try
         {
             userService.saveUser(newUser);

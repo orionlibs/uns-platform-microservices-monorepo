@@ -33,7 +33,7 @@ public class AesGcmColumnConverter implements AttributeConverter<String, String>
     @Override
     public String convertToDatabaseColumn(String attribute)
     {
-        if(attribute == null)
+        if(attribute == null || attribute.isEmpty())
         {
             return null;
         }
@@ -65,7 +65,7 @@ public class AesGcmColumnConverter implements AttributeConverter<String, String>
     @Override
     public String convertToEntityAttribute(String dbData)
     {
-        if(dbData == null)
+        if(dbData == null || dbData.isEmpty())
         {
             return null;
         }

@@ -22,4 +22,9 @@ public class UserRegistrationRequest
     private String password;
     @NotBlank(message = "Authority must not be blank")
     private String authority;
+    @NotBlank(message = "First name must not be blank")
+    private String firstName;
+    @NotBlank(message = "Last name must not be blank")
+    private String lastName;
+    private String phoneNumber;
 }

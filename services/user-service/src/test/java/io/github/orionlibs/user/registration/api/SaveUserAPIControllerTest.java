@@ -45,6 +45,9 @@ class SaveUserAPIControllerTest
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(201);
@@ -59,6 +62,9 @@ class SaveUserAPIControllerTest
                         .username("me")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);
@@ -75,6 +81,9 @@ class SaveUserAPIControllerTest
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         apiUtils.makePostAPICall(request, null);
         Response response = apiUtils.makePostAPICall(request, null);
@@ -92,6 +101,9 @@ class SaveUserAPIControllerTest
                         .username("me@email.com")
                         .password("4528")
                         .authority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);
@@ -108,6 +120,9 @@ class SaveUserAPIControllerTest
                         .username("me@email.com")
                         .password("bunkzh3Z!")
                         .authority("")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);
@@ -124,6 +139,9 @@ class SaveUserAPIControllerTest
                         .username("me")
                         .password("4528")
                         .authority("")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         Response response = apiUtils.makePostAPICall(request, null);
         assertThat(response.statusCode()).isEqualTo(400);

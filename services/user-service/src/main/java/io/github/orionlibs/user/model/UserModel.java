@@ -53,6 +53,15 @@ public class UserModel implements UserDetails
     private String authority;
     @Column(name = "is_enabled", nullable = false)
     private boolean isEnabled;
+    @Column(name = "first_name", nullable = false)
+    @Convert(converter = AesGcmColumnConverter.class)
+    private String firstName;
+    @Column(name = "last_name", nullable = false)
+    @Convert(converter = AesGcmColumnConverter.class)
+    private String lastName;
+    @Column(name = "phone_number")
+    @Convert(converter = AesGcmColumnConverter.class)
+    private String phoneNumber;
     @CreationTimestamp
     @Column(name = "created_at", updatable = false, nullable = false)
     private LocalDateTime createdAt;
@@ -73,14 +82,10 @@ public class UserModel implements UserDetails
     }
 
 
-    public UserModel(HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider, String username, String password, String authority)
+    public UserModel(HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider)
     {
         this();
-        this.username = username;
         this.hmacSHAEncryptionKeyProvider = hmacSHAEncryptionKeyProvider;
-        this.usernameHash = hmacSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.shaKey);
-        this.password = password;
-        this.authority = authority;
     }
 
 
@@ -187,5 +192,41 @@ public class UserModel implements UserDetails
     public List<UserSettingsModel> getSettings()
     {
         return settings;
+    }
+
+
+    public String getFirstName()
+    {
+        return firstName;
+    }
+
+
+    public void setFirstName(String firstName)
+    {
+        this.firstName = firstName;
+    }
+
+
+    public String getLastName()
+    {
+        return lastName;
+    }
+
+
+    public void setLastName(String lastName)
+    {
+        this.lastName = lastName;
+    }
+
+
+    public String getPhoneNumber()
+    {
+        return phoneNumber;
+    }
+
+
+    public void setPhoneNumber(String phoneNumber)
+    {
+        this.phoneNumber = phoneNumber;
     }
 }

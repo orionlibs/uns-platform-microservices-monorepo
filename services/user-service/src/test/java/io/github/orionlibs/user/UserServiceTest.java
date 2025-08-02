@@ -34,7 +34,14 @@ public class UserServiceTest
     @Test
     void loadUserByUsername()
     {
-        UserModel newUser = dao.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        UserModel userTemp = new UserModel(hmacSHAEncryptionKeyProvider);
+        userTemp.setUsername("me@email.com");
+        userTemp.setPassword("4528");
+        userTemp.setAuthority("USER");
+        userTemp.setFirstName("Dimi");
+        userTemp.setLastName("Emilson");
+        userTemp.setPhoneNumber("07896620211");
+        UserModel newUser = dao.save(userTemp);
         assertThat(newUser.getCreatedAt()).isNotNull();
         assertThat(newUser.getUpdatedAt()).isNotNull();
         UserDetails user = userService.loadUserByUsername("me@email.com");

@@ -41,12 +41,18 @@ public class UserRegistrationServiceTest
                         .username("me@email.com")
                         .password("4528")
                         .authority("USER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         userRegistrationService.registerUser(request);
         UserModel user = dao.findByUsername("me@email.com").get();
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("me@email.com");
         assertThat(user.getPassword().isEmpty()).isFalse();
+        assertThat(user.getFirstName()).isEqualTo("Dimi");
+        assertThat(user.getLastName()).isEqualTo("Emilson");
+        assertThat(user.getPhoneNumber()).isEqualTo("07896620211");
         assertThat(user.getAuthority()).isEqualTo("USER");
         assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("USER")));
         List<UserSettingsModel> settings = userSettingsService.getByUserID(user.getId());
@@ -64,6 +70,9 @@ public class UserRegistrationServiceTest
                         .username("me@email.com")
                         .password("4528")
                         .authority("USER")
+                        .firstName("Dimi")
+                        .lastName("Emilson")
+                        .phoneNumber("07896620211")
                         .build();
         userRegistrationService.registerUser(request);
         assertThatThrownBy(() -> userRegistrationService.registerUser(request)).isInstanceOf(DuplicateRecordException.class)
