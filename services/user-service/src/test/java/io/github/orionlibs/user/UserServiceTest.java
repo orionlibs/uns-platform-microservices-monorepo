@@ -3,7 +3,7 @@ package io.github.orionlibs.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
-import io.github.orionlibs.user.model.UserDAORepository;
+import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserServiceTest
 {
-    @Autowired UserDAORepository dao;
+    @Autowired UserDAO dao;
     @Autowired UserRegistrationService userRegistrationService;
     @Autowired UserService userService;
     @Autowired HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
@@ -34,7 +34,7 @@ public class UserServiceTest
     @Test
     void loadUserByUsername()
     {
-        UserModel newUser = dao.saveAndFlush(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        UserModel newUser = dao.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
         assertThat(newUser.getCreatedAt()).isNotNull();
         assertThat(newUser.getUpdatedAt()).isNotNull();
         System.out.println("-----" + newUser.getCreatedAt());

@@ -11,4 +11,10 @@ public interface UserDAO
 
 
     Optional<UserModel> findByUsernameHash(String usernameHash);
+
+
+    void deleteAll();
+
+
+    UserModel save(UserModel model);
 }

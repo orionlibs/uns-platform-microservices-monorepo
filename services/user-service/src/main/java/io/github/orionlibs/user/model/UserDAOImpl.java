@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class UserDAOImpl implements UserDAO
 {
+    @Autowired
     private UserDAORepository userDAO;
     @PersistenceContext
     private EntityManager entityManager;
@@ -49,5 +50,19 @@ public class UserDAOImpl implements UserDAO
         {
             return Optional.empty();
         }
+    }
+
+
+    @Override
+    public void deleteAll()
+    {
+        userDAO.deleteAll();
+    }
+
+
+    @Override
+    public UserModel save(UserModel model)
+    {
+        return userDAO.saveAndFlush(model);
     }
 }

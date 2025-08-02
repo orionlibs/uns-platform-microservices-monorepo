@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.github.orionlibs.core.data.DuplicateRecordException;
-import io.github.orionlibs.user.model.UserDAORepository;
+import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import java.util.Set;
@@ -19,14 +19,14 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserRegistrationServiceTest
 {
-    @Autowired UserDAORepository userDAO;
+    @Autowired UserDAO dao;
     @Autowired UserRegistrationService userRegistrationService;
 
 
     @BeforeEach
     void setup()
     {
-        userDAO.deleteAll();
+        dao.deleteAll();
     }
 
 
@@ -39,7 +39,7 @@ public class UserRegistrationServiceTest
                         .authority("USER")
                         .build();
         userRegistrationService.registerUser(request);
-        UserModel user = userDAO.findByUsername("me@email.com").get();
+        UserModel user = dao.findByUsername("me@email.com").get();
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("me@email.com");
         assertThat(user.getPassword().isEmpty()).isFalse();

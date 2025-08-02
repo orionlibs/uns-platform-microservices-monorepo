@@ -6,7 +6,7 @@ import io.github.orionlibs.core.api.APIError;
 import io.github.orionlibs.core.tests.APITestUtils;
 import io.github.orionlibs.user.ControllerUtils;
 import io.github.orionlibs.user.UserRegistrationService;
-import io.github.orionlibs.user.model.UserDAORepository;
+import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
@@ -24,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 class LoginAPIControllerTest
 {
     @LocalServerPort int port;
-    @Autowired UserDAORepository dao;
+    @Autowired UserDAO dao;
     @Autowired APITestUtils apiUtils;
     String basePath;
     @Autowired UserRegistrationService userRegistrationService;
