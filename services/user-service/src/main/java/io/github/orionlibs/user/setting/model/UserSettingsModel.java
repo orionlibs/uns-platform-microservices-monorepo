@@ -31,7 +31,7 @@ public class UserSettingsModel
     private String settingName;
     @Column(name = "setting_value", nullable = false)
     private String settingValue;
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false, fetch = FetchType.EAGER)
     @JoinColumn(
                     name = "user_id",
                     nullable = false,

@@ -43,6 +43,11 @@ public class UserSettingsServiceTest
         assertThat(setting.getSettingName()).isEqualTo("setting1");
         assertThat(setting.getSettingValue()).isEqualTo("yes");
         assertThat(setting.getUser().getUsername()).isEqualTo("me@email.com");
+        UserSettingsModel setting1 = userSettingsService.getByID(setting.getId()).get();
+        assertThat(setting1).isNotNull();
+        assertThat(setting1.getSettingName()).isEqualTo("setting1");
+        assertThat(setting1.getSettingValue()).isEqualTo("yes");
+        assertThat(setting1.getUser().getUsername()).isEqualTo("me@email.com");
     }
 
 

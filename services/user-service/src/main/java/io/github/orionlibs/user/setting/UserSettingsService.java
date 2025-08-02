@@ -16,6 +16,7 @@ public class UserSettingsService
     private UserSettingsDAORepository dao;
 
 
+    @Transactional(readOnly = true)
     public Optional<UserSettingsModel> getByID(UUID settingID)
     {
         return dao.findById(settingID);
