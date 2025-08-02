@@ -8,6 +8,7 @@ import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.setting.model.UserSettingsDAORepository;
 import io.github.orionlibs.user.setting.model.UserSettingsModel;
+import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,5 +59,18 @@ public class UserSettingsServiceTest
         UserSettingsModel setting = new UserSettingsModel(newUser, "setting1", "yes");
         assertThatThrownBy(() -> userSettingsService.save(setting)).isInstanceOf(InvalidDataAccessApiUsageException.class)
                         .hasMessageContaining("TransientPropertyValueException: Not-null property references a transient value");
+    }
+
+
+    @Test
+    void saveDefaultUserSettings()
+    {
+        UserModel newUser = userDAO.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        userSettingsService.saveDefaultSettingsForUser(newUser);
+        List<UserSettingsModel> settings = userSettingsService.getByUserID(newUser.getId());
+        assertThat(settings).isNotNull();
+        assertThat(settings.size()).isEqualTo(1);
+        assertThat(settings.get(0).getSettingName()).isEqualTo("theme");
+        assertThat(settings.get(0).getSettingValue()).isEqualTo("dark");
     }
 }

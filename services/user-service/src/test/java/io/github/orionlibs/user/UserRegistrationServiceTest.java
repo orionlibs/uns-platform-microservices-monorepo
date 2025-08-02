@@ -7,6 +7,9 @@ import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
+import io.github.orionlibs.user.setting.UserSettingsService;
+import io.github.orionlibs.user.setting.model.UserSettingsModel;
+import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,6 +24,7 @@ public class UserRegistrationServiceTest
 {
     @Autowired UserDAO dao;
     @Autowired UserRegistrationService userRegistrationService;
+    @Autowired UserSettingsService userSettingsService;
 
 
     @BeforeEach
@@ -45,6 +49,11 @@ public class UserRegistrationServiceTest
         assertThat(user.getPassword().isEmpty()).isFalse();
         assertThat(user.getAuthority()).isEqualTo("USER");
         assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("USER")));
+        List<UserSettingsModel> settings = userSettingsService.getByUserID(user.getId());
+        assertThat(settings).isNotNull();
+        assertThat(settings.size()).isEqualTo(1);
+        assertThat(settings.get(0).getSettingName()).isEqualTo("theme");
+        assertThat(settings.get(0).getSettingValue()).isEqualTo("dark");
     }
 
 

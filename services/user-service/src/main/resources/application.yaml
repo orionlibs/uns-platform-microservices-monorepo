@@ -35,6 +35,12 @@ spring:
   application:
     name: User Service
 
+user:
+  default-settings:
+    settings:
+      - name: theme
+        value: dark
+
 password:
   pattern: "^(?=.{8,})(?=.*[A-Z])(?=.*\\d).*$"
 

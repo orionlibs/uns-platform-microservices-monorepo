@@ -33,4 +33,11 @@ public class UserService implements UserDetailsService
                         .disabled(!user.isEnabled())
                         .build();
     }
+
+
+    @Transactional
+    public UserModel saveUser(UserModel user)
+    {
+        return dao.save(user);
+    }
 }
