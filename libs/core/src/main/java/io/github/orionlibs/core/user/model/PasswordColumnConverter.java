@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.model;
+package io.github.orionlibs.core.user.model;
 
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;

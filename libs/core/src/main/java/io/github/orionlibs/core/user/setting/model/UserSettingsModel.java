@@ -1,6 +1,6 @@
 package io.github.orionlibs.core.user.setting.model;
 
-import io.github.orionlibs.user.model.UserModel;
+import io.github.orionlibs.core.user.model.UserModel;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;

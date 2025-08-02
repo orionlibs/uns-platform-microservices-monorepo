@@ -1,7 +1,7 @@
 package io.github.orionlibs.user.observability;
 
 import io.github.orionlibs.core.observability.HealthChecker;
-import io.github.orionlibs.user.model.UserDAORepository;
+import io.github.orionlibs.core.user.model.UserDAORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;

@@ -1,8 +1,10 @@
 package io.github.orionlibs.core.api;
 
+import io.github.orionlibs.core.user.model.UserDAO;
 import java.util.Optional;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
@@ -13,10 +15,12 @@ public class ApiKeyValidationService
     @Autowired
     private ApiKeyDAO apiKeyDAO;
     @Autowired
+    private UserDAO userDAO;
+    @Autowired
     private UserDetailsService userService;
 
 
-    public UserDetails validate(String apiKey, String apiSecret)
+    public UserDetails validate(String apiKey, String apiSecret) throws AuthenticationException
     {
         Optional<ApiKeyModel> opt = apiKeyDAO.findById(apiKey);
         if(opt.isEmpty())
@@ -28,7 +32,8 @@ public class ApiKeyValidationService
         {
             return null;
         }
-        UUID userID = model.getUserID();
-        return userService.loadUserByUsername(username);
+        return userDAO.findByUserID(model.getUserID())
+                        .map(user -> userService.loadUserByUsername(user.getUsername()))
+                        .orElseThrow(() -> new BadCredentialsException("User not found"));
     }
 }

@@ -5,7 +5,7 @@ import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.data.DuplicateRecordException;
 import io.github.orionlibs.core.event.Publishable;
 import io.github.orionlibs.user.event.EventUserRegistered;
-import io.github.orionlibs.user.model.UserModel;
+import io.github.orionlibs.core.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import io.github.orionlibs.user.setting.UserSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;

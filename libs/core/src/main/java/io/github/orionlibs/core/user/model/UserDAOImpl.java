@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.model;
+package io.github.orionlibs.core.user.model;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.core.cryptology.SHAEncodingKeyProvider;
@@ -6,6 +6,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,9 @@ public class UserDAOImpl implements UserDAO
 
 
     @Override
-    public Integer testConnection()
+    public Optional<UserModel> findByUserID(UUID userID)
     {
-        return userDAO.testConnection();
+        return userDAO.findById(userID);
     }
 
 

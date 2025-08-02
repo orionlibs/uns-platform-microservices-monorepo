@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -23,7 +24,6 @@ public class ApiKeyAuthenticationProvider implements AuthenticationProvider
         {
             throw new BadCredentialsException("Invalid API key/secret");
         }
-        // on success, return a new *authenticated* token with user and roles
         return new ApiKeyAuthenticationToken(
                         user, user.getAuthorities(),
                         token.getApiKey(),

@@ -4,8 +4,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
-import io.github.orionlibs.user.model.UserDAO;
-import io.github.orionlibs.user.model.UserModel;
+import io.github.orionlibs.core.user.model.UserDAO;
+import io.github.orionlibs.core.user.model.UserModel;
 import io.github.orionlibs.core.user.setting.model.UserSettingsDAORepository;
 import io.github.orionlibs.core.user.setting.model.UserSettingsModel;
 import java.util.List;

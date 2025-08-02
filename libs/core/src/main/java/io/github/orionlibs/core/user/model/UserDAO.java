@@ -1,10 +1,11 @@
-package io.github.orionlibs.user.model;
+package io.github.orionlibs.core.user.model;
 
 import java.util.Optional;
+import java.util.UUID;
 
 public interface UserDAO
 {
-    Integer testConnection();
+    Optional<UserModel> findByUserID(UUID userID);
 
 
     Optional<UserModel> findByUsername(String username);
