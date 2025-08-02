@@ -25,14 +25,14 @@ class SaveUserAPIControllerTest
     @LocalServerPort int port;
     @Autowired APITestUtils apiUtils;
     String basePath;
-    @Autowired UserDAO userDAO;
+    @Autowired UserDAO dao;
 
 
     @BeforeEach
     @SuppressWarnings("unchecked")
     public void setUp()
     {
-        userDAO.deleteAll();
+        dao.deleteAll();
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/users";
     }
 

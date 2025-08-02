@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class HealthCheckerForDocument implements HealthChecker
 {
     @Autowired
-    private DocumentDAO documentRepository;
+    private DocumentDAO dao;
 
 
     @Override
@@ -33,7 +33,7 @@ public class HealthCheckerForDocument implements HealthChecker
     {
         try
         {
-            Integer result = documentRepository.testConnection();
+            Integer result = dao.testConnection();
             return result != null && result == 1;
         }
         catch(Exception e)

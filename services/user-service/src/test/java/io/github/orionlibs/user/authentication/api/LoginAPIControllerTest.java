@@ -24,7 +24,7 @@ import org.springframework.test.context.ActiveProfiles;
 class LoginAPIControllerTest
 {
     @LocalServerPort int port;
-    @Autowired UserDAO userDAO;
+    @Autowired UserDAO dao;
     @Autowired APITestUtils apiUtils;
     String basePath;
     @Autowired UserRegistrationService userRegistrationService;
@@ -34,7 +34,7 @@ class LoginAPIControllerTest
     public void setUp()
     {
         basePath = "http://localhost:" + port + ControllerUtils.baseAPIPath + "/users/login";
-        userDAO.deleteAll();
+        dao.deleteAll();
         userRegistrationService.registerUser(UserRegistrationRequest.builder()
                         .username("me@email.com")
                         .password("bunkzh3Z!")

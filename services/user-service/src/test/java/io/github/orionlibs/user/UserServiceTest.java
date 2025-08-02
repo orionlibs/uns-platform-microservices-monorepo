@@ -2,8 +2,9 @@ package io.github.orionlibs.user;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
 import io.github.orionlibs.user.model.UserDAO;
-import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
+import io.github.orionlibs.user.model.UserModel;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -17,27 +18,27 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserServiceTest
 {
-    @Autowired UserDAO userDAO;
+    @Autowired UserDAO dao;
     @Autowired UserRegistrationService userRegistrationService;
     @Autowired UserService userService;
+    @Autowired HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
 
     @BeforeEach
     void setup()
     {
-        userDAO.deleteAll();
+        dao.deleteAll();
     }
 
 
     @Test
     void loadUserByUsername()
     {
-        UserRegistrationRequest request = UserRegistrationRequest.builder()
-                        .username("me@email.com")
-                        .password("4528")
-                        .authority("USER")
-                        .build();
-        userRegistrationService.registerUser(request);
+        UserModel newUser = dao.saveAndFlush(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
+        assertThat(newUser.getCreatedAt()).isNotNull();
+        assertThat(newUser.getUpdatedAt()).isNotNull();
+        System.out.println("-----" + newUser.getCreatedAt());
+        System.out.println("-----" + newUser.getUpdatedAt());
         UserDetails user = userService.loadUserByUsername("me@email.com");
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("me@email.com");

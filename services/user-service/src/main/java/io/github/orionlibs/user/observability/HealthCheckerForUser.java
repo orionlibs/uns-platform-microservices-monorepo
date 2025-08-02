@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class HealthCheckerForUser implements HealthChecker
 {
     @Autowired
-    private UserDAO userDAO;
+    private UserDAO dao;
 
 
     @Override
@@ -33,7 +33,7 @@ public class HealthCheckerForUser implements HealthChecker
     {
         try
         {
-            Integer result = userDAO.testConnection();
+            Integer result = dao.testConnection();
             return result != null && result == 1;
         }
         catch(Exception e)

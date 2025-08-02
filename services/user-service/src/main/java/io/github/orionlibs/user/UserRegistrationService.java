@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRegistrationService implements Publishable
 {
     @Autowired
-    private UserDAO userDAO;
+    private UserDAO dao;
     @Autowired
     private HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
@@ -29,7 +29,7 @@ public class UserRegistrationService implements Publishable
         UserModel newUser = new UserModel(hmacSHAEncryptionKeyProvider, request.getUsername(), request.getPassword(), request.getAuthority());
         try
         {
-            userDAO.saveAndFlush(newUser);
+            dao.saveAndFlush(newUser);
             publish(EventUserRegistered.EVENT_NAME, EventUserRegistered.builder()
                             .username(request.getUsername())
                             .build());

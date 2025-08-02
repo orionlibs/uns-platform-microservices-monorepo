@@ -13,13 +13,13 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class DocumentRepositoryTest
 {
-    @Autowired DocumentDAO documentRepository;
+    @Autowired DocumentDAO dao;
 
 
     @BeforeEach
     void setup()
     {
-        documentRepository.deleteAll();
+        dao.deleteAll();
     }
 
 
@@ -29,7 +29,7 @@ public class DocumentRepositoryTest
         // given
         DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
         // when
-        DocumentModel savedDoc = documentRepository.save(doc1);
+        DocumentModel savedDoc = dao.save(doc1);
         // then
         assertThat(savedDoc).isNotNull();
         assertThat(savedDoc.getId()).isGreaterThan(0);
@@ -46,9 +46,9 @@ public class DocumentRepositoryTest
         DocumentModel doc1 = saveDocument("https://company.com/1.pdf");
         DocumentModel doc2 = saveDocument("https://company.com/2.pdf");
         // when
-        DocumentModel savedDoc1 = documentRepository.save(doc1);
-        DocumentModel savedDoc2 = documentRepository.save(doc2);
-        List<DocumentModel> docs = documentRepository.findAllByType(DocumentType.Type.DOCUMENTATION);
+        DocumentModel savedDoc1 = dao.save(doc1);
+        DocumentModel savedDoc2 = dao.save(doc2);
+        List<DocumentModel> docs = dao.findAllByType(DocumentType.Type.DOCUMENTATION);
         // then
         assertThat(docs).isNotNull();
         assertThat(docs.size()).isEqualTo(2);
@@ -66,6 +66,6 @@ public class DocumentRepositoryTest
     private DocumentModel saveDocument(String documentURL)
     {
         DocumentModel doc = new DocumentModel(documentURL, DocumentType.Type.DOCUMENTATION, "doc title 1", "doc description 1");
-        return documentRepository.save(doc);
+        return dao.save(doc);
     }
 }

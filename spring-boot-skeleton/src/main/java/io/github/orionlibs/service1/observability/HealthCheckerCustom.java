@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class HealthCheckerCustom implements HealthChecker
 {
     @Autowired
-    private SomeDAO someDAO;
+    private SomeDAO dao;
 
 
     @Override
@@ -32,7 +32,7 @@ public class HealthCheckerCustom implements HealthChecker
     {
         try
         {
-            Integer result = someDAO.testConnection();
+            Integer result = dao.testConnection();
             return result != null && result == 1;
         }
         catch(Exception e)

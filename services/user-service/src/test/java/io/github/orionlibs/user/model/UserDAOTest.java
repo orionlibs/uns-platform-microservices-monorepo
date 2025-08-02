@@ -17,7 +17,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserDAOTest
 {
-    @Autowired UserDAO userDAO;
+    @Autowired UserDAO dao;
     UserModel user;
     @Autowired HMACSHAEncryptionKeyProvider hmacSHAEncryptionKeyProvider;
 
@@ -25,7 +25,7 @@ public class UserDAOTest
     @BeforeEach
     void setup()
     {
-        userDAO.deleteAll();
+        dao.deleteAll();
         user = saveUser("me@email.com", "4528", UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER");
     }
 
@@ -49,7 +49,7 @@ public class UserDAOTest
         user.setEnabled(false);
         user.setPassword("4528");
         user.setAuthority(UserAuthority.ADMINISTRATOR.name() + ",CUSTOMER,SUPPORT");
-        userDAO.save(user);
+        dao.save(user);
         assertThat(user).isNotNull();
         assertThat(user.getId().toString().length()).isGreaterThan(20);
         assertThat(user.getUsername()).isEqualTo("me@email.com");
@@ -65,8 +65,8 @@ public class UserDAOTest
     @Test
     void deleteUser()
     {
-        userDAO.delete(user);
-        Optional<UserModel> user1 = userDAO.findById(user.getId());
+        dao.delete(user);
+        Optional<UserModel> user1 = dao.findById(user.getId());
         assertThat(user1.isEmpty()).isTrue();
     }
 
@@ -74,6 +74,6 @@ public class UserDAOTest
     private UserModel saveUser(String username, String password, String authority)
     {
         UserModel userModel = new UserModel(hmacSHAEncryptionKeyProvider, username, password, authority);
-        return userDAO.save(userModel);
+        return dao.save(userModel);
     }
 }

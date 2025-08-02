@@ -6,6 +6,8 @@ import io.github.orionlibs.user.UserRegistrationService;
 import io.github.orionlibs.user.UserService;
 import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
+import io.github.orionlibs.user.setting.model.UserSettingsDAO;
+import io.github.orionlibs.user.setting.model.UserSettingsModel;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,32 +21,23 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserSettingsServiceTest
 {
-    @Autowired UserDAO userDAO;
-    @Autowired UserRegistrationService userRegistrationService;
-    @Autowired UserService userService;
+    @Autowired UserSettingsDAO dao;
+    @Autowired UserSettingsService userSettingsService;
 
 
     @BeforeEach
     void setup()
     {
-        userDAO.deleteAll();
+        dao.deleteAll();
     }
 
 
     @Test
-    void xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx()
+    void saveUserSetting()
     {
-        odpodkpd
-        UserRegistrationRequest request = UserRegistrationRequest.builder()
-                        .username("me@email.com")
-                        .password("4528")
-                        .authority("USER")
-                        .build();
-        userRegistrationService.registerUser(request);
-        UserDetails user = userService.loadUserByUsername("me@email.com");
-        assertThat(user).isNotNull();
-        assertThat(user.getUsername()).isEqualTo("me@email.com");
-        assertThat(user.getPassword().isEmpty()).isFalse();
-        assertThat(user.getAuthorities()).isEqualTo(Set.of(new SimpleGrantedAuthority("USER")));
+        UserSettingsModel setting = new UserSettingsModel();
+        //userSettingsService.save();
+        //assertThat(user).isNotNull();
+        //assertThat(user.getUsername()).isEqualTo("me@email.com");
     }
 }
