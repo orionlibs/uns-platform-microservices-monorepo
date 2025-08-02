@@ -1,4 +1,4 @@
-package io.github.orionlibs.user;
+package io.github.orionlibs.core.user;
 
 import io.github.orionlibs.core.user.model.UserDAO;
 import io.github.orionlibs.core.user.model.UserModel;

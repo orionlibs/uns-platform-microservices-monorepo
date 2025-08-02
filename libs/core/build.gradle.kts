@@ -51,6 +51,8 @@ dependencies {
     implementation("io.micrometer:micrometer-core")
     implementation("io.rest-assured:rest-assured")
     compileOnly("org.projectlombok:lombok")
+    implementation("com.mysql:mysql-connector-j:9.3.0")
+    runtimeOnly("com.h2database:h2")
     annotationProcessor("org.projectlombok:lombok")
     api("com.fasterxml.jackson.core:jackson-databind")
     api("com.fasterxml.jackson.core:jackson-annotations")

@@ -3,6 +3,7 @@ package io.github.orionlibs.user;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
+import io.github.orionlibs.core.user.UserService;
 import io.github.orionlibs.core.user.model.UserDAO;
 import io.github.orionlibs.core.user.model.UserModel;
 import java.util.Set;

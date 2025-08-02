@@ -1,11 +1,9 @@
-package io.github.orionlibs.user.model;
+package io.github.orionlibs.core.user.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 import io.github.orionlibs.core.cryptology.HMACSHAEncryptionKeyProvider;
-import io.github.orionlibs.core.user.model.UserDAORepository;
-import io.github.orionlibs.core.user.model.UserModel;
-import io.github.orionlibs.user.UserAuthority;
+import io.github.orionlibs.core.user.UserAuthority;
 import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;

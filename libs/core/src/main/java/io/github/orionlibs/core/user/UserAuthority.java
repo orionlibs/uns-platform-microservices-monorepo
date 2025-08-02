@@ -1,4 +1,4 @@
-package io.github.orionlibs.user;
+package io.github.orionlibs.core.user;
 
 public enum UserAuthority
 {
