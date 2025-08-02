@@ -1,7 +1,7 @@
 package io.github.orionlibs.user.setting;
 
 import io.github.orionlibs.core.Logger;
-import io.github.orionlibs.user.setting.model.UserSettingsDAO;
+import io.github.orionlibs.user.setting.model.UserSettingsDAORepository;
 import io.github.orionlibs.user.setting.model.UserSettingsModel;
 import java.util.Optional;
 import java.util.UUID;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserSettingsService
 {
     @Autowired
-    private UserSettingsDAO dao;
+    private UserSettingsDAORepository dao;
 
 
     public Optional<UserSettingsModel> getByID(UUID settingID)

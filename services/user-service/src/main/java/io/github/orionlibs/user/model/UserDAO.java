@@ -4,6 +4,9 @@ import java.util.Optional;
 
 public interface UserDAO
 {
+    Integer testConnection();
+
+
     Optional<UserModel> findByUsername(String username);
 
 

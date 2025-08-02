@@ -22,6 +22,13 @@ public class UserDAOImpl implements UserDAO
 
 
     @Override
+    public Integer testConnection()
+    {
+        return userDAO.testConnection();
+    }
+
+
+    @Override
     public Optional<UserModel> findByUsername(String username)
     {
         return findByUsernameHash(hmacSHAEncryptionKeyProvider.getNewHMACBase64(username, SHAEncodingKeyProvider.shaKey));

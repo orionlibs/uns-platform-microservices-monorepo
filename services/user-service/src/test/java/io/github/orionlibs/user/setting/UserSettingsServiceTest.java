@@ -2,7 +2,7 @@ package io.github.orionlibs.user.setting;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import io.github.orionlibs.user.setting.model.UserSettingsDAO;
+import io.github.orionlibs.user.setting.model.UserSettingsDAORepository;
 import io.github.orionlibs.user.setting.model.UserSettingsModel;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,7 +14,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 public class UserSettingsServiceTest
 {
-    @Autowired UserSettingsDAO dao;
+    @Autowired UserSettingsDAORepository dao;
     @Autowired UserSettingsService userSettingsService;
 
 
