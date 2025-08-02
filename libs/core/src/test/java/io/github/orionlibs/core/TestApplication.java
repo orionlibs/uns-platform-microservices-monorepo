@@ -2,8 +2,8 @@ package io.github.orionlibs.core;
 
 import io.github.orionlibs.core.event.EventPublisher;
 import io.github.orionlibs.core.event.EventPublisher.EventPublisherFake;
-import io.github.orionlibs.core.json.JsonObjectMapper;
 import io.github.orionlibs.core.json.JSONService;
+import io.github.orionlibs.core.json.JsonObjectMapper;
 import java.util.TimeZone;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -37,8 +37,6 @@ public class UserServiceTest
         UserModel newUser = dao.save(new UserModel(hmacSHAEncryptionKeyProvider, "me@email.com", "4528", "USER"));
         assertThat(newUser.getCreatedAt()).isNotNull();
         assertThat(newUser.getUpdatedAt()).isNotNull();
-        System.out.println("-----" + newUser.getCreatedAt());
-        System.out.println("-----" + newUser.getUpdatedAt());
         UserDetails user = userService.loadUserByUsername("me@email.com");
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("me@email.com");

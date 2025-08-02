@@ -42,8 +42,6 @@ public class DocumentService implements Publishable
 
     public DocumentModel save(SaveDocumentRequest newDocument)
     {
-        newDocument.setCreatedAt(LocalDateTime.now());
-        newDocument.setUpdatedAt(LocalDateTime.now());
         DocumentModel toSave = newDocumentDTOToEntityConverter.convert(newDocument);
         DocumentModel saved = save(toSave);
         return saved;
