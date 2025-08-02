@@ -1,7 +1,7 @@
 package io.github.orionlibs.document.observability;
 
 import io.github.orionlibs.core.observability.HealthChecker;
-import io.github.orionlibs.document.model.DocumentDAO;
+import io.github.orionlibs.document.model.DocumentDAORepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.stereotype.Component;
@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 public class HealthCheckerForDocument implements HealthChecker
 {
     @Autowired
-    private DocumentDAO dao;
+    private DocumentDAORepository dao;
 
 
     @Override

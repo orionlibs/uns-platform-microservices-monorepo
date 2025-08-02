@@ -9,7 +9,7 @@ import io.github.orionlibs.document.event.EventDocumentDeleted;
 import io.github.orionlibs.document.event.EventDocumentDeletedAll;
 import io.github.orionlibs.document.event.EventDocumentSaved;
 import io.github.orionlibs.document.event.EventDocumentUpdated;
-import io.github.orionlibs.document.model.DocumentDAO;
+import io.github.orionlibs.document.model.DocumentDAORepository;
 import io.github.orionlibs.document.model.DocumentModel;
 import io.github.orionlibs.document.model.DocumentType;
 import java.time.LocalDateTime;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class DocumentService implements Publishable
 {
     @Autowired
-    private DocumentDAO dao;
+    private DocumentDAORepository dao;
     @Autowired
     private NewDocumentDTOToEntityConverter newDocumentDTOToEntityConverter;
 
