@@ -1,5 +1,7 @@
 package io.github.orionlibs.core.api;
 
+import io.github.orionlibs.core.api.model.ApiKeyDAO;
+import io.github.orionlibs.core.api.model.ApiKeyModel;
 import io.github.orionlibs.core.user.model.UserDAO;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
