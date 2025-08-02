@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional
-public class UserDAOCustomImpl implements UserDAOCustom
+public class UserDAOImpl implements UserDAO
 {
     private UserDAORepository userDAO;
     @PersistenceContext

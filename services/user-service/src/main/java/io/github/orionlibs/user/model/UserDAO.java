@@ -2,7 +2,7 @@ package io.github.orionlibs.user.model;
 
 import java.util.Optional;
 
-public interface UserDAOCustom
+public interface UserDAO
 {
     Optional<UserModel> findByUsername(String username);
 
