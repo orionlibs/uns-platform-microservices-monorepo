@@ -1,4 +1,4 @@
-package io.github.orionlibs.user.setting.model;
+package io.github.orionlibs.core.user.setting.model;
 
 import java.util.List;
 import java.util.UUID;

@@ -2,8 +2,8 @@ package io.github.orionlibs.user.setting;
 
 import io.github.orionlibs.core.Logger;
 import io.github.orionlibs.user.model.UserModel;
-import io.github.orionlibs.user.setting.model.UserSettingsDAORepository;
-import io.github.orionlibs.user.setting.model.UserSettingsModel;
+import io.github.orionlibs.core.user.setting.model.UserSettingsDAORepository;
+import io.github.orionlibs.core.user.setting.model.UserSettingsModel;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;

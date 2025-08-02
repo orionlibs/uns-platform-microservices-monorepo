@@ -8,7 +8,7 @@ import io.github.orionlibs.user.model.UserDAO;
 import io.github.orionlibs.user.model.UserModel;
 import io.github.orionlibs.user.registration.api.UserRegistrationRequest;
 import io.github.orionlibs.user.setting.UserSettingsService;
-import io.github.orionlibs.user.setting.model.UserSettingsModel;
+import io.github.orionlibs.core.user.setting.model.UserSettingsModel;
 import java.util.List;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
